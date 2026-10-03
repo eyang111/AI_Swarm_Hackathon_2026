@@ -162,11 +162,6 @@ details.method p,details.method li{max-width:90ch;color:var(--ink-2)}
   </div>
   <div class="counts" id="counts"></div>
 </header>
-<nav class="tabs" role="tablist" aria-label="Views">
-  <button role="tab" id="tab-episodes" aria-selected="true" type="button" onclick="showView('episodes')">Episodes</button>
-  <button role="tab" id="tab-jargon" aria-selected="false" type="button" onclick="showView('jargon')">Jargon spread</button>
-  <button role="tab" id="tab-taxonomy" aria-selected="false" type="button" onclick="showView('taxonomy')">Taxonomy check</button>
-</nav>
 <div id="view-episodes">
 
 <p class="note" id="statusNote" hidden></p>
@@ -198,14 +193,6 @@ details.method p,details.method li{max-width:90ch;color:var(--ink-2)}
   <main class="detail" id="detail"><div class="panel empty">Loading episodes…</div></main>
 </section>
 </div>
-<div id="view-jargon" hidden>
-  <div class="panel" style="margin-top:12px"><h2>Does jargon spread like a swarm?</h2><p class="sub">A term counts as jargon here if one or two agents started it, several others used it afterwards, and it is far more common in its dataset than in the other two. Each term is tested for contagion (adopters had seen it used before they used it) against common cause (a shared prompt, platform text or model habit).</p><div id="jgFindings"></div></div>
-  <div class="panel" style="margin-top:14px"><h2>Across terms</h2><div id="jgGlobal"></div></div>
-  <div class="panel" style="margin-top:14px"><h2>Across models (AI Village)</h2><p class="sub">Who picked up jargon from whom, by model family. Rows are the family a term was picked up from; columns are the family that picked it up.</p><div id="jgFam"></div></div>
-  <div class="jg-ctl"><label for="jgDs">Dataset <select id="jgDs"></select></label><label for="jgKind">Origin <select id="jgKind"></select></label><label for="jgSort">Sort <select id="jgSort"><option value="adopters">most adopters</option><option value="qp">most imitation-driven</option><option value="lift">strongest exposure effect</option><option value="first">first used</option></select></label><input type="search" id="jgQ" placeholder="Find a term" aria-label="Find a term"></div>
-  <section class="jg-split"><aside class="list" id="jgList" aria-label="Terms"><div class="empty">Loading terms…</div></aside><main class="detail" id="jgDetail"></main></section>
-</div>
-<div id="view-taxonomy" hidden><div id="txBody" class="detail" style="padding-block:12px"><div class="panel empty">Loading…</div></div></div>
 </div>
 <div id="tip" hidden></div>
 
@@ -320,7 +307,7 @@ function renderList(L){const el=$("#list");el.replaceChildren();el.append(h("div
 
 // ---------- detail
 async function loadChunk(m){if(!st.chunks[m.file]){const r=await fetch(m.file);if(!r.ok)throw new Error(`Could not load ${m.file} (${r.status})`);st.chunks[m.file]=await r.json()}return st.chunks[m.file][m.id]}
-async function select(id,scroll=true){if($("#view-episodes").hidden)showView("episodes");st.sel=id;st.txLimit=200;try{history.replaceState(null,"","#"+id.replace(/[^A-Za-z0-9._~-]/g,"_"))}catch(e){}
+async function select(id,scroll=true){st.sel=id;st.txLimit=200;try{history.replaceState(null,"","#"+id.replace(/[^A-Za-z0-9._~-]/g,"_"))}catch(e){}
   document.querySelectorAll("#list .item").forEach(x=>x.setAttribute("aria-selected","false"));renderTimelines(filtered());renderList(filtered());
   const m=st.all.find(x=>x.id===id);const d=$("#detail");d.replaceChildren(h("div",{class:"panel"},h("h3",{text:m.title}),h("p",{class:"muted",text:"Loading transcript…"})));
   let T;try{T=await loadChunk(m)}catch(e){d.replaceChildren(h("div",{class:"panel"},h("h3",{text:m.title}),h("p",{text:e.message+". The episode summary is below; the transcript file did not load."}),summaryBlock(m)));return}
@@ -413,16 +400,11 @@ async function boot(){initFilters();
     st.all=ix.map(m=>({...m,level:+(m.level??0),_q:[m.id,m.title,m.summary,(m.participants||[]).join(" "),m.origin_detail,m.prior_category,m.consequence_note].join(" ").toLowerCase()}));st.meta=meta;renderMethod(meta)}
   catch(e){$("#detail").replaceChildren(h("div",{class:"panel empty",text:"The episode index did not load. Reload the page to try again."}));return}
   render();
-  const want=(location.hash||"").slice(1);if(want==="jargon"||want==="taxonomy"){showView(want)}
+  const want=(location.hash||"").slice(1);
   const first=st.all.find(m=>m.id.replace(/[^A-Za-z0-9._~-]/g,"_")===want)||[...st.all].sort((a,b)=>b.level-a.level||(b.stats?.n_messages||0)-(a.stats?.n_messages||0))[0];
   if(first)select(first.id,!!want)}
 let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{render();if(st.sel){const m=st.all.find(x=>x.id===st.sel);const T2=st.chunks[m.file]?.[m.id];if(T2)renderDetail(m,T2)}},250)});
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>render());
 new MutationObserver(()=>render()).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
-function showView(v){for(const k of["episodes","jargon","taxonomy"]){$("#view-"+k).hidden=k!==v;$("#tab-"+k).setAttribute("aria-selected",k===v?"true":"false")}
-  $("#counts").hidden=v!=="episodes";if(v!=="episodes"){try{history.replaceState(null,"","#"+v)}catch(e){}}
-  if(v==="jargon")jgBoot();if(v==="taxonomy")txBoot()}
 boot();
 </script>
-<script src="jargon.js"></script>
-<script src="taxonomy.js"></script>
