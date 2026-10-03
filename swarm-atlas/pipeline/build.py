@@ -418,8 +418,9 @@ def main():
         meta = {k: inst.get(k) for k in ("id", "dataset", "title", "summary", "start", "end", "participants", "features", "level",
                                           "level_name", "level_rationale", "origin", "origin_detail", "assigned_task", "goal_relation",
                                           "violates_rules", "violation_detail", "goal_type", "prior_category", "new_vs_prior",
-                                          "confidence", "caveats", "review")}
-        for k in ("summary", "level_rationale", "origin_detail", "assigned_task", "violation_detail", "caveats"):
+                                          "confidence", "caveats", "review", "goal_relations", "consequence",
+                                          "consequence_note", "merged_from")}
+        for k in ("summary", "level_rationale", "origin_detail", "assigned_task", "violation_detail", "caveats", "consequence_note", "review"):
             if meta.get(k): meta[k] = redact(meta[k])
         if meta.get("features"):
             for f, v in meta["features"].items():

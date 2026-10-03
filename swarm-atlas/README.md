@@ -8,34 +8,44 @@ Every candidate episode of multi-agent "swarm" behavior found in three datasets,
 
 ## Definition used
 
-A full swarm has five necessary features:
-- **F1 multiple agents.** At least 3; accounts run by one operator or script count as one.
-- **F2 causal interaction.** One agent's output demonstrably changed another's behavior, checked by timestamp order.
-- **F3 self-organization.** The agents built the structure themselves; dictated structure does not count.
-- **F4 responsiveness.** Agents adjust to each other rather than broadcasting in parallel.
-- **F5 a collective goal.**
+Definitions and taxonomy follow Michael Flood, [AI Agent Swarm Part 1 – Definitions](https://www.greaterwrong.com/posts/zh8rBFTPDPhx2p23K/ai-agent-swarm-part-1-definitions) (LessWrong, 31 Aug 2026).
 
-Agents that converge on the same thing without influencing each other are an **aggregate**, not a swarm.
+An AI agent swarm is two or more AI agents whose causal interactions produce self-organized, mutually conditioned collective behavior directed toward one or more collective goals. The coordination structure or goals were not specified by a human or orchestrator.
+
+**Necessary features:**
+- **F1 multiplicity:** two or more agents. Accounts run by one operator or script count as one.
+- **F2 causal interaction.**
+- **F3 self-organization.**
+- **F4 mutually conditioning behavior.**
+- **F5 a collective goal.** It can be inferred from behavior and may be instrumental.
+
+**Exclusions:**
+- Parallel convergence is an aggregate.
+- One-off exchanges are cooperation.
+- Stable equilibria are not goals.
+- A swarm may be temporary.
 
 **Graded progression** (no binary call):
 
-| Level | Name |
-|---|---|
-| 0 | aggregate |
-| 1 | interaction |
-| 2 | cooperation |
-| 3 | coordination |
-| 4 | self-organization |
-| 5 | swarm formation |
+| Level | Name | Meaning |
+|---|---|---|
+| 1 | interaction | one agent causally affects another |
+| 2 | cooperation | interaction advances one or both agents' individual objectives |
+| 3 | coordination | behavior becomes mutually conditioned |
+| 4 | self-organization | roles, norms, strategies or division of labor emerge without being prescribed |
+| 5 | swarm formation | that self-organized coordination serves an identifiable collective goal |
 
-Level 5 needs all five features plus self-made structure that kept working while members came and went.
+Level 0 marks aggregates.
 
 **Axes:**
-- **origin:** seeded, afforded or spontaneous;
-- **goal relation to the assigned task:** supporting, orthogonal or conflicting, plus a separate rule-breaking flag;
-- **goal type:** shared task, shared resource, or preserving the collective.
+- **Origin:** seeded, afforded or spontaneous. AI Village and Moltbook are built for agent interaction, so they are seeded or afforded. DSEWiki is spontaneous.
+- **Goal relation to the assigned task:** supporting, orthogonal and/or conflicting. Conflicting includes working against constraints.
+- **Consequence for people:** beneficial, neutral/ambiguous, or harmful.
+- **Goal type:** shared task, shared instrumental, or collective preservation.
 
-Full operational rules: `briefs/SWARM_DEF.md` and `briefs/CONSISTENCY.md`.
+Operational rules: `briefs/ALIGNMENT.md`, which supersedes the earlier `SWARM_DEF.md` and `CONSISTENCY.md` where they differ.
+
+**Note on the preliminary data below.** It was graded under a stricter reading than the post: three or more agents, level 5 also requiring member turnover, and no consequence axis. Realignment is in progress.
 
 ## Preliminary counts (raw sweep, before merging)
 

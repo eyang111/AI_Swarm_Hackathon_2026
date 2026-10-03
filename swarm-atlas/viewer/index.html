@@ -133,6 +133,19 @@ svg .tick text{fill:var(--muted)}
 details.method{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:10px 16px;margin-top:6px}
 details.method summary{cursor:pointer;font:600 13px var(--f-cond);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2)}
 details.method p,details.method li{max-width:90ch;color:var(--ink-2)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--rule);margin-bottom:6px;flex-wrap:wrap}
+.tabs button{font:600 13px var(--f-cond);letter-spacing:.04em;text-transform:uppercase;background:none;border:0;border-bottom:2px solid transparent;color:var(--ink-2);padding:8px 12px;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--l3)}
+.findings{margin:0;padding-left:18px;display:grid;gap:6px;max-width:100ch}
+.findings li{color:var(--ink)}
+.datatab{border-collapse:collapse;font-size:13px;min-width:640px}
+.datatab th{font:600 11.5px var(--f-cond);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;padding:6px 10px;border-bottom:1px solid var(--axis)}
+.datatab td{padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top;font-variant-numeric:tabular-nums}
+.datatab tr.best td{background:var(--hover)}
+.jg-split{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);gap:18px;align-items:start;padding-block:12px}
+.jg-ctl{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding-block:8px}
+#jgDetail svg,#jgGlobal svg,#jgFam svg,#txBody svg{max-width:100%;height:auto}
+@media (max-width:980px){.jg-split{grid-template-columns:minmax(0,1fr)}}
 #feats svg,.detail svg{max-width:100%;height:auto}
 @media (max-width:1280px){.charts{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:980px){.filters{position:static}.overview{grid-template-columns:minmax(0,1fr)}.split{grid-template-columns:minmax(0,1fr)}.list{position:static;max-height:420px}.charts{grid-template-columns:minmax(0,1fr)}.feat{grid-template-columns:repeat(2,minmax(0,1fr))}.kv{grid-template-columns:minmax(0,1fr)}.msg{grid-template-columns:minmax(0,1fr)}.msg .body{grid-column:1}}
@@ -144,10 +157,17 @@ details.method p,details.method li{max-width:90ch;color:var(--ink-2)}
 <header class="top">
   <div>
     <h1>Agent Swarm Atlas</h1>
-    <p class="lede">Every candidate swarm episode found in AI Village, Moltbook and DSEWiki, graded on the progression from interaction to swarm formation and classified by origin, goal relation and goal type. Select an episode to read its full transcript.</p>
+    <p class="lede">Every candidate swarm episode found in AI Village, Moltbook and DSEWiki, graded on the progression from interaction to swarm formation and classified by origin, goal relation, consequence for people and goal type. Select an episode to read its full transcript.</p>
+    <p class="muted" style="font-size:12.5px;margin:6px 0 0">Definitions and taxonomy: Michael Flood, <a href="https://www.greaterwrong.com/posts/zh8rBFTPDPhx2p23K/ai-agent-swarm-part-1-definitions" style="color:var(--ink-2)">AI Agent Swarm Part 1 – Definitions</a> (LessWrong, 31 August 2026).</p>
   </div>
   <div class="counts" id="counts"></div>
 </header>
+<nav class="tabs" role="tablist" aria-label="Views">
+  <button role="tab" id="tab-episodes" aria-selected="true" type="button" onclick="showView('episodes')">Episodes</button>
+  <button role="tab" id="tab-jargon" aria-selected="false" type="button" onclick="showView('jargon')">Jargon spread</button>
+  <button role="tab" id="tab-taxonomy" aria-selected="false" type="button" onclick="showView('taxonomy')">Taxonomy check</button>
+</nav>
+<div id="view-episodes">
 
 <p class="note" id="statusNote" hidden></p>
 <details class="method" id="method"><summary>Definition, scale and method</summary><div id="methodBody"></div></details>
@@ -158,17 +178,19 @@ details.method p,details.method li{max-width:90ch;color:var(--ink-2)}
   <label for="fOrigin">Origin <select id="fOrigin"></select></label>
   <label for="fRel">Goal relation <select id="fRel"></select></label>
   <label for="fType">Goal type <select id="fType"></select></label>
+  <label for="fCons">Consequence <select id="fCons"></select></label>
   <label for="fConf">Confidence <select id="fConf"></select></label>
   <input type="search" id="fQ" placeholder="Search titles, agents, summaries" aria-label="Search">
   <button class="btn" id="fReset" type="button">Reset</button>
 </div>
 
 <section class="overview" id="overview">
-  <div class="panel wide"><h2>Graded progression</h2><p class="sub">Highest level each episode reaches. Level 0 episodes are aggregates: agents converged without influencing each other.</p><div class="ladder" id="ladder"></div></div>
+  <div class="panel wide"><h2>Graded progression</h2><p class="sub">Highest level each episode reaches. Level 0 episodes are aggregates: agents converged without influencing each other. A swarm can be temporary; level 5 needs self-organized coordination serving an identifiable collective goal, not long life.</p><div class="ladder" id="ladder"></div></div>
   <div class="panel wide"><h2>Timeline</h2><p class="sub">One bar per episode, from first to last message. Each dataset has its own time axis because they cover different periods. Click a bar to open it.</p><div id="timelines" class="scroll-x"></div><div class="legend" id="lvLegend"></div></div>
-  <div class="panel"><h2>Origin × goal relation</h2><p class="sub">Episode counts. Click a cell to filter.</p><div class="scroll-x" id="mx1"></div></div>
+  <div class="panel"><h2>Origin × goal relation</h2><p class="sub">Episode counts; an episode with several relations counts in each. Click a cell to filter.</p><div class="scroll-x" id="mx1"></div></div>
   <div class="panel"><h2>Goal type × level</h2><p class="sub">Episode counts. Click a cell to filter.</p><div class="scroll-x" id="mx2"></div></div>
-  <div class="panel wide"><h2>The five necessary features</h2><p class="sub">How many episodes meet each feature. A full swarm needs all five.</p><div id="feats"></div></div>
+  <div class="panel wide"><h2>Goal relation × consequence for people</h2><p class="sub">Whether the collective goal supports, ignores or works against the agents’ assigned tasks does not decide whether it helps or harms people. An episode can show more than one relation, so rows can add up to more than the episode count.</p><div class="scroll-x" id="mx3"></div></div>
+  <div class="panel wide"><h2>The five necessary features</h2><p class="sub">How many episodes meet each necessary feature. A full swarm needs all five; the collective goal can be inferred from behavior rather than stated.</p><div id="feats"></div></div>
 </section>
 
 <section class="split">
@@ -176,15 +198,26 @@ details.method p,details.method li{max-width:90ch;color:var(--ink-2)}
   <main class="detail" id="detail"><div class="panel empty">Loading episodes…</div></main>
 </section>
 </div>
+<div id="view-jargon" hidden>
+  <div class="panel" style="margin-top:12px"><h2>Does jargon spread like a swarm?</h2><p class="sub">A term counts as jargon here if one or two agents started it, several others used it afterwards, and it is far more common in its dataset than in the other two. Each term is tested for contagion (adopters had seen it used before they used it) against common cause (a shared prompt, platform text or model habit).</p><div id="jgFindings"></div></div>
+  <div class="panel" style="margin-top:14px"><h2>Across terms</h2><div id="jgGlobal"></div></div>
+  <div class="panel" style="margin-top:14px"><h2>Across models (AI Village)</h2><p class="sub">Who picked up jargon from whom, by model family. Rows are the family a term was picked up from; columns are the family that picked it up.</p><div id="jgFam"></div></div>
+  <div class="jg-ctl"><label for="jgDs">Dataset <select id="jgDs"></select></label><label for="jgKind">Origin <select id="jgKind"></select></label><label for="jgSort">Sort <select id="jgSort"><option value="adopters">most adopters</option><option value="qp">most imitation-driven</option><option value="lift">strongest exposure effect</option><option value="first">first used</option></select></label><input type="search" id="jgQ" placeholder="Find a term" aria-label="Find a term"></div>
+  <section class="jg-split"><aside class="list" id="jgList" aria-label="Terms"><div class="empty">Loading terms…</div></aside><main class="detail" id="jgDetail"></main></section>
+</div>
+<div id="view-taxonomy" hidden><div id="txBody" class="detail" style="padding-block:12px"><div class="panel empty">Loading…</div></div></div>
+</div>
 <div id="tip" hidden></div>
 
 <script>
 const LEVELS=["aggregate","interaction","cooperation","coordination","self-organization","swarm formation"];
 const DS={ai_village:"AI Village",moltbook:"Moltbook",dsewiki:"DSEWiki"};
 const ORIG=["seeded","afforded","spontaneous"], REL=["supporting","orthogonal","conflicting"], GT=["shared_task","shared_resource","preserve_collective"];
-const GTN={shared_task:"shared task",shared_resource:"shared resource",preserve_collective:"preserve collective"};
-const FEATS=[["F1","Multiple agents"],["F2","Causal interaction"],["F3","Self-organization"],["F4","Responsiveness"],["F5","Collective goal"]];
-const st={all:[],f:{ds:new Set(Object.keys(DS)),min:0,origin:"",rel:"",gt:"",conf:"",q:"",cellA:null},sel:null,chunks:{},meta:null,txLimit:200};
+const GTN={shared_task:"shared task",shared_resource:"shared instrumental",preserve_collective:"collective preservation"};
+const CONS=["beneficial","neutral_ambiguous","harmful"], CONSN={beneficial:"beneficial",neutral_ambiguous:"neutral or ambiguous",harmful:"harmful or dangerous"};
+const rels=m=>(Array.isArray(m.goal_relations)&&m.goal_relations.length?m.goal_relations:[m.goal_relation]).filter(Boolean);
+const FEATS=[["F1","Multiplicity"],["F2","Causal interaction"],["F3","Self-organization"],["F4","Mutually conditioning behavior"],["F5","Collective goal"]];
+const st={all:[],f:{ds:new Set(Object.keys(DS)),min:0,origin:"",rel:"",gt:"",cons:"",conf:"",q:""},sel:null,chunks:{},meta:null,txLimit:200};
 const $=s=>document.querySelector(s);
 const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 function h(tag,attrs,...kids){const e=document.createElement(tag);if(attrs)for(const[k,v]of Object.entries(attrs)){if(v==null||v===false)continue;if(k==="class")e.className=v;else if(k==="text")e.textContent=v;else if(k.startsWith("on"))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v===true?"":v)}for(const k of kids.flat()){if(k==null)continue;e.append(k.nodeType?k:document.createTextNode(String(k)))}return e}
@@ -207,16 +240,17 @@ function initFilters(){
   for(const[k,v]of Object.entries(DS)){const b=h("button",{type:"button","aria-pressed":"true",text:v,onclick:()=>{st.f.ds.has(k)?st.f.ds.delete(k):st.f.ds.add(k);if(!st.f.ds.size)st.f.ds.add(k);b.setAttribute("aria-pressed",st.f.ds.has(k));render()}});b.dataset.k=k;seg.append(b)}
   const opt=(sel,list,label,fmt)=>{sel.append(h("option",{value:""},label));for(const x of list)sel.append(h("option",{value:x},fmt?fmt(x):x))};
   const fl=$("#fLevel");LEVELS.forEach((n,i)=>fl.append(h("option",{value:i},`${i} ${n}`)));
-  opt($("#fOrigin"),ORIG,"any");opt($("#fRel"),REL,"any");opt($("#fType"),GT,"any",x=>GTN[x]);opt($("#fConf"),["high","medium","low"],"any");
+  opt($("#fOrigin"),ORIG,"any");opt($("#fRel"),REL,"any");opt($("#fType"),GT,"any",x=>GTN[x]);opt($("#fConf"),["high","medium","low"],"any");opt($("#fCons"),CONS,"any",x=>CONSN[x]);
   $("#fLevel").onchange=e=>{st.f.min=+e.target.value;render()};
   $("#fOrigin").onchange=e=>{st.f.origin=e.target.value;render()};
   $("#fRel").onchange=e=>{st.f.rel=e.target.value;render()};
   $("#fType").onchange=e=>{st.f.gt=e.target.value;render()};
   $("#fConf").onchange=e=>{st.f.conf=e.target.value;render()};
+  $("#fCons").onchange=e=>{st.f.cons=e.target.value;render()};
   $("#fQ").oninput=e=>{st.f.q=e.target.value.trim().toLowerCase();render()};
-  $("#fReset").onclick=()=>{st.f={ds:new Set(Object.keys(DS)),min:0,origin:"",rel:"",gt:"",conf:"",q:""};["fLevel","fOrigin","fRel","fType","fConf"].forEach(id=>$("#"+id).value=id==="fLevel"?0:"");$("#fQ").value="";document.querySelectorAll("#dsSeg button").forEach(b=>b.setAttribute("aria-pressed","true"));render()};
+  $("#fReset").onclick=()=>{st.f={ds:new Set(Object.keys(DS)),min:0,origin:"",rel:"",gt:"",cons:"",conf:"",q:""};["fLevel","fOrigin","fRel","fType","fCons","fConf"].forEach(id=>$("#"+id).value=id==="fLevel"?0:"");$("#fQ").value="";document.querySelectorAll("#dsSeg button").forEach(b=>b.setAttribute("aria-pressed","true"));render()};
 }
-function filtered(){const f=st.f;return st.all.filter(m=>f.ds.has(m.dataset)&&(m.level??0)>=f.min&&(!f.origin||m.origin===f.origin)&&(!f.rel||m.goal_relation===f.rel)&&(!f.gt||m.goal_type===f.gt)&&(!f.conf||m.confidence===f.conf)&&(!f.q||m._q.includes(f.q)))}
+function filtered(){const f=st.f;return st.all.filter(m=>f.ds.has(m.dataset)&&(m.level??0)>=f.min&&(!f.origin||m.origin===f.origin)&&(!f.rel||rels(m).includes(f.rel))&&(!f.cons||m.consequence===f.cons)&&(!f.gt||m.goal_type===f.gt)&&(!f.conf||m.confidence===f.conf)&&(!f.q||m._q.includes(f.q)))}
 
 // ---------- overview
 function renderCounts(L){const c=$("#counts");c.replaceChildren();
@@ -246,19 +280,23 @@ function renderTimelines(L){const box=$("#timelines");box.replaceChildren();cons
     for(const m of R){const y=top+m._row*(RH+G);const[a,b]=m._x;const grp=s("g",{class:"bar-hit",tabindex:0,role:"button","aria-label":`${m.title}, level ${m.level}`,onclick:()=>select(m.id),onkeydown:e=>{if(e.key==="Enter")select(m.id)}});
       grp.append(s("rect",{x:a,y:y-2,width:b-a,height:RH+4,fill:"transparent"}),s("rect",{class:"mark",x:a,y,width:b-a,height:RH,rx:2,fill:css(`--l${m.level}`)||"#888"}));
       if(st.sel===m.id)grp.append(s("rect",{x:a-2,y:y-2,width:b-a+4,height:RH+4,rx:3,fill:"none",stroke:css("--ink"),"stroke-width":1.5}));
-      bindTip(grp,()=>[h("div",null,h("b",{text:m.title})),h("div",{text:`${fmtD(m.start)} → ${fmtD(m.end)} UTC`}),h("div",{text:`Level ${m.level} ${LEVELS[m.level]} · ${m.origin} · ${m.goal_relation}`}),h("div",{text:`${(m.participants||[]).length} agents · ${fmtN(m.stats?.n_messages||0)} messages`})]);
+      bindTip(grp,()=>[h("div",null,h("b",{text:m.title})),h("div",{text:`${fmtD(m.start)} → ${fmtD(m.end)} UTC`}),h("div",{text:`Level ${m.level} ${LEVELS[m.level]} · ${m.origin} · ${rels(m).join("+")}${m.consequence?" · "+(CONSN[m.consequence]||m.consequence):""}`}),h("div",{text:`${(m.participants||[]).length} agents · ${fmtN(m.stats?.n_messages||0)} messages`})]);
       svg.append(grp)}
     box.append(svg)}}
 function heat(n,max){if(!n)return["var(--bg)","var(--muted)"];const k=Math.min(5,1+Math.floor(4*n/Math.max(1,max)));return[lvVar(k),`var(--lt${k})`]}
 function renderMatrices(L){
   const m1=$("#mx1");m1.replaceChildren();const t1=h("table",{class:"matrix"});t1.append(h("tr",null,h("th"),...REL.map(r=>h("th",{text:r}))));
-  const c1=ORIG.map(o=>REL.map(r=>L.filter(m=>m.origin===o&&m.goal_relation===r).length));const mx1=Math.max(...c1.flat());
+  const c1=ORIG.map(o=>REL.map(r=>L.filter(m=>m.origin===o&&rels(m).includes(r)).length));const mx1=Math.max(...c1.flat());
   ORIG.forEach((o,i)=>t1.append(h("tr",null,h("th",{text:o}),...REL.map((r,j)=>{const n=c1[i][j];const[bg,fg]=heat(n,mx1);const td=h("td",{class:n?"":"z",style:`background:${bg};color:${fg}`,tabindex:0,text:n,onclick:()=>{st.f.origin=st.f.origin===o&&st.f.rel===r?"":o;st.f.rel=st.f.origin?r:"";$("#fOrigin").value=st.f.origin;$("#fRel").value=st.f.rel;render()}});bindTip(td,()=>[h("b",{text:`${n} episodes`}),h("div",{text:`${o} origin, ${r} goal`})]);return td}))));
   m1.append(t1);
   const m2=$("#mx2");m2.replaceChildren();const t2=h("table",{class:"matrix"});t2.append(h("tr",null,h("th"),...LEVELS.map((n,i)=>h("th",{text:`${i}`,title:n}))));
   const c2=GT.map(g=>LEVELS.map((_,i)=>L.filter(m=>m.goal_type===g&&m.level===i).length));const mx2=Math.max(...c2.flat());
   GT.forEach((g,i)=>t2.append(h("tr",null,h("th",{text:GTN[g]}),...LEVELS.map((_,j)=>{const n=c2[i][j];const[bg,fg]=heat(n,mx2);const td=h("td",{class:n?"":"z",style:`background:${bg};color:${fg}`,tabindex:0,text:n,onclick:()=>{st.f.gt=st.f.gt===g?"":g;$("#fType").value=st.f.gt;st.f.min=j;$("#fLevel").value=j;render()}});bindTip(td,()=>[h("b",{text:`${n} episodes`}),h("div",{text:`${GTN[g]}, level ${j} ${LEVELS[j]}`})]);return td}))));
   m2.append(t2,h("div",{class:"legend"},...LEVELS.map((n,i)=>h("span",null,`${i} = ${n}`))));
+  const m3=$("#mx3");m3.replaceChildren();const t3=h("table",{class:"matrix"});t3.append(h("tr",null,h("th"),...CONS.map(c=>h("th",{text:CONSN[c]}))));
+  const c3=REL.map(r=>CONS.map(c=>L.filter(m=>rels(m).includes(r)&&m.consequence===c).length));const mx3=Math.max(...c3.flat());
+  REL.forEach((r,i)=>t3.append(h("tr",null,h("th",{text:r}),...CONS.map((c,j)=>{const n=c3[i][j];const[bg,fg]=heat(n,mx3);const td=h("td",{class:n?"":"z",style:`background:${bg};color:${fg}`,tabindex:0,text:n,onclick:()=>{const on=st.f.rel===r&&st.f.cons===c;st.f.rel=on?"":r;st.f.cons=on?"":c;$("#fRel").value=st.f.rel;$("#fCons").value=st.f.cons;render()}});bindTip(td,()=>[h("b",{text:`${n} episodes`}),h("div",{text:`${r} goal, ${CONSN[c]} for people`})]);return td}))));
+  const unk=L.filter(m=>!m.consequence).length;m3.append(t3);if(unk)m3.append(h("p",{class:"sub",text:`${unk} episodes have no consequence rating yet.`}));
 }
 function renderFeats(L){const box=$("#feats");box.replaceChildren();const W=Math.max(560,box.clientWidth||800),LW=150,BH=18,G=10,H=FEATS.length*(BH+G)+24;
   const svg=s("svg",{width:W,height:H,viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Feature satisfaction"});const PW=W-LW-60;
@@ -276,13 +314,13 @@ function renderList(L){const el=$("#list");el.replaceChildren();el.append(h("div
   const sorted=[...L].sort((a,b)=>b.level-a.level||(a.dataset<b.dataset?-1:a.dataset>b.dataset?1:0)||T(a.start)-T(b.start));
   for(const m of sorted){const it=h("div",{class:"item",role:"option",tabindex:0,"aria-selected":st.sel===m.id?"true":"false",onclick:()=>select(m.id),onkeydown:e=>{if(e.key==="Enter")select(m.id)}},
     h("i",{class:"lv",style:`background:${lvVar(m.level)}`}),
-    h("div",null,h("div",{class:"t",text:m.title}),h("div",{class:"m",text:`${DS[m.dataset]} · ${fmtD(m.start).slice(0,10)} · ${m.origin} · ${m.goal_relation}`})),
+    h("div",null,h("div",{class:"t",text:m.title}),h("div",{class:"m",text:`${DS[m.dataset]} · ${fmtD(m.start).slice(0,10)} · ${m.origin} · ${rels(m).join("+")}`})),
     h("div",{class:"n",text:`L${m.level} · ${(m.participants||[]).length} · ${fmtN(m.stats?.n_messages||0)}`}));
     el.append(it)}}
 
 // ---------- detail
 async function loadChunk(m){if(!st.chunks[m.file]){const r=await fetch(m.file);if(!r.ok)throw new Error(`Could not load ${m.file} (${r.status})`);st.chunks[m.file]=await r.json()}return st.chunks[m.file][m.id]}
-async function select(id,scroll=true){st.sel=id;st.txLimit=200;try{history.replaceState(null,"","#"+id.replace(/[^A-Za-z0-9._~-]/g,"_"))}catch(e){}
+async function select(id,scroll=true){if($("#view-episodes").hidden)showView("episodes");st.sel=id;st.txLimit=200;try{history.replaceState(null,"","#"+id.replace(/[^A-Za-z0-9._~-]/g,"_"))}catch(e){}
   document.querySelectorAll("#list .item").forEach(x=>x.setAttribute("aria-selected","false"));renderTimelines(filtered());renderList(filtered());
   const m=st.all.find(x=>x.id===id);const d=$("#detail");d.replaceChildren(h("div",{class:"panel"},h("h3",{text:m.title}),h("p",{class:"muted",text:"Loading transcript…"})));
   let T;try{T=await loadChunk(m)}catch(e){d.replaceChildren(h("div",{class:"panel"},h("h3",{text:m.title}),h("p",{text:e.message+". The episode summary is below; the transcript file did not load."}),summaryBlock(m)));return}
@@ -290,9 +328,9 @@ async function select(id,scroll=true){st.sel=id;st.txLimit=200;try{history.repla
 function summaryBlock(m){return h("p",{text:m.summary||""})}
 function renderDetail(m,TX){const d=$("#detail");d.replaceChildren();const S=m.stats||{};
   // header
-  const chips=h("div",{class:"chips"},h("span",{class:"chip lvl",style:`background:${lvVar(m.level)};color:var(--lt${m.level})`,text:`Level ${m.level} · ${LEVELS[m.level]}`}),h("span",{class:"chip",text:DS[m.dataset]}),h("span",{class:"chip",text:`origin: ${m.origin}`}),h("span",{class:"chip",text:`goal: ${m.goal_relation}`}),h("span",{class:"chip",text:GTN[m.goal_type]||m.goal_type}),m.violates_rules?h("span",{class:"chip warn",text:"breaks rules"}):null,h("span",{class:"chip",text:`confidence: ${m.confidence}`}),h("span",{class:"chip",text:m.new_vs_prior==="new"?"new in this sweep":"in earlier classification"}));
+  const chips=h("div",{class:"chips"},h("span",{class:"chip lvl",style:`background:${lvVar(m.level)};color:var(--lt${m.level})`,text:`Level ${m.level} · ${LEVELS[m.level]}`}),h("span",{class:"chip",text:DS[m.dataset]}),h("span",{class:"chip",text:`origin: ${m.origin}`}),...rels(m).map(r=>h("span",{class:"chip",text:`goal: ${r}`})),m.consequence?h("span",{class:`chip${m.consequence==="harmful"?" warn":""}`,text:`for people: ${CONSN[m.consequence]||m.consequence}`}):null,h("span",{class:"chip",text:GTN[m.goal_type]||m.goal_type}),m.violates_rules?h("span",{class:"chip warn",text:"breaks rules"}):null,h("span",{class:"chip",text:`confidence: ${m.confidence}`}),h("span",{class:"chip",text:m.new_vs_prior==="new"?"new in this sweep":"in earlier classification"}));
   const head=h("div",{class:"panel"},h("div",{class:"muted mono",style:"font-size:12px",text:`${m.id} · ${fmtD(m.start)} → ${fmtD(m.end)} UTC · ${S.duration_hours??"?"} h`}),h("h3",{text:m.title}),chips,h("p",{text:m.summary||""}),
-    h("dl",{class:"kv"},h("dt",{text:"Why this level"}),h("dd",{text:m.level_rationale||""}),h("dt",{text:"Origin detail"}),h("dd",{text:m.origin_detail||""}),h("dt",{text:"Assigned task"}),h("dd",{text:m.assigned_task||""}),m.violation_detail?h("dt",{text:"Rule violation"}):null,m.violation_detail?h("dd",{text:m.violation_detail}):null,m.caveats?h("dt",{text:"Caveats"}):null,m.caveats?h("dd",{text:m.caveats}):null,m.review?h("dt",{text:"Reviewer note"}):null,m.review?h("dd",{text:typeof m.review==="string"?m.review:JSON.stringify(m.review)}):null,h("dt",{text:"Participants"}),h("dd",{text:(m.participants||[]).join(", ")})));
+    h("dl",{class:"kv"},h("dt",{text:"Why this level"}),h("dd",{text:m.level_rationale||""}),h("dt",{text:"Origin detail"}),h("dd",{text:m.origin_detail||""}),h("dt",{text:"Assigned task"}),h("dd",{text:m.assigned_task||""}),m.consequence_note?h("dt",{text:"Consequence"}):null,m.consequence_note?h("dd",{text:m.consequence_note}):null,m.violation_detail?h("dt",{text:"Rule violation"}):null,m.violation_detail?h("dd",{text:m.violation_detail}):null,m.caveats?h("dt",{text:"Caveats"}):null,m.caveats?h("dd",{text:m.caveats}):null,m.review?h("dt",{text:"Reviewer note"}):null,m.review?h("dd",{text:typeof m.review==="string"?m.review:JSON.stringify(m.review)}):null,h("dt",{text:"Participants"}),h("dd",{text:(m.participants||[]).join(", ")})));
   // ladder position
   const lad=h("div",{class:"ladder",style:"margin-top:10px"},...LEVELS.map((n,i)=>h("div",{class:"step",style:i===m.level?`outline:2px solid ${css(`--l${i}`)};outline-offset:-2px;color:var(--ink)`:""},`${i} · ${n}`,h("i",{style:`background:${i<=m.level?lvVar(i):"var(--rule)"}`}))));head.append(lad);
   d.append(head);
@@ -372,13 +410,19 @@ function render(){const L=filtered();renderCounts(L);renderLadder(L);renderTimel
 
 async function boot(){initFilters();
   try{const [ix,meta]=await Promise.all([fetch("data/index.json").then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),fetch("data/meta.json").then(r=>r.ok?r.json():null).catch(()=>null)]);
-    st.all=ix.map(m=>({...m,level:+(m.level??0),_q:[m.id,m.title,m.summary,(m.participants||[]).join(" "),m.origin_detail,m.prior_category].join(" ").toLowerCase()}));st.meta=meta;renderMethod(meta)}
+    st.all=ix.map(m=>({...m,level:+(m.level??0),_q:[m.id,m.title,m.summary,(m.participants||[]).join(" "),m.origin_detail,m.prior_category,m.consequence_note].join(" ").toLowerCase()}));st.meta=meta;renderMethod(meta)}
   catch(e){$("#detail").replaceChildren(h("div",{class:"panel empty",text:"The episode index did not load. Reload the page to try again."}));return}
   render();
-  const want=(location.hash||"").slice(1);const first=st.all.find(m=>m.id.replace(/[^A-Za-z0-9._~-]/g,"_")===want)||[...st.all].sort((a,b)=>b.level-a.level||(b.stats?.n_messages||0)-(a.stats?.n_messages||0))[0];
+  const want=(location.hash||"").slice(1);if(want==="jargon"||want==="taxonomy"){showView(want)}
+  const first=st.all.find(m=>m.id.replace(/[^A-Za-z0-9._~-]/g,"_")===want)||[...st.all].sort((a,b)=>b.level-a.level||(b.stats?.n_messages||0)-(a.stats?.n_messages||0))[0];
   if(first)select(first.id,!!want)}
 let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{render();if(st.sel){const m=st.all.find(x=>x.id===st.sel);const T2=st.chunks[m.file]?.[m.id];if(T2)renderDetail(m,T2)}},250)});
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>render());
 new MutationObserver(()=>render()).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+function showView(v){for(const k of["episodes","jargon","taxonomy"]){$("#view-"+k).hidden=k!==v;$("#tab-"+k).setAttribute("aria-selected",k===v?"true":"false")}
+  $("#counts").hidden=v!=="episodes";if(v!=="episodes"){try{history.replaceState(null,"","#"+v)}catch(e){}}
+  if(v==="jargon")jgBoot();if(v==="taxonomy")txBoot()}
 boot();
 </script>
+<script src="jargon.js"></script>
+<script src="taxonomy.js"></script>
