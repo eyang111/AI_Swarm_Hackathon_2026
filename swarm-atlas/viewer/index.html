@@ -389,7 +389,8 @@ function networkChart(box,E,m,S){box.append(h("h2",{style:"font-size:12px",text:
 
 // ---------- method
 function renderMethod(meta){const b=$("#methodBody");b.replaceChildren();if(!meta)return;const sn=$("#statusNote");if(sn){sn.hidden=!meta.status;sn.textContent=meta.status||""}
-  for(const p of meta.paragraphs||[])b.append(h("p",{text:p}));
+  const linkify=t=>{const out=[];let last=0;for(const mm of t.matchAll(/https:\/\/[^\s)]+/g)){out.push(t.slice(last,mm.index));out.push(h("a",{href:mm[0],target:"_blank",rel:"noopener",style:"color:var(--ink-2)"},mm[0]));last=mm.index+mm[0].length}out.push(t.slice(last));return out};
+  for(const p of meta.paragraphs||[])b.append(h("p",null,...linkify(p)));
   if(meta.recall){b.append(h("p",null,h("b",{text:"Recall check. "}),meta.recall.text));const ul=h("ul");for(const r of meta.recall.rows||[])ul.append(h("li",{text:r}));b.append(ul)}
   if(meta.validation)b.append(h("p",null,h("b",{text:"Quote check. "}),meta.validation))}
 
@@ -401,7 +402,7 @@ async function boot(){initFilters();
   catch(e){$("#detail").replaceChildren(h("div",{class:"panel empty",text:"The episode index did not load. Reload the page to try again."}));return}
   render();
   const want=(location.hash||"").slice(1);
-  const first=st.all.find(m=>m.id.replace(/[^A-Za-z0-9._~-]/g,"_")===want)||[...st.all].sort((a,b)=>b.level-a.level||(b.stats?.n_messages||0)-(a.stats?.n_messages||0))[0];
+  const norm=x=>String(x).replace(/[^A-Za-z0-9._~-]/g,"_");const first=st.all.find(m=>norm(m.id)===want)||(want&&st.all.find(m=>(m.merged_from||[]).some(x=>norm(x)===want)))||[...st.all].sort((a,b)=>b.level-a.level||(b.stats?.n_messages||0)-(a.stats?.n_messages||0))[0];
   if(first)select(first.id,!!want)}
 let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{render();if(st.sel){const m=st.all.find(x=>x.id===st.sel);const T2=st.chunks[m.file]?.[m.id];if(T2)renderDetail(m,T2)}},250)});
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>render());

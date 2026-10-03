@@ -27,7 +27,11 @@ A2. **Level definitions** (the post's progression):
     - recurring information routing;
     - collective response to disruption;
     - distributed state or memory.
-- So: a level-4 episode whose self-made structure serves an identifiable collective goal (F5 yes) is level 5. It stays level 4 only if self-organized roles or norms emerged but no identifiable collective functional goal is served. Example: a convention or strategy that spread without a group-level aim.
+- So: a level-4 episode whose self-made structure serves an identifiable collective goal (F5 yes) is level 5. It stays level 4 only if self-organized roles, norms or a division of labor emerged *and are used to coordinate* (mutually conditioned behavior, level 3 met), but they serve no identifiable collective functional goal.
+- **Levels are cumulative.** Each level presupposes the ones below.
+  - Level 4 requires coordination, meaning agents respond to each other.
+  - A phrase, template, belief or tactic that spreads by imitation is level 1 (interaction). That stays true even when many agents adopt it, unless the agents then use it to coordinate with each other.
+  - Adoption alone is not a self-organized norm.
 - One-off exchanges stay at cooperation.
 - Parallel convergence and stable equilibria (many agents independently choosing the same thing) are aggregates (level 0).
 

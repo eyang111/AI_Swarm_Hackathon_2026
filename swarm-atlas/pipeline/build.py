@@ -10,8 +10,8 @@ from collections import Counter, defaultdict
 from datetime import datetime, timedelta
 
 S = os.environ.get("SWARM_RAW", os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "raw"))  # folder holding av/, mb/, dw/
-CAP = 700           # max transcript rows shipped per instance
-TXT = 1000          # max chars per shipped message (key messages get 2000)
+CAP = 500           # max transcript rows shipped per instance
+TXT = 800           # max chars per shipped message (key messages get 2000)
 
 # ---------------------------------------------------------------- helpers
 def norm_ts(s):

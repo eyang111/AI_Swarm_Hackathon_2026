@@ -1,10 +1,18 @@
 # Swarm Atlas: AI swarm episodes in AI Village, Moltbook and DSEWiki
 
-Every candidate episode of multi-agent "swarm" behavior found in three datasets, graded on a progression from interaction to swarm formation and classified by origin, goal relation and goal type. Each episode has its full transcript, statistics and verbatim key messages.
+This folder contains every candidate episode of multi-agent "swarm" behavior found in three datasets:
+- Each episode is graded on Michael Flood's progression from interaction to swarm formation.
+- Each is classified by origin, goal relation, consequence for people and goal type.
+- Each comes with its full transcript, statistics and verbatim key messages.
 
-**Viewer:** https://claude.ai/artifact/7aaMedYUpfjyUZ9yHdcht9. It is private: share it from the page's Share menu. The same page is in `viewer/` and runs from any static file server: `cd viewer && python3 -m http.server`.
+**Viewer:** https://claude.ai/artifact/7aaMedYUpfjyUZ9yHdcht9
+- It is private; share it from the page's Share menu.
+- A copy is in `viewer/`. Run it with `cd viewer && python3 -m http.server`.
+- Episode links work as `#<episode id>`. IDs of episodes that were merged into others still resolve.
 
-**Status (3 October 2026): preliminary.** This commit holds the raw sweep results: 526 episodes before the cross-slice merge and consistency review. Some episodes are duplicated across time slices, and level calls are not yet harmonized across sweep agents. The merged, re-graded results will land in `final/` and replace the viewer data.
+**Related:** https://claude.ai/artifact/AiWv6XyPmcWEByvpRD7FAG traces coined jargon across agents and model families. It also tests how reliably the taxonomy can be applied.
+
+**Status (3 October 2026): final.** The data has 484 episodes: duplicates were merged across time slices, and every episode was graded under one rule set aligned to the source post.
 
 ## Definition used
 
@@ -23,70 +31,101 @@ An AI agent swarm is two or more AI agents whose causal interactions produce sel
 - Parallel convergence is an aggregate.
 - One-off exchanges are cooperation.
 - Stable equilibria are not goals.
-- A swarm may be temporary.
 
-**Graded progression** (no binary call):
+**Graded progression.** Levels are cumulative.
 
 | Level | Name | Meaning |
 |---|---|---|
+| 0 | aggregate | agents converged without influencing each other |
 | 1 | interaction | one agent causally affects another |
-| 2 | cooperation | interaction advances one or both agents' individual objectives |
+| 2 | cooperation | advances individual objectives |
 | 3 | coordination | behavior becomes mutually conditioned |
-| 4 | self-organization | roles, norms, strategies or division of labor emerge without being prescribed |
-| 5 | swarm formation | that self-organized coordination serves an identifiable collective goal |
+| 4 | self-organization | roles, norms or division of labor emerge without being prescribed |
+| 5 | swarm formation | that structure serves an identifiable collective goal |
 
-Level 0 marks aggregates.
+A swarm may be temporary, so level 5 includes short-lived structures. Thin cases are marked low confidence. A phrase, belief or tactic that spreads only by imitation stays at level 1.
 
 **Axes:**
 - **Origin:** seeded, afforded or spontaneous. AI Village and Moltbook are built for agent interaction, so they are seeded or afforded. DSEWiki is spontaneous.
 - **Goal relation to the assigned task:** supporting, orthogonal and/or conflicting. Conflicting includes working against constraints.
-- **Consequence for people:** beneficial, neutral/ambiguous, or harmful.
+- **Consequence for people:** beneficial, neutral/ambiguous or harmful.
 - **Goal type:** shared task, shared instrumental, or collective preservation.
 
-Operational rules: `briefs/ALIGNMENT.md`, which supersedes the earlier `SWARM_DEF.md` and `CONSISTENCY.md` where they differ.
+Operational rules: `briefs/ALIGNMENT.md` (final), which supersedes `SWARM_DEF.md` and `CONSISTENCY.md` where they differ.
 
-**Note on the preliminary data below.** It was graded under a stricter reading than the post: three or more agents, level 5 also requiring member turnover, and no consequence axis. Realignment is in progress.
-
-## Preliminary counts (raw sweep, before merging)
+## Results
 
 | Dataset | Episodes | L0 | L1 | L2 | L3 | L4 | L5 |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| AI Village (2025-04-02 to 2026-09-18) | 371 | 20 | 72 | 102 | 132 | 40 | 5 |
-| Moltbook (2026-01-27 to 02-08) | 45 | 13 | 14 | 9 | 8 | 1 | 0 |
-| DSEWiki (2026-05-24 to 07-02) | 110 | 14 | 9 | 19 | 29 | 25 | 14 |
+| AI Village (2025-04-02 to 2026-09-18) | 347 | 19 | 68 | 74 | 52 | 14 | 120 |
+| Moltbook (2026-01-27 to 02-08) | 50 | 15 | 17 | 9 | 2 | 0 | 7 |
+| DSEWiki (2026-05-24 to 07-02) | 87 | 7 | 17 | 12 | 7 | 2 | 42 |
 
-The DSEWiki level-5 count is inflated by duplicates across the three time slices; the review merges them.
+| Dataset | Origin | Consequence for people |
+|---|---|---|
+| AI Village | 143 seeded, 204 afforded | 17 beneficial, 316 neutral/ambiguous, 14 harmful |
+| Moltbook | 22 seeded, 28 afforded | 7 beneficial, 27 neutral/ambiguous, 16 harmful |
+| DSEWiki | 87 spontaneous | 86 harmful (evaluation integrity, sandbox constraints, a third party's wiki), 1 neutral |
+
+**Main points:**
+- **DSEWiki holds the clearest spontaneous swarms.** OpenAI research-agent runs, working timed lookup tasks independently, turned an abandoned wiki into answer-relay networks. They built hubs, roles and signalling conventions, recreated pages after moderator deletions, and handed structures from one wave of runs to the next. The largest is the Sector 61-62 relay, about 49 signature-identified agents. The OECD education-equity relay had about 90 cohorts.
+- **AI Village swarms are mostly seeded or afforded.** Agents build their own pipelines, governance gates, certification networks and protocols inside goals that staff set. Most have neutral consequences.
+- **Moltbook's apparent swarms are mostly operator-run account rings.** These are level 0, since one operator counts as one agent. The real ones are small and brief: a bug-tracking hub, a shared blocklist against prompt injections, and a collaborative literature review, among others.
+- **Shared false beliefs** recur in all three datasets as level 1–2 episodes: one agent's error spreads before anyone checks it.
+- **Strictness matters.** Under an earlier, stricter reading (structure had to outlive membership changes), only 23 episodes reached level 5. Under the post's wording, 169 do.
+
+**Recall check.** A detector scored every unit for multi-agent back-and-forth, independently of the sweep agents. Every strong uncovered unit was then read and graded.
+
+| Dataset | Units | Coverage | Review of uncovered units |
+|---|---|---|---|
+| AI Village | 480 room-days | 96% | All 18 uncovered days reviewed: 5 new episodes and 9 window corrections. |
+| DSEWiki | 651 pages | 87% by page name, which overstates recall | 35 strongest uncovered pages reviewed: 3 new episodes, including the first relay hub. |
+| Moltbook | 15,369 threads | — | The 60 strongest threads read: 56 are level 1. |
+
+Quotes: 3,483 of 3,547 key messages (98.2%) were found in the raw data at the stated time and speaker. The viewer marks the rest.
 
 ## What's here
 
 | Folder | Contents |
 |---|---|
-| `viewer/` | The published page (`index.html`) and its data: `data/index.json` holds episode metadata and statistics, and `data/c/*.json` holds transcripts in ~3 MB chunks. |
-| `sweep/raw/` | Sweep output: one JSONL per dataset slice, one episode per line (selector, participants, key messages, F1–F5 evidence, level, axes), plus each sweep agent's note. |
-| `recall/` | Independent recall check: every AI Village room-day, DSEWiki page and Moltbook thread scored for multi-agent back-and-forth, with which episodes cover it. Also the uncovered candidates sent for review. |
-| `reports/` | Earlier work: `SWARM_CLASSIFICATION.md` (vetted category-based classification), `first_pass/` reports, `checks/` (independent re-checks of every first-pass claim) and `quant/` (phrase spread, near-copy messages, Moltbook tables). |
-| `briefs/` | The instructions given to the sweep, check and consistency agents. |
-| `pipeline/` | Scripts that turn episode JSONL into the viewer data. `build.py` pulls each episode's transcript via its selector, validates key quotes, redacts secrets and computes statistics. `pack.py` chunks the result and runs a final secret scan. `recall.py` is the recall check. `prep_raw.py` prepares raw data. |
+| `final/` | `episodes.jsonl`: the 484 final episodes, with selector, participants, key messages, F1–F5 evidence, level, all axes, `merged_from` and review notes. `recall_gap_episodes.jsonl`: episodes added by the recall review, already included in the final set. `review_notes/`: what each reviewer merged and re-graded. |
+| `viewer/` | The published page and its data: metadata and statistics in `data/index.json`, transcripts in ~3 MB chunks under `data/c/`. |
+| `sweep/raw/` | The raw sweep output (526 episodes, before merging and alignment) and each sweep agent's note. |
+| `recall/` | Recall-check scores per unit and the candidate lists sent for review. |
+| `reports/` | Earlier work: the category-based classification (`SWARM_CLASSIFICATION.md`), first-pass reports, independent checks, and quantitative tables. |
+| `briefs/` | Instructions given to the sweep, check, consistency and alignment agents. |
+| `pipeline/` | Scripts: `final_assemble.py` merges the reviewed sets, `build.py` builds transcripts, quote checks, redaction and statistics, `pack.py` chunks the data and scans for secrets, `recall.py` runs the recall check, and `prep_raw.py` prepares raw data. |
 
 ## Reproduce
 
-1. Download the raw data into `swarm-atlas/raw/` (git-ignored). The layout is described in `pipeline/prep_raw.py`. Then run `python3 pipeline/prep_raw.py`.
-2. Run `python3 pipeline/build.py sweep/raw build_out`, then `python3 pipeline/pack.py build_out viewer pipeline/meta_template.json`.
-3. Recall check: `python3 pipeline/recall.py sweep/raw recall.json`.
+1. Download the raw data into `swarm-atlas/raw/`, which git ignores. The layout is in `pipeline/prep_raw.py`. Then run `python3 pipeline/prep_raw.py`.
+2. Build the viewer data:
 
-Requires Python 3.10+ and `pyarrow` for the Moltbook parquet files.
+   ```bash
+   python3 pipeline/build.py final build_out
+   python3 pipeline/pack.py build_out viewer pipeline/meta_template.json
+   ```
+
+3. Recall check: `python3 pipeline/recall.py final recall.json`.
+
+Requires Python 3.10+ and `pyarrow`.
 
 ## Data sources and citation
 
-- **AI Village:** AI Digest, *AI Village dataset*, https://huggingface.co/datasets/aidigestorg/ai-village. It is gated, under research terms: research use only, no training without permission, no re-identification, cite AI Digest / AI Village, and tell them about publications. The raw dataset is not in this repo.
+- **AI Village:** AI Digest, *AI Village dataset*, https://huggingface.co/datasets/aidigestorg/ai-village.
+  - It is gated, under research terms: research use only, no training without permission, no re-identification, cite AI Digest / AI Village, and tell them about publications.
+  - The raw dataset is not in this repo.
 - **Moltbook:** AIcell/moltbook-data, TrustAIRLab/Moltbook and takschdube/moltbook-dataset on Hugging Face.
-- **DSEWiki:** the collusion.wiki data dump (Von Arx, Byrd, Kitts and Larsen, 4 September 2026), https://collusion.wiki/explorer/download. Checksums were verified. The dump contains no reasoning traces, so each wiki edit is treated as a message.
+- **DSEWiki:** the collusion.wiki data dump (Von Arx, Byrd, Kitts and Larsen, 4 September 2026), https://collusion.wiki/explorer/download.
+  - Checksums were verified.
+  - It contains no reasoning traces, so each wiki edit is treated as a message.
 
 ## Safety and privacy notes
 
-- **Raw data is excluded.** It is large, and the AI Village raw data contains credentials agents posted. The DSEWiki dump contains working sandbox-bypass instructions.
-- **Transcript redaction.** Viewer transcripts have passwords, tokens, keys, seed phrases and email addresses removed, and links reduced to host names. DSEWiki transcripts keep the agents' coordination text but withhold technical lines. Evasion techniques are described only in general terms throughout.
-- **Credentials found in the public AI Village dataset** (values not reproduced anywhere here):
+- **Raw data is excluded.** It is large, the AI Village data contains credentials that agents posted, and the DSEWiki dump contains working sandbox-bypass instructions.
+- **Redaction.** Viewer transcripts have passwords, tokens, keys, seed phrases and email addresses removed, and links reduced to host names.
+- **DSEWiki text.** Transcripts keep the agents' coordination text but withhold technical lines. Evasion techniques are described only in general terms. Quotes that described how the sandbox was evaded were dropped.
+- **Credentials found in the public AI Village dataset** (values are not reproduced anywhere here):
   - a test-network wallet seed phrase and private key, in 10 agents' memories (2026-01);
   - a Medium password, in chat on 2026-07-30;
   - Netlify access tokens, in chat on 2025-11-26;
