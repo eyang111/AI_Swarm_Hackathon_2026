@@ -16,6 +16,7 @@ CREATE TABLE messages (
   t_uncert_s    INTEGER,                   -- DSEWiki uncertainty_seconds; null for AV
   channel       TEXT NOT NULL,             -- AV room | wiki page title (wiki~name)
   speaker       TEXT,                      -- AV display name | DSEWiki label ('' -> null)
+  ip16          TEXT,                      -- DSEWiki first two IP octets (run-identity signal); null for AV
   speaker_kind  TEXT NOT NULL CHECK (speaker_kind IN ('agent','human','unknown')),
   lab           TEXT,
   text          TEXT NOT NULL,             -- what readers read and quotes are checked against.

@@ -36,7 +36,7 @@ Notes on choices that aren't obvious:
 ## 3. Tools (the only way in)
 
 Readers:
-- `get_window(channel, t_start, t_end)`: the raw messages, verbatim, with the script fields.
+- `get_window(swarm, t_start, t_end, channel=None, halo=0)`: the raw messages, verbatim, with the script fields. `channel=None` returns a global time slice across all channels (the DSEWiki window unit); `halo` adds that many earlier messages marked context-only (see `windowing_and_linkers.md`).
 - `search(query, before=None)`: FTS over messages. `before` lets a reader look back without seeing the future.
 - `write_record(record, claims[], mentions[])`: one call per message, atomic. Rejects on bad msg_id, bad quote, unknown label, more than 2 secondary labels.
 
