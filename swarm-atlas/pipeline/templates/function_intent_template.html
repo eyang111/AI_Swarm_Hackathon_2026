@@ -1,4 +1,4 @@
-<title>Agent Swarm Atlas</title>
+<title>Swarm Function Atlas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
@@ -11,6 +11,7 @@
   --hover:rgba(42,120,214,.08); --sel:rgba(42,120,214,.14); --focus:#2a78d6;
   --l0:#b8bcc4; --l1:#86b6ef; --l2:#5598e7; --l3:#2a78d6; --l4:#1c5cab; --l5:#104281; --lt0:#14161a; --lt1:#0b1a2e; --lt2:#0b1a2e; --lt3:#ffffff; --lt4:#ffffff; --lt5:#ffffff;
   --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#4a3aa7; --s8:#e34948; --s9:#a6a9b0;
+  --i1:#fbd3bf; --i2:#f5a47f; --i3:#eb6834; --i4:#c24a1d; --i5:#8f3410; --it1:#14161a; --it2:#14161a; --it3:#14161a; --it4:#ffffff; --it5:#ffffff;
   --good:#0ca30c; --bad:#d03b3b; --keybg:#fff6d6; --keyrule:#e2b23a;
   --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
@@ -21,12 +22,14 @@
   --hover:rgba(57,135,229,.12); --sel:rgba(57,135,229,.22); --focus:#6da7ec;
   --l0:#4a4e56; --l1:#256abf; --l2:#2a78d6; --l3:#3987e5; --l4:#6da7ec; --l5:#9ec5f4; --lt0:#ffffff; --lt1:#ffffff; --lt2:#ffffff; --lt3:#ffffff; --lt4:#0b1a2e; --lt5:#0b1a2e;
   --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767; --s9:#5d6169;
+  --i1:#5a2a14; --i2:#8f3a17; --i3:#d95926; --i4:#ef8a5c; --i5:#f6b597; --it1:#ffffff; --it2:#ffffff; --it3:#14161a; --it4:#14161a; --it5:#14161a;
   --keybg:#3a3110; --keyrule:#b8901f; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0f1114; --surface:#18191c; --ink:#f1f2f4; --ink-2:#c2c6cd; --muted:#8a9099; --rule:#2a2d33; --axis:#3b3f46;
   --hover:rgba(57,135,229,.12); --sel:rgba(57,135,229,.22); --focus:#6da7ec;
   --l0:#4a4e56; --l1:#256abf; --l2:#2a78d6; --l3:#3987e5; --l4:#6da7ec; --l5:#9ec5f4; --lt0:#ffffff; --lt1:#ffffff; --lt2:#ffffff; --lt3:#ffffff; --lt4:#0b1a2e; --lt5:#0b1a2e;
   --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767; --s9:#5d6169;
+  --i1:#5a2a14; --i2:#8f3a17; --i3:#d95926; --i4:#ef8a5c; --i5:#f6b597; --it1:#ffffff; --it2:#ffffff; --it3:#14161a; --it4:#14161a; --it5:#14161a;
   --keybg:#3a3110; --keyrule:#b8901f; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--f-body);padding-inline:16px;padding-block:0 48px}
@@ -156,8 +159,8 @@ details.method p,details.method li{max-width:90ch;color:var(--ink-2)}
 <div class="wrap">
 <header class="top">
   <div>
-    <h1>Agent Swarm Atlas</h1>
-    <p class="lede">Every candidate swarm episode found in AI Village, Moltbook and DSEWiki, graded on the progression from interaction to swarm formation and classified by origin, goal relation, consequence for people and goal type. Select an episode to read its full transcript.</p>
+    <h1>Swarm Function Atlas</h1>
+    <p class="lede">Every candidate swarm episode found in AI Village, Moltbook and DSEWiki, graded on the progression from interaction to swarm formation and classified by origin, goal relation, consequence for people and goal type. This edition adds each episode’s primary function and how deliberate its originating message was. Select an episode to read its full transcript.</p>
     <p class="muted" style="font-size:12.5px;margin:6px 0 0">Definitions and taxonomy: Michael Flood, <a href="https://www.greaterwrong.com/posts/zh8rBFTPDPhx2p23K/ai-agent-swarm-part-1-definitions" style="color:var(--ink-2)">AI Agent Swarm Part 1 – Definitions</a> (LessWrong, 31 August 2026).</p>
   </div>
   <div class="counts" id="counts"></div>
@@ -174,6 +177,8 @@ details.method p,details.method li{max-width:90ch;color:var(--ink-2)}
   <label for="fRel">Goal relation <select id="fRel"></select></label>
   <label for="fType">Goal type <select id="fType"></select></label>
   <label for="fCons">Consequence <select id="fCons"></select></label>
+  <label for="fFn">Function <select id="fFn"></select></label>
+  <label for="fInt">Origin intent <select id="fInt"></select></label>
   <label for="fConf">Confidence <select id="fConf"></select></label>
   <input type="search" id="fQ" placeholder="Search titles, agents, summaries" aria-label="Search">
   <button class="btn" id="fReset" type="button">Reset</button>
@@ -185,6 +190,10 @@ details.method p,details.method li{max-width:90ch;color:var(--ink-2)}
   <div class="panel"><h2>Origin × goal relation</h2><p class="sub">Episode counts; an episode with several relations counts in each. Click a cell to filter.</p><div class="scroll-x" id="mx1"></div></div>
   <div class="panel"><h2>Goal type × level</h2><p class="sub">Episode counts. Click a cell to filter.</p><div class="scroll-x" id="mx2"></div></div>
   <div class="panel wide"><h2>Goal relation × consequence for people</h2><p class="sub">Whether the collective goal supports, ignores or works against the agents’ assigned tasks does not decide whether it helps or harms people. An episode can show more than one relation, so rows can add up to more than the episode count.</p><div class="scroll-x" id="mx3"></div></div>
+  <div class="panel"><h2>Primary function</h2><p class="sub">The single thing each group is mainly doing. Click a bar to filter.</p><div id="fnBars"></div></div>
+  <div class="panel"><h2>Function × level</h2><p class="sub">Episode counts. Function and level are close to independent: belief work and rule-gaming appear at every level.</p><div class="scroll-x" id="mx4"></div></div>
+  <div class="panel"><h2>How deliberate was the start?</h2><p class="sub">Intent of each episode’s originating message, from 1 (an offhand remark) to 5 (an explicit proposal, instruction or rule aimed at others), by dataset.</p><div id="inDist"></div></div>
+  <div class="panel"><h2>Origin intent × level</h2><p class="sub">Episode counts. Low-intent starts that reached high levels are cases where agents organized around a remark that was not meant as a plan.</p><div class="scroll-x" id="mx5"></div></div>
   <div class="panel wide"><h2>The five necessary features</h2><p class="sub">How many episodes meet each necessary feature. A full swarm needs all five; the collective goal can be inferred from behavior rather than stated.</p><div id="feats"></div></div>
 </section>
 
@@ -197,15 +206,20 @@ details.method p,details.method li{max-width:90ch;color:var(--ink-2)}
 <div id="tip" hidden></div>
 
 <script>
-const DATA="data/bfa1238b2ea";
+const DATA="data/__BUILD__";
 const LEVELS=["aggregate","interaction","cooperation","coordination","self-organization","swarm formation"];
 const DS={ai_village:"AI Village",moltbook:"Moltbook",dsewiki:"DSEWiki"};
 const ORIG=["seeded","afforded","spontaneous"], REL=["supporting","orthogonal","conflicting"], GT=["shared_task","shared_resource","preserve_collective"];
 const GTN={shared_task:"shared task",shared_resource:"shared instrumental",preserve_collective:"collective preservation"};
 const CONS=["beneficial","neutral_ambiguous","harmful"], CONSN={beneficial:"beneficial",neutral_ambiguous:"neutral or ambiguous",harmful:"harmful or dangerous"};
+const FUNS=["epistemic","executive","normative","infrastructural","affiliative","adversarial_extractive","none"];
+const FUNN={epistemic:"belief and knowledge",executive:"doing the work",normative:"rules and decisions",infrastructural:"building shared tools",affiliative:"identity and culture",adversarial_extractive:"competing, gaming or attacking",none:"none"};
+const FUNCOL={epistemic:"--s1",executive:"--s3",normative:"--s7",infrastructural:"--s4",affiliative:"--s5",adversarial_extractive:"--s2",none:"--s9"};
+const INTN=["","offhand","mostly offhand","ambiguous","mostly deliberate","explicit"];
+const iscore=m=>m.intent&&m.intent.score?+m.intent.score:0;
 const rels=m=>(Array.isArray(m.goal_relations)&&m.goal_relations.length?m.goal_relations:[m.goal_relation]).filter(Boolean);
 const FEATS=[["F1","Multiplicity"],["F2","Causal interaction"],["F3","Self-organization"],["F4","Mutually conditioning behavior"],["F5","Collective goal"]];
-const st={all:[],f:{ds:new Set(Object.keys(DS)),min:0,origin:"",rel:"",gt:"",cons:"",conf:"",q:""},sel:null,chunks:{},meta:null,txLimit:200};
+const st={all:[],f:{ds:new Set(Object.keys(DS)),min:0,origin:"",rel:"",gt:"",cons:"",conf:"",q:"",fn:"",imin:0},sel:null,chunks:{},meta:null,txLimit:200};
 const $=s=>document.querySelector(s);
 const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 function h(tag,attrs,...kids){const e=document.createElement(tag);if(attrs)for(const[k,v]of Object.entries(attrs)){if(v==null||v===false)continue;if(k==="class")e.className=v;else if(k==="text")e.textContent=v;else if(k.startsWith("on"))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v===true?"":v)}for(const k of kids.flat()){if(k==null)continue;e.append(k.nodeType?k:document.createTextNode(String(k)))}return e}
@@ -228,17 +242,19 @@ function initFilters(){
   for(const[k,v]of Object.entries(DS)){const b=h("button",{type:"button","aria-pressed":"true",text:v,onclick:()=>{st.f.ds.has(k)?st.f.ds.delete(k):st.f.ds.add(k);if(!st.f.ds.size)st.f.ds.add(k);b.setAttribute("aria-pressed",st.f.ds.has(k));render()}});b.dataset.k=k;seg.append(b)}
   const opt=(sel,list,label,fmt)=>{sel.append(h("option",{value:""},label));for(const x of list)sel.append(h("option",{value:x},fmt?fmt(x):x))};
   const fl=$("#fLevel");LEVELS.forEach((n,i)=>fl.append(h("option",{value:i},`${i} ${n}`)));
-  opt($("#fOrigin"),ORIG,"any");opt($("#fRel"),REL,"any");opt($("#fType"),GT,"any",x=>GTN[x]);opt($("#fConf"),["high","medium","low"],"any");opt($("#fCons"),CONS,"any",x=>CONSN[x]);
+  opt($("#fOrigin"),ORIG,"any");opt($("#fRel"),REL,"any");opt($("#fType"),GT,"any",x=>GTN[x]);opt($("#fConf"),["high","medium","low"],"any");opt($("#fCons"),CONS,"any",x=>CONSN[x]);opt($("#fFn"),FUNS,"any",x=>FUNN[x]);const fi=$("#fInt");fi.append(h("option",{value:0},"any"));for(let k=1;k<=5;k++)fi.append(h("option",{value:k},`${k}+ (${INTN[k]})`));
   $("#fLevel").onchange=e=>{st.f.min=+e.target.value;render()};
   $("#fOrigin").onchange=e=>{st.f.origin=e.target.value;render()};
   $("#fRel").onchange=e=>{st.f.rel=e.target.value;render()};
   $("#fType").onchange=e=>{st.f.gt=e.target.value;render()};
   $("#fConf").onchange=e=>{st.f.conf=e.target.value;render()};
   $("#fCons").onchange=e=>{st.f.cons=e.target.value;render()};
+  $("#fFn").onchange=e=>{st.f.fn=e.target.value;render()};
+  $("#fInt").onchange=e=>{st.f.imin=+e.target.value;render()};
   $("#fQ").oninput=e=>{st.f.q=e.target.value.trim().toLowerCase();render()};
-  $("#fReset").onclick=()=>{st.f={ds:new Set(Object.keys(DS)),min:0,origin:"",rel:"",gt:"",cons:"",conf:"",q:""};["fLevel","fOrigin","fRel","fType","fCons","fConf"].forEach(id=>$("#"+id).value=id==="fLevel"?0:"");$("#fQ").value="";document.querySelectorAll("#dsSeg button").forEach(b=>b.setAttribute("aria-pressed","true"));render()};
+  $("#fReset").onclick=()=>{st.f={ds:new Set(Object.keys(DS)),min:0,origin:"",rel:"",gt:"",cons:"",conf:"",q:"",fn:"",imin:0};["fLevel","fOrigin","fRel","fType","fCons","fConf","fFn","fInt"].forEach(id=>$("#"+id).value=id==="fLevel"?0:"");$("#fQ").value="";document.querySelectorAll("#dsSeg button").forEach(b=>b.setAttribute("aria-pressed","true"));render()};
 }
-function filtered(){const f=st.f;return st.all.filter(m=>f.ds.has(m.dataset)&&(m.level??0)>=f.min&&(!f.origin||m.origin===f.origin)&&(!f.rel||rels(m).includes(f.rel))&&(!f.cons||m.consequence===f.cons)&&(!f.gt||m.goal_type===f.gt)&&(!f.conf||m.confidence===f.conf)&&(!f.q||m._q.includes(f.q)))}
+function filtered(){const f=st.f;return st.all.filter(m=>f.ds.has(m.dataset)&&(m.level??0)>=f.min&&(!f.origin||m.origin===f.origin)&&(!f.rel||rels(m).includes(f.rel))&&(!f.cons||m.consequence===f.cons)&&(!f.fn||m.function===f.fn)&&(!f.imin||iscore(m)>=f.imin)&&(!f.gt||m.goal_type===f.gt)&&(!f.conf||m.confidence===f.conf)&&(!f.q||m._q.includes(f.q)))}
 
 // ---------- overview
 function renderCounts(L){const c=$("#counts");c.replaceChildren();
@@ -302,7 +318,7 @@ function renderList(L){const el=$("#list");el.replaceChildren();el.append(h("div
   const sorted=[...L].sort((a,b)=>b.level-a.level||(a.dataset<b.dataset?-1:a.dataset>b.dataset?1:0)||T(a.start)-T(b.start));
   for(const m of sorted){const it=h("div",{class:"item",role:"option",tabindex:0,"aria-selected":st.sel===m.id?"true":"false",onclick:()=>select(m.id),onkeydown:e=>{if(e.key==="Enter")select(m.id)}},
     h("i",{class:"lv",style:`background:${lvVar(m.level)}`}),
-    h("div",null,h("div",{class:"t",text:m.title}),h("div",{class:"m",text:`${DS[m.dataset]} · ${fmtD(m.start).slice(0,10)} · ${m.origin} · ${rels(m).join("+")}`})),
+    h("div",null,h("div",{class:"t",text:m.title}),h("div",{class:"m",text:`${DS[m.dataset]} · ${fmtD(m.start).slice(0,10)} · ${m.function?FUNN[m.function]:m.origin} · intent ${iscore(m)||"?"}`})),
     h("div",{class:"n",text:`L${m.level} · ${(m.participants||[]).length} · ${fmtN(m.stats?.n_messages||0)}`}));
     el.append(it)}}
 
@@ -319,12 +335,16 @@ async function select(id,scroll=true){st.sel=id;st.txLimit=200;try{history.repla
 function summaryBlock(m){return h("p",{text:m.summary||""})}
 function renderDetail(m,TX){const d=$("#detail");d.replaceChildren();const S=m.stats||{};
   // header
-  const chips=h("div",{class:"chips"},h("span",{class:"chip lvl",style:`background:${lvVar(m.level)};color:var(--lt${m.level})`,text:`Level ${m.level} · ${LEVELS[m.level]}`}),h("span",{class:"chip",text:DS[m.dataset]}),h("span",{class:"chip",text:`origin: ${m.origin}`}),...rels(m).map(r=>h("span",{class:"chip",text:`goal: ${r}`})),m.consequence?h("span",{class:`chip${m.consequence==="harmful"?" warn":""}`,text:`for people: ${CONSN[m.consequence]||m.consequence}`}):null,h("span",{class:"chip",text:GTN[m.goal_type]||m.goal_type}),m.violates_rules?h("span",{class:"chip warn",text:"breaks rules"}):null,h("span",{class:"chip",text:`confidence: ${m.confidence}`}),h("span",{class:"chip",text:m.new_vs_prior==="new"?"new in this sweep":"in earlier classification"}));
+  const chips=h("div",{class:"chips"},h("span",{class:"chip lvl",style:`background:${lvVar(m.level)};color:var(--lt${m.level})`,text:`Level ${m.level} · ${LEVELS[m.level]}`}),h("span",{class:"chip",text:DS[m.dataset]}),h("span",{class:"chip",text:`origin: ${m.origin}`}),...rels(m).map(r=>h("span",{class:"chip",text:`goal: ${r}`})),m.consequence?h("span",{class:`chip${m.consequence==="harmful"?" warn":""}`,text:`for people: ${CONSN[m.consequence]||m.consequence}`}):null,m.function?h("span",{class:"chip"},h("i",{class:"sw",style:`background:var(${FUNCOL[m.function]});margin-right:6px`}),`function: ${FUNN[m.function]}`):null,iscore(m)?h("span",{class:"chip",text:`origin intent ${iscore(m)} \u00b7 ${INTN[iscore(m)]}`}):null,h("span",{class:"chip",text:GTN[m.goal_type]||m.goal_type}),m.violates_rules?h("span",{class:"chip warn",text:"breaks rules"}):null,h("span",{class:"chip",text:`confidence: ${m.confidence}`}),h("span",{class:"chip",text:m.new_vs_prior==="new"?"new in this sweep":"in earlier classification"}));
   const head=h("div",{class:"panel"},h("div",{class:"muted mono",style:"font-size:12px",text:`${m.id} · ${fmtD(m.start)} → ${fmtD(m.end)} UTC · ${S.duration_hours??"?"} h`}),h("h3",{text:m.title}),chips,h("p",{text:m.summary||""}),
     h("dl",{class:"kv"},h("dt",{text:"Why this level"}),h("dd",{text:m.level_rationale||""}),h("dt",{text:"Origin detail"}),h("dd",{text:m.origin_detail||""}),h("dt",{text:"Assigned task"}),h("dd",{text:m.assigned_task||""}),m.consequence_note?h("dt",{text:"Consequence"}):null,m.consequence_note?h("dd",{text:m.consequence_note}):null,m.violation_detail?h("dt",{text:"Rule violation"}):null,m.violation_detail?h("dd",{text:m.violation_detail}):null,m.caveats?h("dt",{text:"Caveats"}):null,m.caveats?h("dd",{text:m.caveats}):null,m.review?h("dt",{text:"Reviewer note"}):null,m.review?h("dd",{text:typeof m.review==="string"?m.review:JSON.stringify(m.review)}):null,h("dt",{text:"Participants"}),h("dd",{text:(m.participants||[]).join(", ")})));
   // ladder position
   const lad=h("div",{class:"ladder",style:"margin-top:10px"},...LEVELS.map((n,i)=>h("div",{class:"step",style:i===m.level?`outline:2px solid ${css(`--l${i}`)};outline-offset:-2px;color:var(--ink)`:""},`${i} · ${n}`,h("i",{style:`background:${i<=m.level?lvVar(i):"var(--rule)"}`}))));head.append(lad);
   d.append(head);
+  if(m.intent&&m.intent.score){const I=m.intent,o=I.origin||{};const pips=h("div",{style:"display:flex;gap:3px;align-items:center"},...[1,2,3,4,5].map(k=>h("i",{style:`display:inline-block;width:22px;height:10px;border-radius:2px;background:${k<=I.score?`var(--i${I.score})`:"var(--rule)"}`})),h("b",{style:"margin-left:8px",text:`${I.score} \u00b7 ${INTN[I.score]}`}));
+    const op=h("div",{class:"panel"},h("h2",{text:"Originating message"}),h("p",{class:"sub",text:"The message that started this episode, scored on its own for how deliberately it set out to organize others."}),pips,
+      h("dl",{class:"kv",style:"margin-top:10px"},h("dt",{text:"Form"}),h("dd",{text:`${I.speech_act||"?"}${I.addressed_to_others?", addressed to other agents":", not addressed to anyone"}`}),h("dt",{text:"Why this score"}),h("dd",{text:I.reason||""}),h("dt",{text:"Confidence"}),h("dd",{text:I.confidence||""}),h("dt",{text:"Scored by"}),h("dd",{text:I.source||""})),
+      o.text?h("div",{class:"key",style:"margin-top:10px",tabindex:0,onclick:()=>jumpNear(o),onkeydown:e=>{if(e.key==="Enter")jumpNear(o)}},h("div",null,h("div",{class:"ts",text:fmtD(o.ts)}),h("div",{class:"role",text:"origin"})),h("div",null,h("b",{text:(o.who||"")+": "}),o.text)):null);d.append(op)}
   // features
   const fp=h("div",{class:"panel"},h("h2",{text:"Five necessary features"}),h("div",{class:"feat"},...FEATS.map(([k,n])=>{const f=m.features?.[k]||{};const v=(f.met||"no").toLowerCase();return h("div",{class:"f"},h("h4",null,`${k} ${n}`,h("span",{class:`met ${v}`,text:v})),h("p",{text:(f.evidence||"")+(f.goal?` Goal: ${f.goal}`:"")}))})));d.append(fp);
   // charts
@@ -351,6 +371,7 @@ function renderDetail(m,TX){const d=$("#detail");d.replaceChildren();const S=m.s
 }
 function binName(sec){return{60:"minute",300:"5 minutes",600:"10 minutes",1800:"30 minutes",3600:"hour",10800:"3 hours",21600:"6 hours",86400:"day",604800:"week"}[sec]||`${Math.round(sec/3600)} hours`}
 function msgEl(x,i){const e=h("div",{class:`msg ${x.kind}${x.key?" key":""}`,id:`msg-${i}`},h("div",{class:"when",text:x.ts}),h("div",{class:"who","data-kind":x.kind},x.who,h("small",{text:x.loc||""}),x.key?h("small",{text:`· key: ${x.key}`}):null),h("div",{class:"body",text:x.text+(x.note?`\n[edit summary: ${x.note}]`:"")}));return e}
+function jumpNear(o){const st0=st;const tx=$("#tx");if(!tx)return;const T0=T(o.ts||"1970-01-01 00:00:00");let best=null,bd=1e15;document.querySelectorAll("#tx .msg").forEach(el=>{const w=el.querySelector(".when")?.textContent||"";const who=el.querySelector(".who")?.firstChild?.textContent||"";const dd=Math.abs(T(w)-T0)+(who===o.who?0:3e5);if(dd<bd){bd=dd;best=el}});if(best&&bd<9e5){best.scrollIntoView({block:"center"});best.classList.add("flash");setTimeout(()=>best.classList.remove("flash"),1600)}}
 function jumpTo(row){if(row==null)return;let el=document.getElementById(`msg-${row}`);if(!el){st.txLimit=Math.max(st.txLimit,row+50);["txQ"].forEach(id=>{const e=$("#"+id);if(e)e.value=""});const k=$("#txKey");if(k)k.checked=false;const p=$("#txPart");if(p)p.checked=false;const w=$("#txWho");if(w)w.value="";st._redraw&&st._redraw();el=document.getElementById(`msg-${row}`)}
   if(el){el.scrollIntoView({block:"center"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1600)}}
 function activityChart(box,S,m){const ser=S.series||{};const keys=Object.keys(ser);const nb=keys.length?ser[keys[0]].length:0;box.append(h("h2",{style:"font-size:12px",text:"Messages over time, by speaker"}));if(!nb){box.append(h("p",{class:"muted",text:"No messages in this window."}));return}
@@ -398,11 +419,33 @@ function renderMethod(meta){const b=$("#methodBody");b.replaceChildren();if(!met
   if(meta.recall){b.append(h("p",null,h("b",{text:"Recall check. "}),meta.recall.text));const ul=h("ul");for(const r of meta.recall.rows||[])ul.append(h("li",{text:r}));b.append(ul)}
   if(meta.validation)b.append(h("p",null,h("b",{text:"Quote check. "}),meta.validation))}
 
-function render(){const L=filtered();renderCounts(L);renderLadder(L);renderTimelines(L);renderMatrices(L);renderFeats(L);renderList(L)}
+function renderFn(L){const box=$("#fnBars");box.replaceChildren();const W=Math.max(320,box.clientWidth||520),LW=170,BH=18,G=8,PW=W-LW-46,H=FUNS.length*(BH+G)+4;
+  const n=Object.fromEntries(FUNS.map(f=>[f,L.filter(m=>m.function===f).length]));const mx=Math.max(1,...Object.values(n));
+  const svg=s("svg",{width:W,height:H,viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Episodes by primary function"});
+  FUNS.forEach((f,i)=>{const y=i*(BH+G),w=PW*n[f]/mx;const g=s("g",{class:"bar-hit",tabindex:0,role:"button",onclick:()=>{st.f.fn=st.f.fn===f?"":f;$("#fFn").value=st.f.fn;render()}});
+    g.append(s("text",{x:0,y:y+13,text:FUNN[f]}),s("rect",{x:LW,y:y-2,width:PW+40,height:BH+4,fill:"transparent"}),s("rect",{class:"mark",x:LW,y,width:Math.max(n[f]?2:0,w),height:BH,rx:3,fill:css(FUNCOL[f])}),s("text",{x:LW+w+6,y:y+13,text:n[f]}));
+    if(st.f.fn===f)g.append(s("rect",{x:LW-3,y:y-3,width:Math.max(6,w+6),height:BH+6,rx:4,fill:"none",stroke:css("--ink"),"stroke-width":1.5}));
+    bindTip(g,()=>[h("b",{text:`${n[f]} episodes`}),h("div",{text:FUNN[f]})]);svg.append(g)});
+  box.append(svg);
+  const t=h("table",{class:"matrix"});t.append(h("tr",null,h("th"),...LEVELS.map((nm,i)=>h("th",{text:String(i),title:nm}))));
+  const c=FUNS.map(f=>LEVELS.map((_,i)=>L.filter(m=>m.function===f&&m.level===i).length));const mx2=Math.max(...c.flat());
+  FUNS.forEach((f,i)=>t.append(h("tr",null,h("th",{text:FUNN[f]}),...LEVELS.map((_,j)=>{const k=c[i][j];const[bg,fg]=heat(k,mx2);const td=h("td",{class:k?"":"z",style:`background:${bg};color:${fg}`,tabindex:0,text:k,onclick:()=>{st.f.fn=f;$("#fFn").value=f;st.f.min=j;$("#fLevel").value=j;render()}});bindTip(td,()=>[h("b",{text:`${k} episodes`}),h("div",{text:`${FUNN[f]}, level ${j} ${LEVELS[j]}`})]);return td}))));
+  const m4=$("#mx4");m4.replaceChildren(t)}
+function iheat(n,max){if(!n)return["var(--bg)","var(--muted)"];const k=Math.min(5,1+Math.floor(4*n/Math.max(1,max)));return[`var(--i${k})`,`var(--it${k})`]}
+function renderIntent(L){const box=$("#inDist");box.replaceChildren();const W=Math.max(320,box.clientWidth||520),LW=96,BH=20,G=10,PW=W-LW-8;const dss=Object.keys(DS).filter(d=>st.f.ds.has(d));const H=dss.length*(BH+G)+4;
+  const svg=s("svg",{width:W,height:H,viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"Intent of originating messages by dataset"});
+  dss.forEach((d,gi)=>{const y=gi*(BH+G);const R=L.filter(m=>m.dataset===d&&iscore(m));const tot=R.length||1;svg.append(s("text",{x:0,y:y+14,text:`${DS[d]} (${R.length})`}));let x=LW;
+    for(let k=1;k<=5;k++){const n=R.filter(m=>iscore(m)===k).length;const w=PW*n/tot;if(w<=0)continue;const r=s("rect",{x,y,width:Math.max(1,w-2),height:BH,fill:`var(--i${k})`,tabindex:0,class:"bar-hit",onclick:()=>{st.f.imin=k;$("#fInt").value=k;render()}});bindTip(r,()=>[h("b",{text:`${n} episodes`}),h("div",{text:`${DS[d]}: intent ${k}, ${INTN[k]}`}),h("div",{class:"muted",text:`${Math.round(100*n/tot)}% of this dataset`})]);svg.append(r);if(w>30)svg.append(s("text",{x:x+w/2-1,y:y+14,"text-anchor":"middle",style:`fill:var(--it${k})`,text:Math.round(100*n/tot)+"%"}));x+=w}});
+  box.append(svg,h("div",{class:"legend"},...[1,2,3,4,5].map(k=>h("span",null,h("i",{class:"sw",style:`background:var(--i${k})`}),`${k} ${INTN[k]}`))));
+  const t=h("table",{class:"matrix"});t.append(h("tr",null,h("th"),...LEVELS.map((nm,i)=>h("th",{text:String(i),title:nm}))));
+  const c=[1,2,3,4,5].map(k=>LEVELS.map((_,j)=>L.filter(m=>iscore(m)===k&&m.level===j).length));const mx=Math.max(...c.flat());
+  [1,2,3,4,5].forEach((k,i)=>t.append(h("tr",null,h("th",{text:`${k} ${INTN[k]}`}),...LEVELS.map((_,j)=>{const n=c[i][j];const[bg,fg]=iheat(n,mx);const td=h("td",{class:n?"":"z",style:`background:${bg};color:${fg}`,tabindex:0,text:n});bindTip(td,()=>[h("b",{text:`${n} episodes`}),h("div",{text:`origin intent ${k} (${INTN[k]}), level ${j} ${LEVELS[j]}`})]);return td}))));
+  $("#mx5").replaceChildren(t)}
+function render(){const L=filtered();renderCounts(L);renderLadder(L);renderTimelines(L);renderMatrices(L);renderFn(L);renderIntent(L);renderFeats(L);renderList(L)}
 
 async function boot(){initFilters();
   try{const [ix,meta]=await Promise.all([fetch(DATA+"/index.json",{cache:"no-cache"}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()}),fetch(DATA+"/meta.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).catch(()=>null)]);
-    st.all=ix.map(m=>({...m,level:+(m.level??0),_q:[m.id,m.title,m.summary,(m.participants||[]).join(" "),m.origin_detail,m.prior_category,m.consequence_note].join(" ").toLowerCase()}));st.meta=meta;renderMethod(meta)}
+    st.all=ix.map(m=>({...m,level:+(m.level??0),_q:[m.id,m.title,m.summary,(m.participants||[]).join(" "),m.origin_detail,m.prior_category,m.consequence_note,m.function,m.function&&FUNN[m.function]].join(" ").toLowerCase()}));st.meta=meta;renderMethod(meta)}
   catch(e){$("#detail").replaceChildren(h("div",{class:"panel empty",text:"The episode index did not load. Reload the page to try again."}));return}
   render();
   const want=(location.hash||"").slice(1);

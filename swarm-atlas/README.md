@@ -10,6 +10,13 @@ This folder contains every candidate episode of multi-agent "swarm" behavior fou
 - A copy is in `viewer/`. Run it with `cd viewer && python3 -m http.server`.
 - Episode links work as `#<episode id>`. IDs of episodes that were merged into others still resolve.
 
+**Function and intent edition:** https://claude.ai/artifact/HKJp6HN5jAAt4xK1NXw6p5 (copy in `viewer_function_intent/`).
+- It is the same atlas, with two fields added to every episode.
+- **Primary function:** belief and knowledge, doing the work, rules and decisions, building shared tools, identity and culture, competing/gaming/attacking, or none.
+- **Origin intent:** a 1–5 intentionality score for the message that started the episode, from 1 (offhand) to 5 (explicit). The originating message itself is shown.
+- **Where the labels come from:** the companion analysis below. Episodes it did not cover were labelled with the same definitions, and each episode says which.
+- **Labels file:** `final/function_intent_labels.jsonl`.
+
 **Related:** https://claude.ai/artifact/AiWv6XyPmcWEByvpRD7FAG traces coined jargon across agents and model families. It also tests how reliably the taxonomy can be applied.
 
 **Status (3 October 2026): final.** The data has 484 episodes: duplicates were merged across time slices, and every episode was graded under one rule set aligned to the source post.
@@ -89,12 +96,13 @@ Quotes: 3,483 of 3,547 key messages (98.2%) were found in the raw data at the st
 | Folder | Contents |
 |---|---|
 | `final/` | `episodes.jsonl`: the 484 final episodes, with selector, participants, key messages, F1–F5 evidence, level, all axes, `merged_from` and review notes. `recall_gap_episodes.jsonl`: episodes added by the recall review, already included in the final set. `review_notes/`: what each reviewer merged and re-graded. |
-| `viewer/` | The published page and its data: metadata and statistics in `data/index.json`, transcripts in ~3 MB chunks under `data/c/`. |
+| `viewer/` | The published page and its data. Each build has its own folder `data/<build>/` (episode index, method notes, transcripts in ~3 MB chunks), so browsers never mix files from two builds. |
+| `viewer_function_intent/` | The function and intent edition: the same layout, plus function and intent fields in its index. |
 | `sweep/raw/` | The raw sweep output (526 episodes, before merging and alignment) and each sweep agent's note. |
 | `recall/` | Recall-check scores per unit and the candidate lists sent for review. |
 | `reports/` | Earlier work: the category-based classification (`SWARM_CLASSIFICATION.md`), first-pass reports, independent checks, and quantitative tables. |
 | `briefs/` | Instructions given to the sweep, check, consistency and alignment agents. |
-| `pipeline/` | Scripts: `final_assemble.py` merges the reviewed sets, `build.py` builds transcripts, quote checks, redaction and statistics, `pack.py` chunks the data and scans for secrets, `recall.py` runs the recall check, and `prep_raw.py` prepares raw data. |
+| `pipeline/` | Scripts: `final_assemble.py` merges the reviewed sets, `build.py` builds transcripts, quote checks, redaction and statistics, `pack.py` writes a per-build data folder, fills the page template from `pipeline/templates/`, and scans for secrets; `fi_augment.py` attaches function and intent labels for the second edition; `recall.py` runs the recall check, and `prep_raw.py` prepares raw data. |
 
 ## Reproduce
 
