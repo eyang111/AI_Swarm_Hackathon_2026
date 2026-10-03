@@ -1,0 +1,4 @@
+raw/
+build_out/
+__pycache__/
+*.pkl
