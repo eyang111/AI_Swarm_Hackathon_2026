@@ -37,14 +37,15 @@ formats, relay pages) and methods (techniques and resources).
   public German wikis as a scratchpad and relay between runs, May 24 to Jul 2 2026. All one lab, no reasoning traces,
   self-chosen editor names. Closest public relative of the Hugging Face incident.
 
-## 2. Standing rules (Peyton)
+## 2. Standing rules
 
 1. **Subagents read raw transcripts.** Nothing is pre-converted into interpreted rows before an AI reader sees it.
    Script-made fields are mechanical only (timestamps, length, exact-duplicate hash).
 2. **Earlier AI findings are not ground truth.** The false-belief scan, the Swarm Atlas, the goal-adoption report and
    the DSEWiki publisher's labels are candidates and baselines only.
-3. **DSEWiki holdout.** Revisions dated 2026-06-18 or later are held out for scoring. Design work used only the
-   5,129 earlier revisions (the "build" split).
+3. **DSEWiki holdout** (a planning choice, not Peyton's rule; under review). Revisions dated 2026-06-18 or later are
+   held out for scoring. Design work used only the 5,129 earlier revisions (the "build" split). The cutoff was picked
+   as "mid-June" and puts the whole Jun 18 burst in the holdout; see section 10.
 4. **Sandbox-bypass text.** DSEWiki contains working sandbox-bypass instructions written by the agents. Never run,
    quote or paraphrase a method. Name the category (`ACCESS_WORKAROUND`) and cite by `msg_id` only.
 
