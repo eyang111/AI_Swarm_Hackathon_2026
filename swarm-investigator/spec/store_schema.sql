@@ -54,7 +54,7 @@ CREATE TABLE runs (
 CREATE TABLE tasks (
   task_id  TEXT PRIMARY KEY,               -- e.g. run-03/reader/aivillage/general/2026-03-12T16
   run_id   TEXT NOT NULL REFERENCES runs(run_id),
-  tier     TEXT NOT NULL CHECK (tier IN ('reader','clusterer','local_linker','resolver','linker','identity','reconciler','tracker','lead','summarizer','checker')),
+  tier     TEXT NOT NULL CHECK (tier IN ('reader','reverify','grouper','analyzer','clusterer','local_linker','resolver','linker','identity','reconciler','tracker','lead','summarizer','checker')),
   scope    TEXT NOT NULL,                  -- JSON: {channel, t_start, t_end} | {claim_key} | {group_id} ...
   replica  INTEGER NOT NULL DEFAULT 0,     -- >0 = independent re-read of the same scope (agreement tests)
   model    TEXT,
@@ -164,7 +164,9 @@ CREATE TABLE links (
   task_id      TEXT NOT NULL REFERENCES tasks(task_id),
   from_msg_id  TEXT NOT NULL REFERENCES messages(msg_id),
   to_msg_id    TEXT NOT NULL REFERENCES messages(msg_id),
-  type         TEXT NOT NULL CHECK (type IN ('source_of','reply_to','acted_on','confirms','doubts','corrects','same_run','exposed_to','independent_of')),
+  from_segment TEXT, to_segment TEXT,      -- v4: segment ids (<msg_id>#<n>); store.py caps local links at 3 outgoing per segment
+  type         TEXT NOT NULL CHECK (type IN ('source_of','reply_to','acted_on','confirms','doubts','corrects','same_run','exposed_to','independent_of','anchor')),
+  -- anchor (v4): link to the most assertive earlier segment on the same topic (pipeline_v2 section 3)
   -- independent_of: same claim_key, but the linker judges from_msg reached it without exposure to to_msg (convergence, not copying)
   via          TEXT CHECK (via IN ('direct_message','shared_page','human_relay','external_source','task_prompt','unknown')),
                                            -- how the item travelled, for source_of / exposed_to / acted_on
@@ -226,6 +228,38 @@ CREATE TABLE checks (                      -- citation script + adversarial chec
   note TEXT, t TEXT NOT NULL
 );
 CREATE INDEX checks_obj ON checks(obj_type, obj_id);
+
+CREATE TABLE segments (                    -- v4 (pipeline_v2 section 2): one act within a message; the unit from L2 on
+  segment_id  TEXT PRIMARY KEY,            -- <msg_id>#<n>
+  record_id   TEXT NOT NULL REFERENCES records(record_id),
+  msg_id      TEXT NOT NULL REFERENCES messages(msg_id),
+  char_start  INTEGER NOT NULL, char_end INTEGER NOT NULL,   -- span in messages.text, checked by store.py
+  function    TEXT CHECK (function IN ('epistemic','executive','normative','infrastructural','affiliative','adversarial')),
+  purpose     TEXT NOT NULL,
+  assertiveness REAL CHECK (assertiveness BETWEEN 0 AND 1),        -- how flatly the agent stated it (anchors, seeds)
+  reader_confidence REAL CHECK (reader_confidence BETWEEN 0 AND 1), -- reader's certainty in its labels (re-verify trigger)
+  retracted_by TEXT
+);
+CREATE INDEX segments_msg ON segments(msg_id);
+CREATE TABLE segment_keywords (            -- 3 to 8 per segment; distinctiveness decided by the script df pass
+  segment_id TEXT NOT NULL REFERENCES segments(segment_id),
+  keyword    TEXT NOT NULL,                -- entity key (agent:, page:, task:, value:, term:, url_host:) or keyphrase
+  from_context INTEGER NOT NULL DEFAULT 0, -- 1 = topic key the reader saw elsewhere in the window
+  PRIMARY KEY (segment_id, keyword)
+);
+CREATE TABLE keyword_df (                  -- script output; overrides the reader's own distinctive/common guess
+  keyword TEXT PRIMARY KEY, df INTEGER NOT NULL, distinctive INTEGER NOT NULL
+);
+CREATE TABLE cluster_edges (               -- v4 L5: links between content clusters (claim keys)
+  edge_id   TEXT PRIMARY KEY,
+  task_id   TEXT NOT NULL REFERENCES tasks(task_id),
+  from_key  TEXT NOT NULL REFERENCES claim_keys(claim_key),
+  to_key    TEXT NOT NULL REFERENCES claim_keys(claim_key),
+  type      TEXT NOT NULL CHECK (type IN ('evolves_into','feeds','corrects','supersedes','caused')),
+  confidence TEXT NOT NULL CHECK (confidence IN ('high','medium','low')),
+  rationale TEXT NOT NULL,                 -- cited segments on both sides live in citations(obj_type='cluster_edge')
+  retracted_by TEXT
+);
 
 CREATE TABLE identity_edges (              -- run identity (DESIGN.md 5.5); run groups = components of accepted edges
   edge_id    INTEGER PRIMARY KEY,

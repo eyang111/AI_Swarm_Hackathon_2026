@@ -1,4 +1,4 @@
-# Swarm Investigator: design (consolidated, v3 2026-10-04)
+# Swarm Investigator: design (consolidated, v4 2026-10-04)
 
 One document for everything designed so far. It summarizes and links the spec files in `spec/`, which stay the
 detailed source for each part. Where the files disagreed, this document follows the most recent decision and says
@@ -9,7 +9,12 @@ Status: design only. No pipeline code (`load.py`, `store.py`, `window_plan.py`, 
 Changes in v2 (Peyton, 2026-10-04): holdout dropped; burst-aware windows; Sonnet readers in one-shot batches, Opus
 analyzers; exact-copy collapsing; refusal handling and an export screen. v3: run-identity method from the thread
 "DSEWiki agent identity" (section 5.5, `spec/identity_findings.md`); conversation layer from the thread "Investigator
-database and analyzers" (section 4.6, `spec/store_design.md` 2a), approved by Peyton 2026-10-04.
+database and analyzers" (section 4.5, `spec/store_design.md` 2a), approved by Peyton 2026-10-04.
+
+v4: Sandra's pipeline v2 merged (`pipeline_v2.md`, branch `claude/swarm-investigator-design-v2`): message
+segments, a function axis, assertiveness kept apart from reader confidence, a re-verify pass, capped local links with
+a topic anchor, assertiveness-seeded groupers, a sequence-vs-cause rule, cross-cluster edges and a timeline graph
+(sections 4.2, 4.3, 5.6, 5.7). Where pipeline_v2 and this file differ, this file says which applies (section 10).
 
 | Spec file | What it holds | Status |
 |---|---|---|
@@ -18,6 +23,7 @@ database and analyzers" (section 4.6, `spec/store_design.md` 2a), approved by Pe
 | [`spec/store_design.md`](spec/store_design.md) + [`spec/store_schema.sql`](spec/store_schema.sql) | SQLite store `investigation.db`, write tools, analyzers v2 | draft; schema updated for v2 |
 | [`spec/windowing_and_linkers.md`](spec/windowing_and_linkers.md) | reader windows (core + halo + context pack), linker division by content | draft; DSEWiki windows superseded by section 5.2 here |
 | [`spec/taxonomy_dev_codes.jsonl`](spec/taxonomy_dev_codes.jsonl) | 100 DSEWiki + 100 AI Village messages hand-coded with purpose labels (one Claude pass, unchecked; not truth) | dev set |
+| [`pipeline_v2.md`](pipeline_v2.md) | Sandra's pipeline v2: segments, function + assertiveness, re-verify, capped links, groupers, causal order, timeline graph | merged in v4; windows, models, copies, safety and identity come from this file |
 | [`spec/identity_findings.md`](spec/identity_findings.md) | DSEWiki name measurements and the run-identity method; scripts in `identity_scripts/` | new, 2026-10-04 |
 | [`spec/dsewiki_SCHEMA.md`](spec/dsewiki_SCHEMA.md) | what is in the DSEWiki dump and how identity is recorded | reference |
 
@@ -58,18 +64,22 @@ formats, relay pages) and methods (techniques and resources).
 ## 3. Pipeline
 
 ```
-raw messages (verbatim, loader script; exact copies grouped)
-  -> readers (Sonnet, one-shot batch): one record per distinct message, per window
-     (core + last-50 halo + token-routed halo + script context pack)
-  -> store.py validates; rejected records go back once with the reason
-  -> local linkers (Sonnet): short-range links inside each window
-  -> gap resolver (Sonnet): fills reader "missing context" flags, versions records
-  -> conversation layer: cluster.py (script) + clusterer (Opus) on the unclear spots
-  -> pregroup.py (script): candidate families from shared entities, claim text, copy groups, signed names
-  -> family linkers + run-identity linker (Opus)
-  -> reconciler (Opus): merges claim keys that landed in different families
-  -> analyzers / lead / summarizers (Opus)
+L0  raw messages (verbatim, loader script; exact copies grouped)
+L1  readers (Sonnet, one-shot batch), per window (core + last-50 halo + token-routed halo + context pack):
+    one record per distinct message, split into one-act segments with function, purpose, assertiveness,
+    reader_confidence, keywords and uncertainty flags; store.py validates, re-asks rejects once
+L1.9 re-verify (Sonnet): flagged gaps and low reader_confidence segments, checked against raw; new record versions
+L2  local linkers (Sonnet): <=3 outgoing links per segment (2 recent same-content + 1 topic anchor)
+    conversation layer: cluster.py (script) + clusterer (Opus) -> who was talking with whom
+    pregroup.py (script): df pass on keywords, copy groups, shared entities, signed names
+L3  groupers (Opus): per-layer content clusters seeded on assertive segments = claim keys
+    + run-identity linker (Opus); reconciler (Opus) merges a claim split across clusters
+    re-verify again on every assertive cluster seed
+L4  within-cluster analyzers (Opus): time order = sequence; cause only with an exposure link
+L5  cross-cluster analyzers (Opus): evolves_into / feeds / corrects / supersedes / caused
+L6  timeline graph: clusters as events, L5 edges as arrows; analyzers and summarizers (Opus) read from here
 every AI write passes the citation check; an Opus adversarial checker reviews rows; events view -> scoring
+every tier after readers can pull raw text with get_raw; AI records are never fed back to readers
 ```
 
 Each tier writes only what it can see. Readers record what a message says; linkers record how messages connect;
@@ -93,6 +103,18 @@ text_hash, dup_of, copy_of, removed_text, script_label in {DUPLICATE, EMPTY}`).
 summary, quote, claims[], entities[], addressed_to, reply_to_hint, anomaly, context_status, context_needs[],
 uncertain_fields, confidence`.
 
+**Segments (v4, pipeline_v2 section 2).** A message that does several things (a status note, a directive and a
+relayed answer in one save) is split by the reader into one-act segments with cited character spans; single-act
+messages are one segment. From L2 on, the segment (`<msg_id>#<n>`) is the unit. An `ACCESS_WORKAROUND` span is its
+own segment, so it is withheld without losing the rest of the save. Per segment the reader adds:
+- **function**: `epistemic, executive, normative, infrastructural, affiliative, adversarial`, above the purpose label
+  (pipeline_v2 cites an α of 0.85 from earlier validation; the source isn't in the project files, so treat it as
+  unverified);
+- **assertiveness** 0 to 1 (how flatly the agent stated it) and **reader_confidence** 0 to 1 (how sure the reader is
+  of its labels), never merged; assertiveness anchors links and cluster seeds, reader_confidence triggers re-verify;
+- **keywords**, 3 to 8 per segment, including topic keys seen elsewhere in the window; a script df pass decides which
+  are distinctive.
+
 Claim object: `{claim_text, about: self|shared, stance: asserts|relays|doubts|corrects, stated_source, quote}`.
 `stated_source` is only what the text says (`own_observation`, a signed name, a page title, "other cohorts",
 `unstated`). Readers never fill true sources, claim keys, novelty, acted-on or run groups.
@@ -105,14 +127,20 @@ Script-only: `DUPLICATE`, `EMPTY`.
 **Missing context (2a).** Readers flag instead of guessing: `context_status` complete / partial / missing, one
 `context_needs` entry per gap (`type, span, needed, search_hints`), with eight gap types (`reply_to_unseen,
 unresolved_reference, coded_token, continuation, compacted_history, implicit_task, identity, outside_transcript`).
-A resolver later writes `context_resolutions` and a new record version; version 1 is never edited.
+The re-verify pass (v4, replaces the gap resolver) writes `context_resolutions` and a new record version; version 1
+is never edited. It also takes segments with low `reader_confidence`, and later every assertive cluster seed.
 
 ### 4.3 Linker outputs (L2, reader_format section 5)
-- `claim_keys` (+ members): one per distinct claim, layer in `belief | goal | protocol | method | word`.
-- `links`: `source_of, reply_to, acted_on, confirms, doubts, corrects, same_run, exposed_to, independent_of`, each
+- `claim_keys` (+ members): one per distinct claim, layer in `belief | goal | protocol | method | word`. In v4 these are
+  the groupers' content clusters over segments (5.6).
+- `links`: `source_of, reply_to, acted_on, confirms, doubts, corrects, same_run, exposed_to, independent_of`, plus `anchor` (v4), each
   with a checked quote from `from_msg_id`, and `via` (route: reply, shared page, human relay, external source, task prompt).
 - `run_groups` (+ members): which speakers / signed names / run tags are one run. On DSEWiki this replaces usernames.
 - `aggregates` (+ members): messages with the same essential purpose collapsed into one row.
+- Local links are capped at 3 outgoing per segment (in-degree uncapped); family-stage `source_of`, copy-group and
+  exposure links are exempt, so the cap never drops a real source.
+- `cluster_edges` (v4): links between clusters (`evolves_into, feeds, corrects, supersedes, caused`), each citing
+  segments on both sides.
 - Merges are reversible; "no match" is always allowed; low-confidence merges are marked low.
 
 ### 4.4 Event rows (row_format section 2), now a SQL view
@@ -197,13 +225,14 @@ The most-copied text appears 555 times on 555 pages.
   if the reader also gets a table of the differing values. Worth it only if reader cost becomes the bottleneck.
 
 ### 5.4 Linkers (windowing_and_linkers section 3)
-Divided by content, not time: (A) local linkers per window for replies and evaluation acts; (B) family linkers over
-connected components of the candidate graph (shared entities with a document-frequency cap, same normalized claim
-text, copy groups, signed names), whole timeline, split at ~300 records; (C) one reconciler over all claim-key texts;
-(D) a run-identity linker (5.5).
+Divided by content, not time: (A) local linkers per window for replies, evaluation acts and the capped same-content
+and anchor links; (B) groupers (formerly family linkers) over connected components of the link and candidate graph
+(distinctive keywords with a document-frequency cap, same normalized claim text, copy groups, signed names), whole
+timeline, one layer at a time, split at ~300 segments; (C) one reconciler over all cluster texts; (D) a run-identity
+linker (5.5).
 
-Order: readers -> local linkers -> gap resolver -> conversation layer -> pregroup.py -> family + run-identity linkers ->
-reconciler -> analyzers / lead.
+Order: readers -> re-verify -> local linkers -> conversation layer -> pregroup.py -> groupers + run-identity linker ->
+reconciler -> re-verify on seeds -> L4 -> L5 -> timeline graph and analyzers.
 
 ### 5.5 Run identity (new in v3; details in `spec/identity_findings.md`)
 **What the names show.** 1,332 of 3,103 names are used once. 729 of those look like a more common name, but that
@@ -236,6 +265,27 @@ at the coarsest level it survives.
 **Evaluation.** Synthetic renaming (give a distinctive name's saves fresh fake names, measure how many are put back
 together and how many land in the wrong group) and a contradiction rate. Not agreement with `page_family_cohort`.
 
+### 5.6 Clusters and causal order (v4, pipeline_v2 sections 5 and 6)
+- **Groupers** build per-layer clusters seeded on the most assertive, clearly typed segments (what the group treated
+  as settled); members attach by distinctive keywords, claim text and L2 links. Seeds are re-verified against raw, so a
+  confidently wrong seed is caught before analysis. Singletons are allowed.
+- **L4, within a cluster:** sort by time. Time order is a *sequence*; an edge becomes *causal* only where an
+  `exposed_to`, `source_of` or `acted_on` link (or conversation presence plus its own rationale) shows the later
+  segment could have seen the earlier one. Output: an ordered spine, origin, carriers.
+- **L5, between clusters:** edges only where warranted, each citing segments on both sides. Most pairs get none.
+
+### 5.7 Analyzers and the timeline graph
+The analyzers from store_design section 5 (dropped from this file in v2 by mistake, restored here) run on the L4 and
+L5 output: 1 cascade tracer (now the L4 spine per cluster), 2 origin and novelty, 3 copying vs convergence, 4 mutation
+tracker (now also tracks assertiveness rising along a chain, e.g. hedges hardening), 5 routes, 6 spreaders and
+adopters (at name-session, run-group and cohort level, 5.5), 7 stopping points, 8 layer coupling (L5 `evolves_into`
+across layers is direct evidence). Sunday set: 1, 2, 4 and the timeline graph.
+
+**Timeline graph (L6)** is the main output picture: each cluster is an event node (split into sub-events where L4 finds
+separate phases, such as a claim and a correction wave days later), positioned by time span, sized by segment count,
+coloured by layer or function; arrows are L5 edges. Every node drills to its segments and their msg_ids; quotes follow
+the export screen (section 7).
+
 ## 6. Models and how calls are made (new in v2)
 
 ### 6.1 Readers: Claude Sonnet 5.5, one-shot, batched
@@ -253,15 +303,15 @@ call per message, whose re-sent context would have cost about 1B input tokens.
 Rough reader cost for all of DSEWiki (estimate, ~3.5 characters per token; confirm with `count_tokens` on one window):
 input ~7.5M tokens (core ~2.6M, halo ~3.4M, cached prefix ~1.5M), output ~3.4M tokens (11,451 records x ~300).
 At Sonnet 5.5 list prices ($2 in / $10 out per million tokens) about $50; with batch about $25, plus ~10% for
-re-asks. The 3-window test (7.2) should also confirm that structured output and caching behave as expected inside batches.
+re-asks. v4 segments, two confidences and keywords add roughly half again to output, so about $35 to $40 batched. The 3-window test (7.2) should also confirm that structured output and caching behave as expected inside batches.
 
 ### 6.2 Linkers: Sonnet for local work, Opus for merges
 | Tier | Model | Why |
 |---|---|---|
 | clusterer | Opus 5.5 | only the unclear spots, few calls; a wrong split or merge misplaces whole cascades (my pick, not yet confirmed) |
-| local linker, gap resolver | Sonnet 5.5 | many short-range, mostly mechanical links; errors are local and cheap to fix |
-| family linker, reconciler, run-identity linker | Opus 5.5 | few calls, each decides which messages are "the same claim" or "the same run"; one wrong merge invents or erases a whole cascade |
-| analyzers, lead, summarizers | Opus 5.5 | Peyton's choice |
+| local linker, re-verify | Sonnet 5.5 | many short-range, mostly mechanical links; errors are local and cheap to fix |
+| groupers, reconciler, run-identity linker | Opus 5.5 | few calls, each decides which messages are "the same claim" or "the same run"; one wrong merge invents or erases a whole cascade |
+| L4, L5, analyzers, lead, summarizers | Opus 5.5 | Peyton's choice |
 | adversarial checker | Opus 5.5 | should not be weaker than the rows it checks |
 
 Rough linker cost (estimate): family linkers read ~11.5k records (~2.3M tokens) once or twice plus raw drill-downs,
@@ -319,11 +369,13 @@ contagion); optional checker diversity.
    rebuild.
 2. `window_plan.py`: AI Village sessions; DSEWiki 60k-character cores with last-50 + token-routed halo; context pack.
 3. `identity_candidates.py` (name-sessions, strong and medium edges).
-4. Reader prompt + batch runner + `store.py` validation and re-ask; refusal bisection; `coverage_gaps`.
+4. Reader prompt (segments, function, assertiveness, reader_confidence, keywords) + batch runner + `store.py`
+   validation and re-ask; refusal bisection; `coverage_gaps`.
 5. 3-window test (section 7.2); check cost, refusals, flags.
 6. Planting script and blind hand labels, before looking at full-run output.
-7. Full reader batch; local linker, resolver, `cluster.py` + clusterer, `pregroup.py` (copy groups), family linker, reconciler.
-8. Scoring join; analyzers 1, 2, 4; export with the screen.
+7. Full reader batch; re-verify; local linker (cap + anchor); `cluster.py` + clusterer; `pregroup.py` (df pass, copy
+   groups); groupers; reconciler; re-verify on seeds.
+8. L4 and L5; scoring join; analyzers 1, 2, 4; timeline graph; export with the screen.
 
 Skip if short on time: off-site texts (`records.jsonl.gz`), template groups, community detection, cross-lab checker.
 
@@ -343,6 +395,11 @@ Skip if short on time: off-site texts (`records.jsonl.gz`), template groups, com
 | reader_format, windowing, store_design: Jun 18 holdout | dropped; `split` column removed from the schema | Peyton, 2026-10-04 |
 | windowing: DSEWiki windows of ~100 saves + 50 halo | 60k-character cores + token-routed halo | burst measurements (5.2) |
 | windowing asked for schema changes | applied: tiers `local_linker, resolver, identity, reconciler`; candidate bases `copy_group, family`; `coverage_gaps`, `identity_edges`, conversation tables, tier `clusterer`; `ip16`, `copy_of`, `removed_text` on messages | needed by v2/v3 |
+| pipeline_v2: "windows unchanged from DESIGN.md §5" (100-save windows) | burst-aware windows (5.2) | v2/v3 measurements postdate the fork |
+| pipeline_v2: groupers with no cross-component merge step | groupers keep the reconciler | a claim split across two components would otherwise stay two items |
+| pipeline_v2: hard cap of 3 outgoing links per segment | cap on local links only; family-stage source, copy and exposure links exempt | a hard cap could drop a real source |
+| pipeline_v2: gap resolver replaced by re-verify | adopted | re-verify is a superset |
+| conversation layer vs groupers | both kept: conversations = who was talking with whom (exposure evidence), groupers = what spreads | different questions |
 | `messages_fts` | external-content FTS5 table has no sync triggers | `load.py` must run `INSERT INTO messages_fts(messages_fts) VALUES('rebuild')` after loading |
 
 ## 11. DSEWiki run: issues and fixes
