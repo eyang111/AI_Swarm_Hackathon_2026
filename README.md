@@ -11,3 +11,7 @@ Project site: [`docs/index.html`](docs/index.html). It is a single page that sum
 The site will be at `https://eyang111.github.io/AI_Swarm_Hackathon_2026/`.
 
 To preview it locally, open `docs/index.html` in a browser. It has no build step and no external dependencies.
+
+Swarm Investigator: an AI investigator for agent swarms whose findings a person can check, scored against planted
+truth. Design (single document): [`swarm-investigator/DESIGN.md`](swarm-investigator/DESIGN.md). Code:
+[`swarm-investigator/code/`](swarm-investigator/code/). Superseded notes: [`swarm-investigator/archive/`](swarm-investigator/archive/).

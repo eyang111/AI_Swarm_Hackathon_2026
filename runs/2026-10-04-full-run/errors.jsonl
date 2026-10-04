@@ -1,0 +1,15 @@
+{"t": "2026-10-04T07:10:56Z", "stage": "local_linker", "kind": "refusal", "detail": "refusal from claude-sonnet-5-5", "context": {"custom_id": "D0618_w1_2", "task_id": "full-1004/local_linker/D0618_w1_2", "stop_reason": "refusal", "category": "cyber", "output_chars": 0}}
+{"t": "2026-10-04T07:10:57Z", "stage": "local_linker", "kind": "refusal", "detail": "refusal from claude-sonnet-5-5", "context": {"custom_id": "D0620_w5_2", "task_id": "full-1004/local_linker/D0620_w5_2", "stop_reason": "refusal", "category": "cyber", "output_chars": 0}}
+{"t": "2026-10-04T07:11:08Z", "stage": "local_linker", "kind": "recovered_by_split", "detail": "refusal", "context": {"custom_id": "D0618_w1_2", "failed_parts": []}}
+{"t": "2026-10-04T07:11:32Z", "stage": "local_linker", "kind": "recovered_by_split", "detail": "refusal", "context": {"custom_id": "D0620_w5_2", "failed_parts": []}}
+{"t": "2026-10-04T07:25:05Z", "stage": "grouper", "kind": "max_tokens", "detail": "max_tokens from claude-opus-4-8", "context": {"custom_id": "g30", "task_id": "full-1004/grouper/g30", "stop_reason": "max_tokens", "category": null, "output_chars": 78159}}
+{"t": "2026-10-04T07:27:02Z", "stage": "grouper", "kind": "recovered_by_retry", "detail": "max_tokens", "context": {"custom_id": "g30"}}
+{"t": "2026-10-04T07:29:27Z", "stage": "l4", "kind": "budget_stop", "detail": "analyzer: spent $129.73 + next ~$26.36 would pass the $150.00 budget"}
+{"t": "2026-10-04T07:57:11Z", "stage": "analyzer", "kind": "refusal", "detail": "refusal from claude-opus-4-8", "context": {"custom_id": "l4_76", "task_id": "full-1004/analyzer/l4_76", "stop_reason": "refusal", "category": "bio", "output_chars": 0}}
+{"t": "2026-10-04T08:07:47Z", "stage": "analyzer", "kind": "recovered_by_split", "detail": "refusal", "context": {"custom_id": "l4_76", "failed_parts": []}}
+{"t": "2026-10-04T08:12:55Z", "stage": "analyzer", "kind": "max_tokens", "detail": "max_tokens from claude-opus-4-8", "context": {"custom_id": "l5", "task_id": "full-1004/analyzer/l5", "stop_reason": "max_tokens", "category": null, "output_chars": 51298}}
+{"t": "2026-10-04T08:17:18Z", "stage": "analyzer", "kind": "max_tokens", "detail": "max_tokens from claude-opus-4-8", "context": {"custom_id": "l5.retry", "task_id": "full-1004/analyzer/l5", "stop_reason": "max_tokens", "category": null, "output_chars": 51631}}
+{"t": "2026-10-04T08:20:14Z", "stage": "analyzer", "kind": "recovered_by_split", "detail": "max_tokens", "context": {"custom_id": "l5", "failed_parts": []}}
+{"t": "2026-10-04T08:20:41Z", "stage": "checker", "kind": "budget_stop", "detail": "checker: spent $190.11 + next ~$0.16 would pass the $190.00 budget"}
+{"t": "2026-10-04T14:34:25Z", "stage": "checker", "kind": "budget_stop", "detail": "checker: waiting for a manual answer at /mnt/attach/project-files/swarm-investigator/full_run/manual/checker/chk0.json"}
+{"t": "2026-10-04T14:37:45Z", "stage": "lead", "kind": "budget_stop", "detail": "lead: waiting for a manual answer at /mnt/attach/project-files/swarm-investigator/full_run/manual/lead/lead.json"}

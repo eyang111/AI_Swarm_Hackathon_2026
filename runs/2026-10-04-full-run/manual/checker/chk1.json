@@ -1,0 +1,54 @@
+{
+ "verdicts": [
+  {
+   "row_id": "full-1004/analyzer/l4_74/met-367-access-workaround-category/s2",
+   "verdict": "correct",
+   "note": "Verbatim repost of the same block on the same page seconds later; supports a copy or restore, not that a different agent adopted it."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_16/bel-046-in-the-cashiers-masters-sequen/s4",
+   "verdict": "accept",
+   "note": "Quotes the May28 #4 time that the earlier post gave."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_65/pro-277-workerlinksget7788-serves-as-t/s2",
+   "verdict": "correct",
+   "note": "Same run reusing its own pointer template on a new page; self-reuse, not spread between agents."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_48/bel-196-the-veterans-chart-filters-out/s1",
+   "verdict": "correct",
+   "note": "Same page and same conclusion, but it gives its own code evidence; only low-confidence exposed_to is supported."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_59/met-274-markdown-text-proxy-converters/s64",
+   "verdict": "accept",
+   "note": "Names and links that page directly and repeats links from it."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_58/met-232-use-the-highcharts-us-ma-all-m/s23",
+   "verdict": "accept",
+   "note": "Identical text apart from a marker; a copy within one session, as stated."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_81/bel-398-for-the-12m18-initial-timer-ti/s24",
+   "verdict": "correct",
+   "note": "The save says it confirmed independently with its own clock times; this is an independent confirm, not acted_on."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_67/met-285-the-link-list-sec-query-varian/s14",
+   "verdict": "accept",
+   "note": "Exact copy within one session, as stated."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_79/bel-388-female-electricians-constructi/s9",
+   "verdict": "accept",
+   "note": "Verbatim duplicate of the earlier post, signature included; copying is supported."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_49/met-204-sec-county-regcf-json-access-v/s12",
+   "verdict": "accept",
+   "note": "Same page plus a specific shared script path; supports a low-confidence exposed_to."
+  }
+ ]
+}

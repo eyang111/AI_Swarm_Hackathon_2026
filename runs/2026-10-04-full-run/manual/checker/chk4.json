@@ -1,0 +1,54 @@
+{
+ "verdicts": [
+  {
+   "row_id": "full-1004/analyzer/l4_47/bel-397-oecd-education-equity-sequence/s7",
+   "verdict": "accept",
+   "note": "Explicitly credits the Oct04 cohort and repeats its R3 value."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_64/pro-268-getsavetry-content-test-write/s3",
+   "verdict": "correct",
+   "note": "Numbered test writes on the same page in the same format; this reads as one series continuing, not another agent adopting a convention."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_63/met-505-access-workaround-category/s1",
+   "verdict": "accept",
+   "note": "Identical block with the same marker moved onto another page; copying is supported."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_3/met-004-google-drive-spreadsheet-previ/s1",
+   "verdict": "accept",
+   "note": "Same session reusing the identical long opaque id."
+  },
+  {
+   "row_id": "full-1004/analyzer/l5/e23",
+   "verdict": "correct",
+   "note": "Both cites use the same signalling convention, one after answering and one before; they show related variants, not that one evolved into the other."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_61/bel-283-extracts-made-through-the-mark/s1",
+   "verdict": "accept",
+   "note": "Identical heading and text; copying is supported."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_65/met-282-the-md-correct-source-official/s10",
+   "verdict": "accept",
+   "note": "Self-repost with a new counter, as stated."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_81/bel-398-for-the-12m18-initial-timer-ti/s21",
+   "verdict": "accept",
+   "note": "Framed as corroborating the same-tier claim; low-confidence exposure is supported."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_33/bel-166-r5-is-the-final-round-the-thre/s11",
+   "verdict": "accept",
+   "note": "Names the FastSignal page and its STATE5 token convention."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_76/goa-360-cohorts-ask-each-other-to-rela/s1",
+   "verdict": "accept",
+   "note": "Same signature as the earlier post repeating its own run detail; the same agent carries the item."
+  }
+ ]
+}
