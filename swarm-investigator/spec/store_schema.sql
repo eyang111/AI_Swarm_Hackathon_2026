@@ -23,12 +23,15 @@ CREATE TABLE messages (
                                            -- DSEWiki: page title line + lines added/replaced in this save
   body_ref      TEXT,                      -- DSEWiki: rev_id whose full body is in revisions.jsonl
   parent_msg_id TEXT,                      -- DSEWiki: previous save of the same page (diff_base)
-  split         TEXT NOT NULL CHECK (split IN ('build','heldout')),  -- DSEWiki: t >= 2026-06-18 -> heldout
+  -- (holdout dropped 2026-10-04: no `split` column; scoring uses plants and blind hand labels)
   -- script-computed per-message features (reader_format.md section 2, "script" rows)
   len INTEGER, n_urls INTEGER, gap_prev_s INTEGER,
   text_hash     TEXT,                      -- exact-dup key
   dup_of        TEXT REFERENCES messages(msg_id),  -- exact or near duplicate of an earlier message
-  script_label  TEXT CHECK (script_label IN ('DUPLICATE','EMPTY'))
+  script_label  TEXT CHECK (script_label IN ('DUPLICATE','EMPTY')),
+  copy_of       TEXT REFERENCES messages(msg_id),  -- exact copy (NFC + whitespace-normalized text) of this earlier message:
+                                           -- readers read only the first instance; store.py clones its record (DESIGN.md 5.3)
+  removed_text  TEXT                       -- DSEWiki: lines this save deleted, shown to readers with a 'removed:' marker
 );
 CREATE INDEX messages_ch_t ON messages(channel, t);
 CREATE INDEX messages_t ON messages(t);
@@ -51,7 +54,7 @@ CREATE TABLE runs (
 CREATE TABLE tasks (
   task_id  TEXT PRIMARY KEY,               -- e.g. run-03/reader/aivillage/general/2026-03-12T16
   run_id   TEXT NOT NULL REFERENCES runs(run_id),
-  tier     TEXT NOT NULL CHECK (tier IN ('reader','linker','tracker','lead','summarizer','checker')),
+  tier     TEXT NOT NULL CHECK (tier IN ('reader','local_linker','resolver','linker','identity','reconciler','tracker','lead','summarizer','checker')),
   scope    TEXT NOT NULL,                  -- JSON: {channel, t_start, t_end} | {claim_key} | {group_id} ...
   replica  INTEGER NOT NULL DEFAULT 0,     -- >0 = independent re-read of the same scope (agreement tests)
   model    TEXT,
@@ -123,7 +126,7 @@ CREATE INDEX mentions_key ON mentions(key);
 CREATE TABLE candidates (
   cand_id  TEXT PRIMARY KEY,
   run_id   TEXT NOT NULL REFERENCES runs(run_id),
-  basis    TEXT NOT NULL CHECK (basis IN ('dup_chain','channel_purpose_burst','same_claim_text','shared_entity','signed_name','run_tag')),
+  basis    TEXT NOT NULL CHECK (basis IN ('dup_chain','copy_group','channel_purpose_burst','same_claim_text','shared_entity','signed_name','run_tag','family')),
   key      TEXT NOT NULL,                  -- the shared value that formed the group
   status   TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open','taken','done'))
 );
@@ -223,6 +226,14 @@ CREATE TABLE checks (                      -- citation script + adversarial chec
   note TEXT, t TEXT NOT NULL
 );
 CREATE INDEX checks_obj ON checks(obj_type, obj_id);
+
+CREATE TABLE coverage_gaps (               -- messages no reader record exists for, and why (DESIGN.md 7)
+  msg_id   TEXT NOT NULL REFERENCES messages(msg_id),
+  task_id  TEXT REFERENCES tasks(task_id),
+  reason   TEXT NOT NULL CHECK (reason IN ('refused','failed','skipped')),
+  detail   TEXT,                           -- e.g. stop_details.category; never message text
+  PRIMARY KEY (msg_id, reason)
+);
 
 CREATE TABLE ops (                         -- append-only log of every tool call that wrote something
   op_id INTEGER PRIMARY KEY, t TEXT NOT NULL, task_id TEXT, tool TEXT NOT NULL,

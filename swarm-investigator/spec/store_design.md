@@ -26,7 +26,7 @@ Neither `reader_format.md` nor `row_format.md` is edited by this file.
 
 Notes on choices that aren't obvious:
 - **`messages.text` for DSEWiki is the page title line plus the lines this save added or replaced** (from `hunks`), which is what readers read and what quotes are checked against. `body_ref` points to the full body; `parent_msg_id` to the previous save of the page.
-- **`split`** is set by the loader: DSEWiki saves from 2026-06-18 on are `heldout`. Design-time runs filter on `split = 'build'`; scoring runs read everything.
+- **No holdout** (dropped 2026-10-04): the `split` column is gone; scoring relies on planted cascades and blind hand labels. Exact copies get `copy_of`, and DSEWiki deletions get `removed_text` (see DESIGN.md).
 - **Planted messages** go into a copy of the db (`messages` rows with `plant:` ids is how row_format names them, but the loader should give them ordinary-looking ids in the copy, and keep the mapping only in `truth_plants.jsonl`).
 - **`novelty` is a view.** First message, first speaker and later-speaker count per claim key fall out of the live members, so nobody can write a novelty number that disagrees with the evidence.
 - **`events` is a view** in row_format's vocabulary: first member = `origin`, `doubts` stance = `challenge` (reader_format 6.3), `corrects` = `correct`, else `adopt`; depth = `acted` if an `acted_on` link leaves that message for that claim key, else `said`; `DUPLICATE` messages never count (6.6). On DSEWiki, scoring should join `agent` through `run_group_members` instead of trusting labels.
@@ -36,7 +36,7 @@ Notes on choices that aren't obvious:
 ## 3. Tools (the only way in)
 
 Readers:
-- `get_window(swarm, t_start, t_end, channel=None, halo=0)`: the raw messages, verbatim, with the script fields. `channel=None` returns a global time slice across all channels (the DSEWiki window unit); `halo` adds that many earlier messages marked context-only (see `windowing_and_linkers.md`).
+- `get_window(swarm, t_start, t_end, channel=None, halo=0)`: the raw messages, verbatim, with the script fields. `channel=None` returns a global time slice across all channels (the DSEWiki window unit); `halo` adds earlier messages marked context-only; on DSEWiki the window planner supplies the halo list itself (last 50 plus token-routed saves, DESIGN.md 5.2).
 - `search(query, before=None)`: FTS over messages. `before` lets a reader look back without seeing the future.
 - `write_record(record, claims[], mentions[])`: one call per message, atomic. Rejects on bad msg_id, bad quote, unknown label, more than 2 secondary labels.
 
@@ -54,7 +54,7 @@ Every tool returns either `ok` with ids, or `rejected: <reason>` so the agent ca
 
 ## 4. Build order for the deadline
 
-1. `load.py` (about 1 hour): AI Village from `chat_flat.jsonl.gz`, DSEWiki from `revisions.jsonl.gz` with added-text extraction; compute `len`, `n_urls`, `gap_prev_s`, `text_hash`, `dup_of` (exact hash only first; near-dup later if time), `script_label`, `split`.
+1. `load.py` (about 1 hour): AI Village from `chat_flat.jsonl.gz`, DSEWiki from `revisions.jsonl.gz` with added-text extraction; compute `len`, `n_urls`, `gap_prev_s`, `text_hash`, `dup_of` (exact hash only first; near-dup later if time), `script_label`, `copy_of`, `removed_text`.
 2. `store.py` (2 to 3 hours): the tools above as plain Python functions, exposed to subagents as tools (or a CLI they call through Bash). Citation check and the safety rule live here.
 3. `pregroup.py` (about 1 hour): candidates from dup chains, `norm_text`, shared entities, signed names and run tags.
 4. Run readers on a few windows, then linkers, then the analyzers below. `checks` gets filled by the citation script and the adversarial checker.
