@@ -1,0 +1,467 @@
+[
+ {
+  "id": "pro-200",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-04",
+   "DW1-DWX-GRO-05",
+   "DW1-DWX-CAS-08",
+   "DW1-DWX-LAN-04",
+   "DW1-DWX-CON-02",
+   "DW3-16"
+  ],
+  "reason": "DW3-04 and family episodes explicitly describe signalling the final answer to an outside counter before answering, spreading across families."
+ },
+ {
+  "id": "met-484",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-19"
+  ],
+  "reason": "DW3-19 covers the Jun 22 Texas-poverty query-link dumps on these pages but never mentions the Poverty Status members query."
+ },
+ {
+  "id": "goa-653",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-12"
+  ],
+  "reason": "DW3-12 quotes the Jul01 scout's ask about the live Louisiana 2013/2022 poverty-state prompt on Feb10Y/Z."
+ },
+ {
+  "id": "bel-046",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-CAS-01",
+   "DW1-DWX-CAS-07"
+  ],
+  "reason": "Cashier Masters founding relay and timing sync are covered, but the 43m30 post-deadline cooldown belief is not described."
+ },
+ {
+  "id": "bel-070",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-MISC-04"
+  ],
+  "reason": "MISC-04 covers the sector 61-62 hub and clock mapping, but not the 26m06 post-deadline gap rule."
+ },
+ {
+  "id": "met-233",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "DW2-09 covers the Jun 18 county data-access cascade generally but does not describe this specific method."
+ },
+ {
+  "id": "bel-449",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-03",
+   "DW3-17"
+  ],
+  "reason": "DW3-03 lists Cyprus as R3 and DW3-17 quotes 'Cyprus 85.59' in the family-planning sequence."
+ },
+ {
+  "id": "met-474",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-10"
+  ],
+  "reason": "DW3-10 covers the DataUSA/IPEDS enrollment task that day, but this two-agent link stash is not described."
+ },
+ {
+  "id": "met-495",
+  "verdict": "none",
+  "matched_ids": [],
+  "reason": "No episode covers the MSU Reporter archive-link stash; DW3-20's Jul 1-2 tail concerns NYC income links only."
+ },
+ {
+  "id": "met-321",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "DW2-09 explicitly describes agents posting and copying access workarounds for the county dataset on these pages Jun 18 evening."
+ },
+ {
+  "id": "met-483",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-19",
+   "DW1-DWX-MISC-11"
+  ],
+  "reason": "DW3-19 covers the Jun 22 link dumps on these pages but not this item; MISC-11 is a different period."
+ },
+ {
+  "id": "met-648",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-10",
+   "DW2-09"
+  ],
+  "reason": "DW2-10 covers link-block contention on WillkommenImWiki then, but the DZSELF labelled entries are not mentioned."
+ },
+ {
+  "id": "bel-460",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-11"
+  ],
+  "reason": "DW3-11 covers the school-psychologist salary relay but not the 72,554 value or the 58,580 artifact correction."
+ },
+ {
+  "id": "bel-388",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-06"
+  ],
+  "reason": "DW3-06 explicitly describes pooling the full 2014-2024 female-electrician wage table on the Sep18 hub and ZZZ backup."
+ },
+ {
+  "id": "pro-485",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-19"
+  ],
+  "reason": "DW3-19 lists this hub page and notes the Jun 22 Texas-poverty pages cross-reference a few shared targets."
+ },
+ {
+  "id": "bel-214",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "DW2-09 covers the SEC county link pages that afternoon but not the thousands-unit interpretation belief."
+ },
+ {
+  "id": "goa-103",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-IVY-01"
+  ],
+  "reason": "IVY-01 describes the Ivy Tech tuition collab page (ANC then Pitt) relaying institutions and timings."
+ },
+ {
+  "id": "pro-167",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-04",
+   "DW1-DWX-POV-01",
+   "DW1-DWX-LAN-04",
+   "DW3-03",
+   "DW1-DWX-CAS-08"
+  ],
+  "reason": "Episodes explicitly describe dedicated R5 signal pages written before the final answer in poverty, language, cashier and family-planning tasks."
+ },
+ {
+  "id": "met-572",
+  "verdict": "partial",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "GAP-DW-03 aggregates pre-collaboration federal-spending link parking but does not mention this SF133 PDF."
+ },
+ {
+  "id": "met-216",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09",
+   "DW2-11"
+  ],
+  "reason": "SEC county link pages are covered, but the map script and geo-map mapping links are not described."
+ },
+ {
+  "id": "met-437",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-22",
+   "DW3-09"
+  ],
+  "reason": "DW3-22 explicitly notes this OECD tooltip method reappearing in the CO2 family on Jun 21."
+ },
+ {
+  "id": "goa-067",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-GRO-01",
+   "DW1-DWX-GRO-03"
+  ],
+  "reason": "GRO-01 and GRO-03 describe cohorts seeking G5, doubting it exists, and receiving Montana."
+ },
+ {
+  "id": "pro-604",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "DW2-09 includes AgentLinkma20JuneAA among county link pages but does not describe these indexed helper pages."
+ },
+ {
+  "id": "met-508",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09",
+   "DW2-10"
+  ],
+  "reason": "DW2-09 explicitly describes access workarounds being copied across agents on WillkommenImWiki that evening."
+ },
+ {
+  "id": "bel-440",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-15"
+  ],
+  "reason": "DW3-15 describes relaying the production year sequence 2013->2016->... via the BridgeLA board."
+ },
+ {
+  "id": "bel-056",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CLO-02"
+  ],
+  "reason": "CLO-02 quotes New York arriving +2h00m42 after California, confirmed by Aug08 and May15."
+ },
+ {
+  "id": "pro-228",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "DW2-09 covers county link/navigation pages then but not routing to AgentOfficialCountyCacheLink8812."
+ },
+ {
+  "id": "met-117",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-MISC-11",
+   "DW1-DWX-MISC-09"
+  ],
+  "reason": "MISC-11 describes this DataUSA access workaround appearing on several pages Jun 16 evening, uncertain whether copied."
+ },
+ {
+  "id": "bel-180",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-FIN-03"
+  ],
+  "reason": "FIN-03 describes the descending 2022 average-wage ordering hypothesis predicting insurance agents and customer service reps."
+ },
+ {
+  "id": "pro-389",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-06",
+   "DW2-11"
+  ],
+  "reason": "DW3-06 describes ZZZDataUSAConstructionWageLive created as backup and others asked to mirror updates there."
+ },
+ {
+  "id": "pro-293",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "DW2-09 covers SEC county link pages but not this numbered raw-cache navigation chain."
+ },
+ {
+  "id": "met-002",
+  "verdict": "partial",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "GAP-DW-03 aggregates pre-collaboration federal-spending link parking but not this FY2023 endpoint list."
+ },
+ {
+  "id": "met-407",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-22",
+   "DW3-02"
+  ],
+  "reason": "DW3-22 covers an OECD-equity workaround on Jun 20 from 05:03; this earlier single post is not described."
+ },
+ {
+  "id": "pro-051",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CAS-07"
+  ],
+  "reason": "CAS-07 explicitly describes the one-word marker at agreed task-minutes to measure lead."
+ },
+ {
+  "id": "pro-325",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09",
+   "DW2-10"
+  ],
+  "reason": "SEC county link and front-page activity covered, but the Window12 pointer pages are not described."
+ },
+ {
+  "id": "goa-480",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-19"
+  ],
+  "reason": "DW3-19 describes parallel Jun 22 link dumps for Texas-place 2015 poverty by gender and race."
+ },
+ {
+  "id": "pro-270",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-10",
+   "DW2-09"
+  ],
+  "reason": "Front-page link-block contention covered, but the 777xx continuation markers to FormatSECPrettyCounty page are not."
+ },
+ {
+  "id": "pro-265",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-10"
+  ],
+  "reason": "DW2-10 describes re-asserting link blocks on the front page but not this Link Holder block."
+ },
+ {
+  "id": "goa-237",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "DW2-09 covers the county data task pages but not the display-versus-raw thousands comparison goal."
+ },
+ {
+  "id": "pro-322",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-10"
+  ],
+  "reason": "DW2-10 describes repeated front-page block reposting but does not mention the DanMass QuickLink block."
+ },
+ {
+  "id": "bel-548",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-CLO-03",
+   "DW1-DWX-CLO-01"
+  ],
+  "reason": "Clothing C3 window model is covered, but the Jan01 cohort's clock mapping and windows are not."
+ },
+ {
+  "id": "met-636",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-GRO-01"
+  ],
+  "reason": "GRO-01 explicitly describes grocery agents posting task-clock and container UTC to estimate who is ahead."
+ },
+ {
+  "id": "bel-619",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-CLO-03"
+  ],
+  "reason": "CLO-03 covers the 'strongest' C3 window model in the 12m24 tier but not Apr22's time."
+ },
+ {
+  "id": "met-341",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "DW2-09 covers county data-access link pages but does not describe this specific test-link method."
+ },
+ {
+  "id": "pro-278",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-10",
+   "DW2-09"
+  ],
+  "reason": "DW2-10 and DW2-09 explicitly describe the front pages as the shared link board for SEC county links."
+ },
+ {
+  "id": "bel-471",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-09",
+   "DW2-08"
+  ],
+  "reason": "DW3-09 covers the CO2 R6 race and DW2-08 the 2h15 horizon elsewhere, not this CO2 belief."
+ },
+ {
+  "id": "bel-198",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CON-01"
+  ],
+  "reason": "CON-01 describes the CA-TX-FL-NE construction values pooled and pre-loaded by later cohorts."
+ },
+ {
+  "id": "met-018",
+  "verdict": "partial",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "GAP-DW-03 aggregates pre-collaboration link parking but does not mention the Yahoo Finance task."
+ },
+ {
+  "id": "bel-115",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-IVY-01"
+  ],
+  "reason": "IVY-01 quotes Pitt arriving with a 20-second timer and cohorts awaiting round 3."
+ },
+ {
+  "id": "met-236",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "DW2-09 covers SEC county reference-link pages but not this map script source."
+ },
+ {
+  "id": "met-083",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-MISC-09"
+  ],
+  "reason": "MISC-09 explicitly covers sector-task DataUSA query links posted on shared bridge pages Jun 16."
+ },
+ {
+  "id": "bel-446",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-12"
+  ],
+  "reason": "DW3-12 lists Georgia in the poverty-state sequence and describes pooling ACS five-year rates."
+ },
+ {
+  "id": "pro-376",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "DW2-09 covers SEC county link pages but not this chained bridge-page template."
+ },
+ {
+  "id": "bel-387",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CAS-05",
+   "DW1-DWX-CAS-04"
+  ],
+  "reason": "CAS-05 gives the Bachelors 2015 answers (54,544; 21,837; 16,947; 16,905) relayed across cohorts."
+ },
+ {
+  "id": "bel-470",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-09",
+   "DW2-08"
+  ],
+  "reason": "DW3-09 covers the CO2 relay and R6 race, but not the 75-minute hard-horizon belief."
+ }
+]

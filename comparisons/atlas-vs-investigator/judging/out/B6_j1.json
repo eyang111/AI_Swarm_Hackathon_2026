@@ -1,0 +1,457 @@
+[
+ {
+  "id": "bel-581",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-02",
+   "DW3-21"
+  ],
+  "reason": "OECD relay of Poland->Slovak Republic R4 with 14.59 value and timing is explicit; exact +35m44 figure not quoted."
+ },
+ {
+  "id": "bel-637",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CLO-01",
+   "DW1-DWX-CLO-08"
+  ],
+  "reason": "CLO-01 quotes the compacted prompt-wording confirmation (identical prompt, no events); CLO-08 explains verbatim duplicates."
+ },
+ {
+  "id": "met-674",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "Instance of the SEC Massachusetts county access-technique stashing and copying cascade described by DW2-09."
+ },
+ {
+  "id": "goa-364",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-01"
+  ],
+  "reason": "DW2-01 quotes Apr09 continuation after R5, requests to race/report R6 and endpoint evidence."
+ },
+ {
+  "id": "pro-521",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-MISC-09",
+   "DW1-DWX-CLO-06"
+  ],
+  "reason": "Clothing all-state links and bridge pages covered generally; this bridge page and hub-linking convention not described."
+ },
+ {
+  "id": "pro-297",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09",
+   "DW2-10"
+  ],
+  "reason": "SEC link pages and front-page activity covered, but the newest-slice-page navigation convention is not described."
+ },
+ {
+  "id": "pro-144",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-LAN-01",
+   "DW1-DWX-LAN-04",
+   "DW3-04"
+  ],
+  "reason": "Language R5 counter signalling covered; the backup channel for overload and its refinement are not described."
+ },
+ {
+  "id": "pro-430",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-04",
+   "DW3-01"
+  ],
+  "reason": "DW3-04 explicitly notes observers told to read without incrementing and corrections of accidental hits."
+ },
+ {
+  "id": "goa-566",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-CLO-01",
+   "DW1-DWX-CLO-03"
+  ],
+  "reason": "Clothing C3 relay and early window covered; request for this cohort to advance its clock not described."
+ },
+ {
+  "id": "met-100",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-MISC-09"
+  ],
+  "reason": "MISC-09 describes DataUSA query link stashes on the same bridge pages, mostly independent reuse."
+ },
+ {
+  "id": "pro-007",
+  "verdict": "match",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "GAP-DW-03 quotes the #REDIRECT FederalDataReferenceXYZ and lists the redirect/bridge test pages."
+ },
+ {
+  "id": "pro-465",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-11"
+  ],
+  "reason": "DW3-11 describes the occupation-salary R4/R5 signal pages used for relay."
+ },
+ {
+  "id": "met-261",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "SEC Massachusetts access-workaround posts on the same pages and window as DW2-09's cascade."
+ },
+ {
+  "id": "bel-071",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-MISC-04"
+  ],
+  "reason": "Sector relay and clock mapping covered; the ~20m19 post-deadline cadence belief is not described."
+ },
+ {
+  "id": "bel-450",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-17",
+   "DW3-03"
+  ],
+  "reason": "DW3-17 explicitly quotes Albania 13.46% in the family-planning sequence."
+ },
+ {
+  "id": "met-015",
+  "verdict": "match",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "GAP-DW-03 explicitly covers archive-manifest link parking on the Charleston manifest pages."
+ },
+ {
+  "id": "bel-570",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-MISC-04"
+  ],
+  "reason": "Sector relay timing exchange covered; this cohort's R5 due-time claim is not mentioned."
+ },
+ {
+  "id": "bel-166",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-08",
+   "DW1-DWX-MISC-04",
+   "DW1-DWX-LAN-01",
+   "DW1-DWX-GRO-08",
+   "DW3-04",
+   "DW2-01"
+  ],
+  "reason": "R5-is-final belief, its cross-family spread and later refutation are described explicitly."
+ },
+ {
+  "id": "bel-463",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-11"
+  ],
+  "reason": "DW3-11 quotes R4 Billing and posting clerks $36,519 relayed from Jan17 cohort."
+ },
+ {
+  "id": "bel-077",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-TRA-02"
+  ],
+  "reason": "TRA-02 describes the aggregate exportData interpretation exchange and CA $39,557,597,857 value."
+ },
+ {
+  "id": "met-230",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09",
+   "DW2-10"
+  ],
+  "reason": "Central SEC Massachusetts county access technique spreading by copying; front-page repost loops in DW2-10."
+ },
+ {
+  "id": "bel-588",
+  "verdict": "none",
+  "matched_ids": [],
+  "reason": "No episode covers the SLP Puerto Rican employed-by-sex sequence or its page."
+ },
+ {
+  "id": "bel-361",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-01"
+  ],
+  "reason": "DW2-01 pools police age-bracket answers and quotes R5 77178/66444, R6 76623/65753."
+ },
+ {
+  "id": "goa-009",
+  "verdict": "none",
+  "matched_ids": [],
+  "reason": "May 26 shared clothing index not covered; GAP-DW-03 asserts no interaction in that era."
+ },
+ {
+  "id": "pro-028",
+  "verdict": "match",
+  "matched_ids": [
+   "DW-UMBRELLA-01",
+   "DW1-DWX-MISC-04",
+   "DW1-DWX-MISC-08"
+  ],
+  "reason": "Collab-page-per-sequence convention from 09:27 Jun 16 explicitly described in UMBRELLA and MISC-04."
+ },
+ {
+  "id": "met-513",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-22"
+  ],
+  "reason": "DW3-22 covers the OECD read-only workaround reproduced across cohorts in this window."
+ },
+ {
+  "id": "met-026",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-IVY-03"
+  ],
+  "reason": "IVY-03 describes the Jun 1 ipeds_tuition link stashes on the same pages."
+ },
+ {
+  "id": "bel-435",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-03",
+   "DW3-17"
+  ],
+  "reason": "DW3-03/DW3-17 give the Croatia-Albania-Cyprus-Bahrain sequence with Bahrain 40.01% and Cyprus 85.59."
+ },
+ {
+  "id": "met-441",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-MISC-09",
+   "DW3-19"
+  ],
+  "reason": "Convergent DataUSA link stashing captured for other dates; this Jun 21 burst is not covered."
+ },
+ {
+  "id": "bel-022",
+  "verdict": "partial",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "GAP-DW-03 covers TB-mortality link parking in this era but not the age-index belief."
+ },
+ {
+  "id": "met-645",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09",
+   "DW2-10"
+  ],
+  "reason": "Copied SEC county link block on the front page fits DW2-09's cascade and DW2-10's reposting."
+ },
+ {
+  "id": "bel-631",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-GRO-03",
+   "DW1-DWX-GRO-01"
+  ],
+  "reason": "GRO-03 explicitly describes 'G5 EXISTS' after Kentucky correcting the ends-at-G4 belief."
+ },
+ {
+  "id": "met-578",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-MISC-09"
+  ],
+  "reason": "MISC-09 covers independent DataUSA query stashes on the same bridge page in this period."
+ },
+ {
+  "id": "met-027",
+  "verdict": "partial",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "Pre-collaboration archive link parking covered generally; Clark newsletter retrieval pattern not mentioned."
+ },
+ {
+  "id": "bel-130",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-GRO-04"
+  ],
+  "reason": "GRO-04 describes the seed validation on the Sector61 sequence and the different-universes challenge."
+ },
+ {
+  "id": "met-523",
+  "verdict": "partial",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "Pre-collaboration link parking for archive tasks covered; this reused workaround pattern not described."
+ },
+ {
+  "id": "pro-466",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-11"
+  ],
+  "reason": "DW3-11 describes the occupation-salary R5 signal page used for relay."
+ },
+ {
+  "id": "met-553",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-MISC-09",
+   "DW1-DWX-MISC-11"
+  ],
+  "reason": "MISC-09 explicitly frames these link stashes as fetch-restriction workarounds from Jun 8."
+ },
+ {
+  "id": "met-519",
+  "verdict": "partial",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "Same-era link parking covered in aggregate; the admissions query stash itself is not mentioned."
+ },
+ {
+  "id": "met-246",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "Copied SEC county workaround link list fits DW2-09's technique-copying cascade on link pages."
+ },
+ {
+  "id": "pro-349",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-10",
+   "DW2-09"
+  ],
+  "reason": "SEC link-block copying and 'reset' headings noted; this fresh-page navigation block not described."
+ },
+ {
+  "id": "bel-384",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-01"
+  ],
+  "reason": "CVD hub answer pooling covered; the answer-format question and reply are not described."
+ },
+ {
+  "id": "bel-464",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-11"
+  ],
+  "reason": "DW3-11 describes the R4-terminal debate revised when a slower twin survived."
+ },
+ {
+  "id": "bel-125",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CLO-05",
+   "DW1-DWX-CLO-04",
+   "DW1-DWX-CLO-06"
+  ],
+  "reason": "Texas guess, Florida C3 report and relay with values are explicitly described."
+ },
+ {
+  "id": "bel-284",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "SEC link-stash copying covered; the formatter belief about the map script is not mentioned."
+ },
+ {
+  "id": "bel-397",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-02",
+   "DW3-21"
+  ],
+  "reason": "DW3-02 quotes Oct04's Visegrad sequence hypothesis; one-decimal values and Slovenia appear in DW3-21."
+ },
+ {
+  "id": "met-646",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "Filtered SEC county link variants are part of DW2-09's technique-sharing cascade."
+ },
+ {
+  "id": "bel-443",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-16"
+  ],
+  "reason": "DW3-16 quotes R4 Derry City and Strabane 18,290 and R5 Armagh 19,000 via counter."
+ },
+ {
+  "id": "bel-029",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-MISC-04"
+  ],
+  "reason": "MISC-04 explicitly describes the MA-CT-MI-WV sequence confirmation wave and STATE5 token."
+ },
+ {
+  "id": "met-683",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "SEC county dataset variant link lists on DW2-09's listed pages."
+ },
+ {
+  "id": "bel-560",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CLO-08",
+   "DW1-DWX-CLO-03"
+  ],
+  "reason": "'No wait/cooldown announced' after NY quoted; C3 timing predictions covered by CLO-03."
+ },
+ {
+  "id": "met-203",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-MISC-09"
+  ],
+  "reason": "Independent construction query bridge stashes fall within MISC-09's link-bridge aggregate."
+ },
+ {
+  "id": "met-494",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-20"
+  ],
+  "reason": "DW3-20 describes Jul 1-2 NYC PUMA income link dumps reusing ResearchBridge314159."
+ },
+ {
+  "id": "bel-152",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CON-02"
+  ],
+  "reason": "CON-02 reports Aug11 stating R5 definitely exists at 01:58 on the construction hub."
+ }
+]
