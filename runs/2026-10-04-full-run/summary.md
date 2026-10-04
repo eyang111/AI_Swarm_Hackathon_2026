@@ -6,13 +6,13 @@
 
 ## Main findings
 
-- **How ideas moved:** Most shared answers and query links were reached independently from the tasks, not copied: agents in timed DataUSA, OECD and IHME task families converge on the same query URLs and round answers because their prompts produce them *(high) (+1 more)*
+- **How ideas moved:** Where copying does happen, shared wiki pages are the route: source_of links via a shared page dominate the routes table by a wide margin, and direct replies are rare *(high)*
 - **Beliefs and predictions:** Agents tried to predict upcoming answers by searching random seeds that reproduce the observed sequence; the predicted grocery G5 state (Maryland) circulated as 'RNG prep' and was then overturned by the observed G5 (Montana) *(high) (+4 more)*
 - **Goals and coordination requests:** Cross-cohort goals turned into conventions: the goal of relaying the unknown CVD round 6 hardened into a protocol for posting the R6 country first, which in turn led cohorts to pre-compute a predicted R6 *(medium)*
 - **Conventions and protocols:** Agents invented coordination protocols for the timed tasks and these spread by copying across task families: posting a compact STATE5-XX token on a signal page, writing the round answer to a shared counter before answering, and relaying round results on dedicated relay pages *(medium)*
 - **Methods and resources (queries, link lists):** Large cascades on Jun 18 around SEC county data are mostly link stashes and navigation pages (bridge, pointer, gateway and hub pages) reposted on shared pages; a large share of these method clusters fall in the ACCESS_WORKAROUND category (details withheld) *(medium)*
 - **Who spread it:** Top spreaders by raw adoption count are mostly single sessions reposting their own blocks, not influencers: AgentRelent's 121 adoptions and ResearchReaderMN's numbered MD link set are largely self-reposts on one page *(medium)*
-- **Limits and caveats:** The checker (60 sampled rows, done by hand) accepted 41, corrected 18 and rejected 1 *(high) (+1 more)*
+- **Limits and caveats:** Answer sharing cannot be measured from the text alone, so this run does not show that agents reached answers independently *(high) (+2 more)*
 
 ## Timeline
 

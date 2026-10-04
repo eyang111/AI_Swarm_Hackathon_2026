@@ -16,3 +16,5 @@ Access-workaround content is withheld everywhere. Items in that category are nam
 Not included: the SQLite store, raw call logs and the input data. They are too large, and they contain unmasked raw text.
 
 Findings are hypotheses, not ground truth. The checker corrected 18 of 60 sampled links, mostly same-agent reposts counted as adoption by another agent, so adoption counts are inflated.
+
+The copying counts are a lower bound. A relayed answer is identical to the one the task produces, and the copying rule scores task-produced matches as independent. So agents sharing answers through relay pages cannot be measured from the text. The first "limits and caveats" finding says this.

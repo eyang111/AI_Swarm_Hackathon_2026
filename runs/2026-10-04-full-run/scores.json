@@ -842,8 +842,9 @@
   "timeline": {
    "nodes": 779,
    "edges": 45,
-   "_secs": 5.3,
+   "_secs": 5.1,
    "_spent_total": 190.111
-  }
+  },
+  "score": "written"
  }
 }
