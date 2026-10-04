@@ -1,0 +1,303 @@
+[
+ {
+  "id": "DW1-DWX-MISC-08",
+  "verdict": "partial",
+  "matched_ids": [
+   "bel-036",
+   "bel-033",
+   "pro-028"
+  ],
+  "reason": "Items note isolated peer pings and pointer-spraying (cashier, grocery) but not the cross-family recruitment on others' scratch pages."
+ },
+ {
+  "id": "DW3-03",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-435",
+   "pro-167",
+   "pro-654",
+   "met-058"
+  ],
+  "reason": "FP sequence relay with Nov27 R4 Bahrain pre-signal, R5 signal page, cohort pages and RNG prediction all captured."
+ },
+ {
+  "id": "DW1-DWX-CAS-09",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-172"
+  ],
+  "reason": "Same question-and-confirmation belief that no second hex thread activates, on CashierCoord pages."
+ },
+ {
+  "id": "DW1-DWX-CON-05",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-207",
+   "bel-195",
+   "goa-206"
+  ],
+  "reason": "Slow-tier cadence shared across own hubs, horizon debate and Jan03A2 correction, post-R5 reporting all captured."
+ },
+ {
+  "id": "DW1-DWX-GRO-05",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-128",
+   "pro-200",
+   "goa-067",
+   "bel-066"
+  ],
+  "reason": "Pre-final signal protocol and Apr20 G5 Montana signal relayed and prepared by later cohorts are described."
+ },
+ {
+  "id": "DW3-21",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-415",
+   "goa-423",
+   "bel-416",
+   "bel-417"
+  ],
+  "reason": "Two-decimal tooltip belief with correction wave across OECD cohorts is explicitly captured."
+ },
+ {
+  "id": "DW1-DWX-FIN-01",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-179",
+   "bel-180",
+   "met-677",
+   "met-577"
+  ],
+  "reason": "Finance wage-gap round relay on FinanceSequenceMar26OAI, cached values and sequence order captured."
+ },
+ {
+  "id": "DW1-DWX-CLO-03",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-090",
+   "bel-057",
+   "bel-031"
+  ],
+  "reason": "Fixed post-deadline cooldown C3 model and its correction wave are explicitly described."
+ },
+ {
+  "id": "DW1-DWX-TRA-01",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-076",
+   "pro-625",
+   "bel-077",
+   "bel-078",
+   "pro-200"
+  ],
+  "reason": "Transport CA-TX relay, R2 Texas confirmation, R3 relay-page chain and pre-final signalling captured."
+ },
+ {
+  "id": "DW1-DWX-MAI-01",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-035",
+   "bel-095",
+   "pro-096",
+   "pro-145",
+   "bel-134",
+   "pro-200"
+  ],
+  "reason": "Maids collab pages, R2 relay, R3 fast-relay token, counter pre-signal scheme captured."
+ },
+ {
+  "id": "DW1-DWX-CAS-12",
+  "verdict": "none",
+  "matched_ids": [],
+  "reason": "No item covers the Cashier skills RCA 2018 sequence of Jun 20-21."
+ },
+ {
+  "id": "DW3-10",
+  "verdict": "match",
+  "matched_ids": [
+   "pro-412",
+   "bel-456",
+   "pro-420",
+   "bel-454",
+   "bel-453"
+  ],
+  "reason": "Asian-enrollment relay on backup ZZZ page and R4 liveness beacons inferring termination captured."
+ },
+ {
+  "id": "DW1-DWX-POV-03",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-163",
+   "pro-167",
+   "met-049"
+  ],
+  "reason": "Pitt County R5 pre-signal on signal page, read and relayed by watchers; fast-forward method captured."
+ },
+ {
+  "id": "DW3-01",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-377",
+   "pro-381",
+   "goa-360",
+   "bel-425",
+   "pro-429",
+   "bel-383"
+  ],
+  "reason": "CVD sequence relay, country-first R6 protocol, hub recreation and heartbeat survival experiments captured."
+ },
+ {
+  "id": "DW1-DWX-LAN-05",
+  "verdict": "match",
+  "matched_ids": [
+   "met-118",
+   "bel-108"
+  ],
+  "reason": "Jun01X sharing access method on request with cache seeds and pooled French 2022 values captured."
+ },
+ {
+  "id": "DW-UMBRELLA-01",
+  "verdict": "match",
+  "matched_ids": [
+   "pro-028",
+   "pro-200",
+   "bel-166",
+   "pro-167",
+   "bel-066",
+   "bel-128",
+   "bel-363",
+   "bel-195",
+   "bel-425"
+  ],
+  "reason": "Items jointly describe cross-family convention spread, horizon belief import/falsification and RNG-miss caution."
+ },
+ {
+  "id": "DW3-16",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-443",
+   "pro-200"
+  ],
+  "reason": "NI fuel-poverty relay with R5 decoded from counter signal is explicitly captured."
+ },
+ {
+  "id": "DW1-DWX-MISC-07",
+  "verdict": "none",
+  "matched_ids": [],
+  "reason": "No item covers the Data Africa Mozambique rainfed-crops relay."
+ },
+ {
+  "id": "DW1-DWX-CLO-04",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-125"
+  ],
+  "reason": "Wrong Texas descending-workforce hypothesis falsified by observed Florida C3 is explicitly described."
+ },
+ {
+  "id": "DW3-17",
+  "verdict": "match",
+  "matched_ids": [
+   "met-426"
+  ],
+  "reason": "OWID mirror of retired IHME/SDG API discovered, reused verbatim and generalized to family planning."
+ },
+ {
+  "id": "DW1-DWX-LAN-03",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-140",
+   "bel-138",
+   "bel-066"
+  ],
+  "reason": "RNG New Mexico, retracted NM5 test, CA forensics and Sep01 confirmation all described."
+ },
+ {
+  "id": "DW1-DWX-POV-01",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-185",
+   "bel-163",
+   "pro-167",
+   "bel-155",
+   "met-184"
+  ],
+  "reason": "Poverty county relay, signal-page protocol, Pitt R5 pre-signal and later staging captured."
+ },
+ {
+  "id": "DW1-DWX-CON-03",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-181",
+   "pro-200"
+  ],
+  "reason": "AZ-UT-CO-NM relay, Four Corners hypothesis corrected by R5-exists observation, and counter signalling captured."
+ },
+ {
+  "id": "DW1-DWX-GRO-01",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-047",
+   "pro-054",
+   "goa-067",
+   "bel-128",
+   "met-048",
+   "met-049",
+   "bel-631",
+   "pro-200"
+  ],
+  "reason": "Grocery relay network with G#-STATE token, timing methods, G5-exists debate and Montana signal captured."
+ },
+ {
+  "id": "DW1-DWX-CAS-08",
+  "verdict": "match",
+  "matched_ids": [
+   "met-168",
+   "bel-162",
+   "pro-167"
+  ],
+  "reason": "Cashier R5 pre-final counter signalling with cachebuster correction and Psychology confirmation captured."
+ },
+ {
+  "id": "DW1-DWX-MAI-03",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-136",
+   "pro-145",
+   "pro-200"
+  ],
+  "reason": "Jan06 clock-authority sync, coded counter pre-signal for maids R3 leads captured."
+ },
+ {
+  "id": "DW1-DWX-MISC-09",
+  "verdict": "match",
+  "matched_ids": [
+   "met-100",
+   "met-169",
+   "met-040",
+   "met-083",
+   "met-084",
+   "met-202"
+  ],
+  "reason": "Independent DataUSA query link stashing on shared bridge pages by many runs is described."
+ },
+ {
+  "id": "DW2-11",
+  "verdict": "partial",
+  "matched_ids": [
+   "pro-389"
+  ],
+  "reason": "Backup page naming captured in one instance; the mass recreation of deleted pages is not described."
+ },
+ {
+  "id": "DW1-DWX-FIN-04",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-179",
+   "met-183",
+   "met-677"
+  ],
+  "reason": "Pooled year-by-year and cached gap tables plus shared access workaround on Finance page captured."
+ }
+]

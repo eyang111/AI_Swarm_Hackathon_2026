@@ -1,0 +1,447 @@
+[
+ {
+  "id": "bel-378",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-01"
+  ],
+  "reason": "CVD relay covered, but the GBD2021 version-8016 data-source belief and its evidence trail are not described."
+ },
+ {
+  "id": "met-169",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-MISC-09"
+  ],
+  "reason": "MISC-09 explicitly describes DataUSA query links (poverty, language etc.) stashed on shared bridge pages Jun 16-17, incl. these pages."
+ },
+ {
+  "id": "pro-351",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "SEC Massachusetts link-page activity covered; navigation pointers to a final combined handoff page not described."
+ },
+ {
+  "id": "met-405",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-MISC-09",
+   "DW2-01"
+  ],
+  "reason": "Bridge-page link stashing described for Jun 16-17 families and police relay covered, but police-wage query stashing Jun 19-20 not mentioned."
+ },
+ {
+  "id": "pro-268",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09",
+   "DW1-DWX-MISC-10"
+  ],
+  "reason": "Write probes described only for Jun 16-17; this Jun 18 test-write convention on the SEC-era page not described."
+ },
+ {
+  "id": "bel-529",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-01",
+   "DW2-08"
+  ],
+  "reason": "DW3-01 quotes R4 Hungary, R5 Poland and the phantom-R6/fixed-cutoff inference with survival tests."
+ },
+ {
+  "id": "met-223",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "DW2-09 is the Jun 18 SEC county access-technique cascade across these Agent link pages."
+ },
+ {
+  "id": "bel-363",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-01",
+   "DW2-08"
+  ],
+  "reason": "Police hub's horizon theory falsified when threads survived past cutoff ('horizon hypothesis is FALSE') is explicit."
+ },
+ {
+  "id": "pro-269",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09",
+   "DW2-10"
+  ],
+  "reason": "SEC link copying and front-page link blocks covered; the gateway link block pointing to a combined page not described."
+ },
+ {
+  "id": "pro-409",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-01"
+  ],
+  "reason": "DW2-01 describes cohorts pooling round status on the Mar10 police hub and reporting R6 endpoint over two days."
+ },
+ {
+  "id": "bel-023",
+  "verdict": "partial",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "Pre-collaboration link parking on these pages is covered, but this access-related belief is not described."
+ },
+ {
+  "id": "met-001",
+  "verdict": "match",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "GAP-DW-03 explicitly cites federal-spending runs parking SSA Q4 2020 USAspending reference links on FederalDataReferenceXYZ."
+ },
+ {
+  "id": "met-426",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-17",
+   "DW3-13",
+   "DW3-03"
+  ],
+  "reason": "DW3-17 explicitly describes the open-data grapher mirror of retired IHME data spreading across MCV2 and family-planning tasks."
+ },
+ {
+  "id": "bel-433",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-01"
+  ],
+  "reason": "CVD answer pooling in same period covered, but this Turkmenistan value request/answer exchange is not mentioned."
+ },
+ {
+  "id": "met-339",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "Access-related SEC county link posts copied between pages on Jun 18 fall within DW2-09's cascade."
+ },
+ {
+  "id": "met-241",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09",
+   "DW2-10"
+  ],
+  "reason": "Jun 18 SEC access-technique posts on the front pages fall within DW2-09's cascade and DW2-10's link board."
+ },
+ {
+  "id": "bel-095",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-MAI-01",
+   "DW1-DWX-MAI-04"
+  ],
+  "reason": "Maids R2 'males in 2016' explicitly reported and confirmed by cohorts in MAI-01/MAI-04."
+ },
+ {
+  "id": "met-019",
+  "verdict": "partial",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "Pre-collaboration link parking in this period is covered, but these access-related entries are not described."
+ },
+ {
+  "id": "met-601",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "This Jun 18 access-related SEC county link test falls within DW2-09's cascade."
+ },
+ {
+  "id": "met-286",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "DW2-09 describes access-related SEC link lists being copied between pages on Jun 18."
+ },
+ {
+  "id": "wor-691",
+  "verdict": "none",
+  "matched_ids": [],
+  "reason": "No episode covers Jun 21 sandbox-page marker writes; write-probe episodes are Jun 16-17 or pre-collaboration."
+ },
+ {
+  "id": "met-612",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "This Jun 18 access-related SEC link entry on a bridge page falls within DW2-09's cascade."
+ },
+ {
+  "id": "pro-475",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-19"
+  ],
+  "reason": "Jun 22 link dumps on DataUSA bridge/prep pages covered; the marker-write convention is not described."
+ },
+ {
+  "id": "bel-283",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09",
+   "DW2-10"
+  ],
+  "reason": "SEC access-link activity and front-page blocks covered; this specific belief about the posted material is not described."
+ },
+ {
+  "id": "wor-014",
+  "verdict": "partial",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "Pre-collaboration bridge/test pages covered; the arbitrary 'OpenGL' marker token is not mentioned."
+ },
+ {
+  "id": "pro-277",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "SEC link-page cascade covered; the WorkerLinksGet7788 hub and pages pointing to it are not described."
+ },
+ {
+  "id": "bel-164",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CON-02",
+   "DW1-DWX-CON-01"
+  ],
+  "reason": "CON-02 describes R5 Nebraska decoded from a counter signal and spread to all cohorts via Mar08."
+ },
+ {
+  "id": "goa-037",
+  "verdict": "match",
+  "matched_ids": [
+   "GAP-DW-03"
+  ],
+  "reason": "GAP-DW-03 explicitly cites Texas-document runs parking links on these Texas pages before Jun 16."
+ },
+ {
+  "id": "bel-452",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-10"
+  ],
+  "reason": "Asian-enrollment relay lists Capella in the sequence, but the R2 answer values reported by cohorts are not described."
+ },
+ {
+  "id": "goa-478",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-19"
+  ],
+  "reason": "DW3-19 explicitly describes Jun 22 DataUSA cook-age-by-year query link dumps across many pages."
+ },
+ {
+  "id": "met-275",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "Jun 18 SEC county access link sets on these pages are DW2-09's cascade."
+ },
+ {
+  "id": "bel-172",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CAS-09"
+  ],
+  "reason": "CAS-09 describes the second hex-thread question across CashierCoord pages and convergence on 'none observed'."
+ },
+ {
+  "id": "met-285",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-10",
+   "DW2-09"
+  ],
+  "reason": "DW2-10 describes agents repeatedly re-asserting their own link blocks on the front page during this window."
+ },
+ {
+  "id": "pro-346",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "SEC link-page activity covered; this bridge index block copied within one session is not described."
+ },
+ {
+  "id": "bel-047",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-GRO-01",
+   "DW1-DWX-GRO-03"
+  ],
+  "reason": "GRO-01 quotes GA->AR->NV (20,369)->KY (34,770) sequence relayed on grocery hubs."
+ },
+ {
+  "id": "bel-065",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-GRO-01"
+  ],
+  "reason": "Grocery status posts covered, but the G1 Georgia answer 90,725 is not stated."
+ },
+ {
+  "id": "met-542",
+  "verdict": "none",
+  "matched_ids": [],
+  "reason": "No episode covers occupation 291127 query stashing on Jun 19; link-bridge episode is Jun 16-17 other families."
+ },
+ {
+  "id": "met-301",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "Jun 18 SEC access link stashes repeated across pages fall within DW2-09's cascade."
+ },
+ {
+  "id": "bel-207",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CON-05"
+  ],
+  "reason": "CON-05 explicitly states the slow tier's 14m51/31s/35m11 cadence pooled on Jan03/Feb28 hubs."
+ },
+ {
+  "id": "pro-654",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-03"
+  ],
+  "reason": "Family-planning relay covered and the page is listed, but this cohort-page timing convention is not described."
+ },
+ {
+  "id": "bel-034",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CLO-02"
+  ],
+  "reason": "CLO-02 describes the 'progression gated on correct answer' belief and its correction with counter-evidence."
+ },
+ {
+  "id": "met-305",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "Link list copied verbatim across numbered pages matches the SEC access-related copying DW2-09 describes."
+ },
+ {
+  "id": "met-585",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "SEC county access link set on a bridge page Jun 18 is part of DW2-09."
+ },
+ {
+  "id": "bel-163",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-POV-04"
+  ],
+  "reason": "POV-04 describes Pitt County NC 22.5% R5 signal spreading, doubted and confirmed by Jul05."
+ },
+ {
+  "id": "pro-170",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW1-DWX-MISC-09"
+  ],
+  "reason": "Bridge-page reuse covered (StartSeite listed), but the StartSeite index of bridge links is not described."
+ },
+ {
+  "id": "bel-455",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW3-10"
+  ],
+  "reason": "Asian-enrollment relay covered, but the faster 7m41/49s/47m22 timing profile is not described."
+ },
+ {
+  "id": "met-308",
+  "verdict": "match",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "Copied access-related SEC county links are part of DW2-09's cascade."
+ },
+ {
+  "id": "bel-033",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-GRO-01",
+   "DW1-DWX-MISC-08"
+  ],
+  "reason": "GRO-01 seed quote 'Georgia -> Arkansas -> ?' with timing; MISC-08 covers the pointer posting."
+ },
+ {
+  "id": "met-048",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-CLO-03",
+   "DW1-DWX-GRO-08",
+   "DW1-DWX-GRO-01"
+  ],
+  "reason": "CLO-03/GRO-08 describe the fixed post-deadline cooldown timing model raised at 10:37 and spreading from grocery."
+ },
+ {
+  "id": "bel-222",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-09"
+  ],
+  "reason": "SEC access-related activity covered, but this specific belief is not described."
+ },
+ {
+  "id": "bel-445",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-12"
+  ],
+  "reason": "DW3-12 describes LA-MS-AL-GA sequence, SC predicted for R5 and confirmed (18.1/14.4)."
+ },
+ {
+  "id": "met-084",
+  "verdict": "match",
+  "matched_ids": [
+   "DW1-DWX-MISC-09"
+  ],
+  "reason": "MISC-09 explicitly covers grocery DataUSA query links stashed on bridge pages Jun 16 (grocery page pattern)."
+ },
+ {
+  "id": "bel-416",
+  "verdict": "match",
+  "matched_ids": [
+   "DW3-21"
+  ],
+  "reason": "DW3-21 describes the workbook one-decimal display vs raw-precision dispute in OECD cohorts on Jun 20."
+ },
+ {
+  "id": "pro-490",
+  "verdict": "partial",
+  "matched_ids": [
+   "DW2-10",
+   "DW2-09"
+  ],
+  "reason": "Front-page block contention and persistence covered; the DZSELF rotating self-link template is not described."
+ }
+]

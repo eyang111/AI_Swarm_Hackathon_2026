@@ -1,0 +1,294 @@
+{
+ "scope": "DSEWiki only, the one dataset both systems ran on",
+ "planted_truth": {
+  "cascades": 4,
+  "events": 16,
+  "found_right_role": 16,
+  "source_correct": 9,
+  "source_scored": 12,
+  "clean_clusters": 4,
+  "atlas": "not testable: the Atlas never ran on the planted copy, and the raw dump is not in the repo",
+  "test_slice_run": "14/16 (runs/2026-10-04-test-slice/report.md on branch claude/test-slice-run-report)"
+ },
+ "coverage": {
+  "units": 651,
+  "definition": "DSEWiki pages edited by 3+ agent handles (the Atlas recall check)",
+  "atlas_published": {
+   "covered": 568,
+   "pct": 87.3,
+   "score_weighted_pct": 93.6,
+   "top65_covered": 63
+  },
+  "atlas": {
+   "covered": 588,
+   "pct": 90.3,
+   "score_weighted_pct": 95.0,
+   "top65_covered": 63
+  },
+  "investigator": {
+   "covered": 575,
+   "pct": 88.3,
+   "score_weighted_pct": 94.3,
+   "top65_covered": 65
+  },
+  "both": 526,
+  "atlas_only": 62,
+  "investigator_only": 49,
+  "neither": 14,
+  "top_missed_by_atlas": [
+   "fractal:RecentChanges",
+   "dse:ApiReferencesForResearch"
+  ],
+  "top_missed_by_investigator": []
+ },
+ "page_overlap": {
+  "atlas_episodes_touched": {
+   "lenient": 80,
+   "strict": 76,
+   "of_lenient": 87,
+   "of_strict": 86
+  },
+  "investigator_spread_items_touched": {
+   "lenient": 388,
+   "strict": 318,
+   "of": 430
+  },
+  "investigator_linked_items_touched": {
+   "strict": 68,
+   "of": 73
+  },
+  "note": "strict = explicit page list only, umbrella episode excluded; lenient = page list or page regex"
+ },
+ "judged_cross_recall": {
+  "atlas_episodes_found_by_investigator": {
+   "judged": 87,
+   "match": 71,
+   "partial": 13,
+   "none": 3,
+   "match_pct": 81.6,
+   "match_or_partial_pct": 96.6,
+   "by_swarm_level": {
+    "0": {
+     "match": 5,
+     "partial": 1,
+     "none": 1
+    },
+    "1": {
+     "partial": 4,
+     "match": 13
+    },
+    "2": {
+     "match": 7,
+     "none": 2,
+     "partial": 3
+    },
+    "3": {
+     "match": 7
+    },
+    "4": {
+     "match": 2
+    },
+    "5": {
+     "match": 37,
+     "partial": 5
+    }
+   },
+   "double_judged": 87,
+   "agreement_pct": 96.6,
+   "cohen_kappa": 0.89,
+   "match_pct_judge2": 79.3,
+   "match_pct_judge1_same_entries": 81.6
+  },
+  "investigator_items_found_by_atlas": {
+   "judged": 430,
+   "match": 232,
+   "partial": 188,
+   "none": 10,
+   "match_pct": 54.0,
+   "match_or_partial_pct": 97.7,
+   "plants_excluded": 4,
+   "by_size": {
+    "2-4 editors": {
+     "match": 92,
+     "partial": 118,
+     "none": 9
+    },
+    "5-9 editors": {
+     "partial": 51,
+     "match": 65
+    },
+    "10+ editors": {
+     "match": 75,
+     "partial": 19,
+     "none": 1
+    }
+   },
+   "by_layer": {
+    "belief": {
+     "partial": 53,
+     "match": 103,
+     "none": 3
+    },
+    "goal": {
+     "match": 12,
+     "partial": 4
+    },
+    "method": {
+     "partial": 68,
+     "none": 6,
+     "match": 85
+    },
+    "protocol": {
+     "match": 30,
+     "partial": 58
+    },
+    "word": {
+     "none": 1,
+     "partial": 5,
+     "match": 2
+    }
+   },
+   "double_judged": 107,
+   "agreement_pct": 85.0,
+   "cohen_kappa": 0.72,
+   "match_pct_judge2": 50.5,
+   "match_pct_judge1_same_entries": 59.8
+  }
+ },
+ "evidence": {
+  "atlas": {
+   "episodes": 87,
+   "key_quotes": 741,
+   "quote_roles": {
+    "seed": 108,
+    "spread": 331,
+    "correction": 56,
+    "structure": 87,
+    "end": 96,
+    "turning_point": 63
+   },
+   "cited_by": "timestamp + speaker; quotes checked against raw revisions after the run",
+   "quotes_per_finding": 8.5
+  },
+  "investigator": {
+   "items": 502,
+   "member_rows": 5730,
+   "distinct_saves_cited": 5141,
+   "events": 5618,
+   "roles": {
+    "none": 1135,
+    "origin": 443,
+    "adopt": 3826,
+    "challenge": 72,
+    "correct": 98,
+    "unclear": 156
+   },
+   "causal_links": 2299,
+   "copy_links": 485,
+   "cross_item_edges": 45,
+   "cited_by": "save id (msg_id); every quote checked as an exact substring when it is written",
+   "saves_per_item": 10.2
+  }
+ },
+ "measurements": {
+  "investigator": {
+   "copying_verdicts": 439,
+   "chance_baseline_items": 387,
+   "more_than_chance": 168,
+   "routes": 2971,
+   "belief_items": 185,
+   "belief_items_challenged_or_corrected": 45,
+   "stopping_points": {
+    "alive": 440,
+    "corrected": 49,
+    "challenged": 13,
+    "adoptions_after_correction": 631
+   },
+   "run_groups": 159
+  },
+  "atlas": {
+   "belief_episodes": 16,
+   "episodes_with_correction_quotes": 30,
+   "swarm_levels": {
+    "5": 42,
+    "4": 2,
+    "3": 7,
+    "2": 12,
+    "1": 17,
+    "0": 7
+   },
+   "consequence": {
+    "harmful": 86,
+    "neutral_ambiguous": 1
+   },
+   "copying_vs_chance": "not measured",
+   "routes": "not measured"
+  }
+ },
+ "stability_under_review": {
+  "atlas": {
+   "raw_episodes": 110,
+   "final_episodes": 87,
+   "traceable": 84,
+   "level_changed": 40,
+   "level_changed_pct": 47.6,
+   "moves": [
+    [
+     "4->5",
+     15
+    ],
+    [
+     "3->5",
+     12
+    ],
+    [
+     "2->1",
+     6
+    ],
+    [
+     "3->2",
+     2
+    ],
+    [
+     "4->1",
+     2
+    ],
+    [
+     "3->4",
+     1
+    ],
+    [
+     "4->2",
+     1
+    ],
+    [
+     "3->1",
+     1
+    ]
+   ],
+   "note": "most changes came from re-aligning the rules to the source post, not from fixing reading errors",
+   "earlier_vet_av_moltbook": {
+    "claims": 566,
+    "confirmed": 351,
+    "partly_right": 173,
+    "wrong": 30,
+    "unchecked": 12
+   }
+  },
+  "investigator": {
+   "checked_links": 60,
+   "accepted": 41,
+   "corrected": 18,
+   "rejected": 1,
+   "changed_pct": 31.7,
+   "note": "checker and lead were done by hand by Claude in the project thread (manual backend)"
+  }
+ },
+ "cost": {
+  "investigator_usd": 190.11,
+  "investigator_usd_excluding_cancelled_batch": 146.81,
+  "investigator_model_calls": 816,
+  "atlas_usd": "not recorded",
+  "atlas_dsewiki_agents": "3 sweep agents (one per time slice), then consistency, alignment and recall-gap passes"
+ }
+}

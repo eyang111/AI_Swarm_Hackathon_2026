@@ -1,0 +1,453 @@
+[
+{
+"episode_id": "DW1-DWX-LAN-01",
+"candidate_item_ids": [
+"bel-140",
+"bel-141",
+"bel-124",
+"bel-108",
+"pro-200",
+"bel-138",
+"bel-142",
+"bel-166",
+"pro-144",
+"pro-167",
+"met-168",
+"met-118",
+"met-049",
+"bel-114",
+"pro-081",
+"bel-066",
+"bel-128",
+"bel-666",
+"met-600",
+"pro-173"
+]
+},
+{
+"episode_id": "DW1-DWX-MISC-11",
+"candidate_item_ids": [
+"pro-085",
+"met-100",
+"bel-056",
+"bel-108",
+"bel-033",
+"bel-031",
+"bel-034",
+"bel-140",
+"bel-127",
+"wor-119",
+"pro-028",
+"pro-081",
+"bel-637",
+"met-118",
+"bel-124",
+"bel-142",
+"met-530",
+"met-084",
+"met-577",
+"met-191",
+"met-040",
+"bel-029",
+"met-049",
+"bel-097",
+"bel-087",
+"bel-622",
+"bel-623",
+"met-101",
+"bel-032",
+"bel-624",
+"bel-626",
+"met-058",
+"bel-047",
+"met-048",
+"bel-166",
+"bel-141",
+"bel-138"
+]
+},
+{
+"episode_id": "DW1-DWX-TRA-02",
+"candidate_item_ids": [
+"bel-076",
+"bel-097",
+"met-049",
+"bel-077",
+"pro-081",
+"bel-078",
+"pro-625",
+"bel-166"
+]
+},
+{
+"episode_id": "DW1-DWX-MISC-05",
+"candidate_item_ids": [
+"bel-069"
+]
+},
+{
+"episode_id": "DW1-DWX-CLO-02",
+"candidate_item_ids": [
+"bel-056",
+"bel-057",
+"bel-034",
+"pro-081",
+"bel-560",
+"pro-112",
+"pro-055",
+"bel-637",
+"pro-028",
+"bel-031",
+"met-048"
+]
+},
+{
+"episode_id": "DW1-DWX-CLO-08",
+"candidate_item_ids": [
+"bel-056",
+"bel-057",
+"pro-055",
+"bel-560",
+"bel-637"
+]
+},
+{
+"episode_id": "DW1-DWX-CAS-07",
+"candidate_item_ids": [
+"pro-051",
+"bel-044",
+"bel-043",
+"met-049",
+"pro-081",
+"bel-046",
+"pro-591",
+"bel-162",
+"pro-055",
+"bel-561",
+"bel-042"
+]
+},
+{
+"episode_id": "DW3-15",
+"candidate_item_ids": [
+"bel-440"
+]
+},
+{
+"episode_id": "DW2-01",
+"candidate_item_ids": [
+"bel-361",
+"goa-364",
+"bel-363",
+"bel-362",
+"pro-409",
+"bel-279",
+"pro-358",
+"bel-567",
+"bel-568",
+"met-049",
+"bel-213",
+"bel-607",
+"met-405",
+"bel-166"
+]
+},
+{
+"episode_id": "GAP-DW-03",
+"candidate_item_ids": [
+"met-020",
+"pro-007",
+"met-015",
+"met-038",
+"met-001",
+"goa-037",
+"met-008",
+"met-002",
+"pro-013",
+"bel-023",
+"pro-039"
+]
+},
+{
+"episode_id": "DW1-DWX-GRO-08",
+"candidate_item_ids": []
+},
+{
+"episode_id": "DW3-22",
+"candidate_item_ids": [
+"pro-420",
+"bel-415",
+"bel-419",
+"met-422",
+"bel-436",
+"goa-423",
+"bel-398",
+"bel-526",
+"pro-527",
+"bel-581",
+"bel-416",
+"bel-539",
+"bel-417",
+"met-513",
+"met-437",
+"bel-114",
+"pro-430"
+]
+},
+{
+"episode_id": "DW3-23",
+"candidate_item_ids": []
+},
+{
+"episode_id": "DW1-DWX-LAN-04",
+"candidate_item_ids": [
+"bel-140",
+"bel-141",
+"pro-167",
+"met-168",
+"bel-166",
+"pro-200",
+"met-049",
+"pro-173",
+"bel-666"
+]
+},
+{
+"episode_id": "DW1-DWX-MAI-04",
+"candidate_item_ids": [
+"pro-200",
+"bel-134",
+"bel-095",
+"bel-136",
+"met-049",
+"bel-166",
+"pro-145"
+]
+},
+{
+"episode_id": "DW3-06",
+"candidate_item_ids": [
+"bel-388",
+"pro-389",
+"bel-392",
+"pro-390"
+]
+},
+{
+"episode_id": "DW1-DWX-CON-01",
+"candidate_item_ids": [
+"bel-150",
+"bel-195",
+"bel-164",
+"pro-200",
+"bel-166",
+"bel-161",
+"met-049",
+"pro-199",
+"bel-152",
+"goa-206",
+"bel-198",
+"bel-181",
+"met-203"
+]
+},
+{
+"episode_id": "DW3-09",
+"candidate_item_ids": [
+"bel-467",
+"bel-436",
+"bel-468",
+"bel-525",
+"bel-470",
+"bel-469",
+"bel-471",
+"met-437",
+"pro-200",
+"met-049"
+]
+},
+{
+"episode_id": "DW1-DWX-CAS-05",
+"candidate_item_ids": [
+"bel-387",
+"bel-178",
+"pro-382",
+"bel-166",
+"bel-392"
+]
+},
+{
+"episode_id": "DW2-09",
+"candidate_item_ids": [
+"goa-229",
+"met-230",
+"met-209",
+"bel-283",
+"met-368",
+"pro-322",
+"met-274",
+"met-285",
+"bel-257",
+"pro-278",
+"met-304",
+"met-282",
+"met-232",
+"met-329",
+"pro-219",
+"met-367",
+"met-216",
+"met-204",
+"wor-263",
+"pro-269",
+"pro-506",
+"pro-489",
+"met-334",
+"met-234",
+"met-508",
+"met-233",
+"met-223",
+"pro-345",
+"pro-490",
+"pro-268",
+"goa-237",
+"pro-348",
+"met-320",
+"met-301",
+"pro-376",
+"met-395",
+"pro-265",
+"met-342",
+"pro-352",
+"pro-218"
+]
+},
+{
+"episode_id": "DW1-DWX-IVY-03",
+"candidate_item_ids": [
+"met-026"
+]
+},
+{
+"episode_id": "DW1-DWX-LF-01",
+"candidate_item_ids": [
+"pro-167",
+"pro-173"
+]
+},
+{
+"episode_id": "DW2-10",
+"candidate_item_ids": [
+"bel-283",
+"met-368",
+"pro-322",
+"met-285",
+"goa-229",
+"met-230",
+"pro-278",
+"met-304",
+"met-282",
+"met-329",
+"met-367",
+"met-209",
+"met-477",
+"bel-257",
+"pro-489",
+"met-334",
+"met-274",
+"met-479",
+"met-508",
+"pro-506",
+"pro-490",
+"pro-265",
+"pro-271",
+"pro-266",
+"met-299",
+"met-241",
+"met-682",
+"pro-255",
+"met-335",
+"wor-487",
+"bel-238",
+"met-645",
+"pro-353",
+"met-374",
+"pro-269",
+"pro-325",
+"met-484",
+"pro-219",
+"goa-237",
+"pro-264"
+]
+},
+{
+"episode_id": "DW1-DWX-IVY-02",
+"candidate_item_ids": [
+"goa-103",
+"bel-115",
+"bel-114"
+]
+},
+{
+"episode_id": "DW3-14",
+"candidate_item_ids": [
+"bel-582"
+]
+},
+{
+"episode_id": "DW3-20",
+"candidate_item_ids": [
+"met-494"
+]
+},
+{
+"episode_id": "DW3-02",
+"candidate_item_ids": [
+"bel-398",
+"pro-420",
+"bel-415",
+"bel-419",
+"bel-397",
+"met-422",
+"goa-423",
+"bel-401",
+"bel-436",
+"bel-526",
+"met-049",
+"pro-527",
+"bel-416",
+"bel-511",
+"bel-599",
+"bel-581",
+"bel-417",
+"met-437",
+"bel-701",
+"pro-706",
+"bel-540",
+"met-407",
+"bel-539",
+"bel-114",
+"pro-200",
+"pro-430",
+"met-513"
+]
+},
+{
+"episode_id": "DW1-DWX-GRO-04",
+"candidate_item_ids": [
+"bel-066"
+]
+},
+{
+"episode_id": "DW1-DWX-FIN-03",
+"candidate_item_ids": [
+"pro-081",
+"bel-179",
+"met-174",
+"bel-180",
+"pro-028",
+"bel-114",
+"bel-166",
+"pro-200"
+]
+}
+]

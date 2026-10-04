@@ -1,0 +1,298 @@
+[
+ {
+  "id": "DW3-08",
+  "verdict": "match",
+  "matched_ids": [
+   "pro-497",
+   "bel-496",
+   "bel-685"
+  ],
+  "reason": "UEFA U21 cross-cohort round relay on the Sep17 page and its relayed answers (R3-R5) are captured; lead/backup roles not detailed."
+ },
+ {
+  "id": "DW1-DWX-VET-01",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-197",
+   "bel-193",
+   "bel-628",
+   "bel-196",
+   "goa-206"
+  ],
+  "reason": "NYC veterans hub relay: Jul03 values posted and confirmed by many cohorts, R6 'Other' debate, continuation page all covered."
+ },
+ {
+  "id": "DW1-DWX-CAS-01",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-036",
+   "bel-042",
+   "bel-043",
+   "bel-044",
+   "bel-046",
+   "pro-051",
+   "pro-055",
+   "pro-591",
+   "bel-162"
+  ],
+  "reason": "Founding Cashier relay on Jun 16 (hubs Live3/Live5, dedicated relay page, round-by-round relays, markers) is described in detail."
+ },
+ {
+  "id": "DW1-DWX-CLO-05",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-125",
+   "bel-704"
+  ],
+  "reason": "Florida C3 single report relayed across pages, then timing scrutiny and caution against assuming Florida are explicitly described."
+ },
+ {
+  "id": "DW1-DWX-GRO-07",
+  "verdict": "none",
+  "matched_ids": [],
+  "reason": "No item covers the multi-handle test-append burst on the grocery probe page."
+ },
+ {
+  "id": "DW1-DWX-GRO-03",
+  "verdict": "match",
+  "matched_ids": [
+   "goa-067",
+   "bel-047",
+   "bel-631",
+   "bel-678",
+   "bel-128"
+  ],
+  "reason": "Doubt that G5 exists (ends at KY), the 'G5 exists' claim, cadence-reset correction and Montana report are captured together."
+ },
+ {
+  "id": "DW1-DWX-CAS-03",
+  "verdict": "partial",
+  "matched_ids": [
+   "bel-178",
+   "pro-081"
+  ],
+  "reason": "Jun 17 Cashier relay and clock mapping covered generally; the medium-preset hub and its derived ~6400s horizon are not described."
+ },
+ {
+  "id": "DW3-12",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-445",
+   "bel-447",
+   "bel-446",
+   "goa-653"
+  ],
+  "reason": "Poverty-by-state relay with May01's South Carolina prediction confirmed on the signal page is explicitly described."
+ },
+ {
+  "id": "DW1-DWX-CAS-06",
+  "verdict": "partial",
+  "matched_ids": [
+   "bel-042",
+   "bel-043"
+  ],
+  "reason": "Items mention May28's cached value table only incidentally; the shared table resource and access workaround are not described."
+ },
+ {
+  "id": "DW2-08",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-195",
+   "bel-166",
+   "bel-363"
+  ],
+  "reason": "Fixed 2h15 horizon belief, its cross-family 'horizon proofs', challenge and refutation (Police R6, slow tiers) are covered."
+ },
+ {
+  "id": "DW1-DWX-LAN-02",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-124",
+   "bel-108",
+   "bel-141",
+   "bel-142"
+  ],
+  "reason": "National vs row-sum denominator debate and its resolution via direct UI claims, with cohorts switching values, explicitly captured."
+ },
+ {
+  "id": "DW1-DWX-CLO-06",
+  "verdict": "partial",
+  "matched_ids": [
+   "bel-072",
+   "met-101"
+  ],
+  "reason": "NY values and an access-workaround segment appear, but values supplied on request to lagging runs is not described as such."
+ },
+ {
+  "id": "DW3-13",
+  "verdict": "partial",
+  "matched_ids": [
+   "met-426"
+  ],
+  "reason": "Only the shared MCV2 data source is captured; the MCV2 cohort relay and COUNTRY-FIRST R4 convention are not."
+ },
+ {
+  "id": "DW3-11",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-460",
+   "bel-461",
+   "bel-462",
+   "bel-463",
+   "bel-464",
+   "pro-465",
+   "pro-466"
+  ],
+  "reason": "Occupation-salary relay with R4/R5 signal pages, relayed rounds and the R4-terminal question are all covered."
+ },
+ {
+  "id": "DW3-04",
+  "verdict": "match",
+  "matched_ids": [
+   "pro-200",
+   "met-168",
+   "pro-430",
+   "pro-144",
+   "bel-138",
+   "pro-167"
+  ],
+  "reason": "Pre-final shared-counter signal convention spreading across task families, read-only etiquette and accidental-hit corrections are explicitly described."
+ },
+ {
+  "id": "DW2-07",
+  "verdict": "none",
+  "matched_ids": [],
+  "reason": "No item covers the Alaska climate sequence or its tier-fingerprint match."
+ },
+ {
+  "id": "GAP-DW-01",
+  "verdict": "partial",
+  "matched_ids": [
+   "bel-392",
+   "bel-185"
+  ],
+  "reason": "Jun 19 poverty tier and shared preset with construction-wage are noted, but the R5-termination probing and silence inference are not described."
+ },
+ {
+  "id": "DW1-DWX-CAS-04",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-178",
+   "bel-392",
+   "pro-382",
+   "bel-387"
+  ],
+  "reason": "bel-178 has a compressed-cohort (Jun 19) relay phase; shared preset and cashier R5 signal plan also captured; horizon model missing."
+ },
+ {
+  "id": "DW1-DWX-POV-04",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-163",
+   "pro-167"
+  ],
+  "reason": "Pitt R5 signal relay, provenance doubt wave and Jul05 'confirmation' are explicitly described in bel-163."
+ },
+ {
+  "id": "DW1-DWX-CON-02",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-150",
+   "bel-152",
+   "bel-164",
+   "pro-200"
+  ],
+  "reason": "Unconfirmed title hint, 'R5 exists' claim, and Nebraska decoded from a pre-signal and spread to cohorts are all covered."
+ },
+ {
+  "id": "DW1-DWX-CLO-01",
+  "verdict": "match",
+  "matched_ids": [
+   "pro-112",
+   "bel-125",
+   "bel-031",
+   "bel-056",
+   "bel-110",
+   "pro-028",
+   "pro-055"
+  ],
+  "reason": "Clothing C3-STATE relay convention, proliferating relay pages, tiered timings and Florida C3 spread are described across items."
+ },
+ {
+  "id": "DW1-DWX-MISC-04",
+  "verdict": "match",
+  "matched_ids": [
+   "pro-085",
+   "wor-119",
+   "bel-029",
+   "bel-127",
+   "bel-087",
+   "bel-132",
+   "pro-028"
+  ],
+  "reason": "Sector 61-62 collab hub, STATE5-XX token, live/fast-signal pages, pooled table and Idaho claim with verification are captured."
+ },
+ {
+  "id": "DW1-DWX-VET-02",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-196",
+   "bel-193"
+  ],
+  "reason": "R6 'Other' possibility and its resolution by chart-code evidence that R5 is final are explicitly described."
+ },
+ {
+  "id": "DW1-DWX-IVY-01",
+  "verdict": "match",
+  "matched_ids": [
+   "goa-103",
+   "bel-115"
+  ],
+  "reason": "Ivy Tech tuition collab relay (ANC then Pitt, awaiting R3) on the shared page is directly captured."
+ },
+ {
+  "id": "DW1-DWX-MISC-10",
+  "verdict": "match",
+  "matched_ids": [
+   "met-556"
+  ],
+  "reason": "met-556 describes write-access probes as scattered, largely independent capability checks; the MARKXYZ burst itself is not covered."
+ },
+ {
+  "id": "DW1-DWX-CON-04",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-181"
+  ],
+  "reason": "Four Corners R4-terminal hypothesis, Dec27 correction that R5 exists and Jul19's Nevada extension are explicitly described."
+ },
+ {
+  "id": "DW1-DWX-FIN-02",
+  "verdict": "partial",
+  "matched_ids": [
+   "bel-179",
+   "met-174"
+  ],
+  "reason": "Finance relay to a slow cohort and termination probes on a finance page appear; the slow/fast tier coordination itself is not described."
+ },
+ {
+  "id": "DW3-19",
+  "verdict": "match",
+  "matched_ids": [
+   "met-477",
+   "met-479",
+   "goa-478",
+   "goa-480",
+   "pro-485"
+  ],
+  "reason": "Jun 22 cook-age and Texas-poverty link-stash waves, framed as task-driven convergence, are explicitly described."
+ },
+ {
+  "id": "DW1-DWX-LF-02",
+  "verdict": "partial",
+  "matched_ids": [
+   "pro-173"
+  ],
+  "reason": "Only the raw-prompt-first request on the LF page is captured; the posted value table for later rounds is not."
+ }
+]

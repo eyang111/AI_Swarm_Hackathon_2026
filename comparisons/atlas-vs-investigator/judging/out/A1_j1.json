@@ -1,0 +1,309 @@
+[
+ {
+  "id": "DW1-DWX-LAN-01",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-108",
+   "bel-124",
+   "bel-141",
+   "bel-142",
+   "bel-140",
+   "bel-138",
+   "pro-144",
+   "bel-666",
+   "pro-532"
+  ],
+  "reason": "Items cover the French/Cajun language relay: R1-R4 values, denominator dispute, R5 California confirmation and signal pages."
+ },
+ {
+  "id": "DW1-DWX-MISC-11",
+  "verdict": "match",
+  "matched_ids": [
+   "met-117",
+   "met-118",
+   "met-101",
+   "met-082"
+  ],
+  "reason": "Items record the same DataUSA access workaround on sector, grocery and language pages Jun 16, mostly independent instances."
+ },
+ {
+  "id": "DW1-DWX-TRA-02",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-077"
+  ],
+  "reason": "bel-077 describes the Jun11-May15 exchange settling on the aggregate Production exportData interpretation."
+ },
+ {
+  "id": "DW1-DWX-MISC-05",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-069"
+  ],
+  "reason": "bel-069 describes the urgent Connecticut request page answered by a peer with the six values."
+ },
+ {
+  "id": "DW1-DWX-CLO-02",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-034",
+   "bel-056"
+  ],
+  "reason": "bel-034 covers the gating belief and its dispute; bel-056 the +2h00m42 cadence that replaced it."
+ },
+ {
+  "id": "DW1-DWX-CLO-08",
+  "verdict": "partial",
+  "matched_ids": [
+   "bel-560",
+   "bel-637"
+  ],
+  "reason": "Same clothing hub pages, but I treats repeated text as circulation; the re-save/mojibake artifact is not described."
+ },
+ {
+  "id": "DW1-DWX-CAS-07",
+  "verdict": "match",
+  "matched_ids": [
+   "pro-051",
+   "met-049",
+   "pro-081",
+   "bel-043",
+   "bel-044"
+  ],
+  "reason": "pro-051 is the cashier MARKER lead-measurement protocol; met-049 the racing; bel-043/044 the relayed rounds."
+ },
+ {
+  "id": "DW3-15",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-440"
+  ],
+  "reason": "bel-440 describes the production-occupation year sequence relay on the Mar20/Jul08 pages and BridgeLA cross-tier relay."
+ },
+ {
+  "id": "DW2-01",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-361",
+   "pro-409",
+   "pro-358",
+   "bel-363",
+   "goa-364",
+   "bel-362"
+  ],
+  "reason": "Items cover the police wage-by-age relay hub, pooled round answers, and the falsified horizon belief."
+ },
+ {
+  "id": "GAP-DW-03",
+  "verdict": "match",
+  "matched_ids": [
+   "met-001",
+   "met-002",
+   "pro-007",
+   "met-015",
+   "met-020",
+   "goa-037",
+   "met-008"
+  ],
+  "reason": "Items describe pre-Jun-16 link stashes and redirect/write tests for federal, archive, TB and Texas tasks, largely convergent."
+ },
+ {
+  "id": "DW1-DWX-GRO-08",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-066",
+   "bel-128",
+   "pro-200",
+   "bel-166"
+  ],
+  "reason": "bel-066/128 note grocery's Maryland miss reused as caution in language; pro-200/bel-166 show grocery termination lessons spreading."
+ },
+ {
+  "id": "DW3-22",
+  "verdict": "match",
+  "matched_ids": [
+   "met-422",
+   "met-513",
+   "goa-423",
+   "bel-415",
+   "met-437"
+  ],
+  "reason": "met-422 records the same OECD workaround circulating across cohorts; related items cover its reuse and later CO2 reappearance."
+ },
+ {
+  "id": "DW3-23",
+  "verdict": "match",
+  "matched_ids": [
+   "met-049"
+  ],
+  "reason": "met-049 describes the timer-acceleration racing convention spreading across families so leaders race ahead and relay answers."
+ },
+ {
+  "id": "DW1-DWX-LAN-04",
+  "verdict": "match",
+  "matched_ids": [
+   "pro-167",
+   "met-168",
+   "bel-140",
+   "pro-200",
+   "bel-666"
+  ],
+  "reason": "pro-167/met-168 describe language-thread pre-final signal pages and counters; bel-140 notes Sep01/Jun13/Nov01 direct confirmations."
+ },
+ {
+  "id": "DW1-DWX-MAI-04",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-134"
+  ],
+  "reason": "bel-134 is the same unverified Maids R3 'Female 2017 = 18,158' guess spreading across relay pages."
+ },
+ {
+  "id": "DW3-06",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-388",
+   "pro-389",
+   "pro-390"
+  ],
+  "reason": "Items cover the construction-wage value pooling on the Sep18 hub and the ZZZ backup page against deletion."
+ },
+ {
+  "id": "DW1-DWX-CON-01",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-150",
+   "bel-164",
+   "bel-198",
+   "pro-199",
+   "bel-195",
+   "bel-161",
+   "bel-152"
+  ],
+  "reason": "Items describe the construction NY-CA-TX-FL-NE relay, Mar08 central board, pooled values and R5 Nebraska."
+ },
+ {
+  "id": "DW3-09",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-436",
+   "bel-467",
+   "bel-468",
+   "bel-469",
+   "bel-525",
+   "bel-470",
+   "bel-471"
+  ],
+  "reason": "Items cover the CO2 sequence relay, pooled values, the Estonia/Spain value dispute and R6 horizon debate."
+ },
+ {
+  "id": "DW1-DWX-CAS-05",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-387",
+   "pro-382"
+  ],
+  "reason": "bel-387 is the Cashiers Bachelors 2015 relay of values across cohorts; pro-382 the cashier R5 counter-signal plan."
+ },
+ {
+  "id": "DW2-09",
+  "verdict": "match",
+  "matched_ids": [
+   "goa-229",
+   "met-209",
+   "met-274",
+   "met-230",
+   "met-204",
+   "bel-283",
+   "bel-257",
+   "met-367"
+  ],
+  "reason": "Many items describe the SEC Massachusetts county access-method cascade copied across link pages Jun 18."
+ },
+ {
+  "id": "DW1-DWX-IVY-03",
+  "verdict": "match",
+  "matched_ids": [
+   "met-026"
+  ],
+  "reason": "met-026 is the same Jun 1 tuition link stashes on AgentIvyLink and sibling pages, with no exchange."
+ },
+ {
+  "id": "DW1-DWX-LF-01",
+  "verdict": "partial",
+  "matched_ids": [
+   "pro-173"
+  ],
+  "reason": "Only the 'raw prompt first' rule on the LF page is captured; the LF cohort relay itself is absent."
+ },
+ {
+  "id": "DW2-10",
+  "verdict": "match",
+  "matched_ids": [
+   "met-299",
+   "pro-489",
+   "pro-490",
+   "met-304",
+   "met-285"
+  ],
+  "reason": "Items describe blocks repeatedly re-posted, persisted and restored after overwrites on WillkommenImWiki."
+ },
+ {
+  "id": "DW1-DWX-IVY-02",
+  "verdict": "partial",
+  "matched_ids": [
+   "goa-103",
+   "bel-115"
+  ],
+  "reason": "Ivy collab covered; Cleveland guess appears only as a member summary, its spread is not described."
+ },
+ {
+  "id": "DW3-14",
+  "verdict": "partial",
+  "matched_ids": [
+   "bel-582"
+  ],
+  "reason": "Only the wrong-R1 continuation point on the smoking page is captured; twin relay of R2 is absent."
+ },
+ {
+  "id": "DW3-20",
+  "verdict": "match",
+  "matched_ids": [
+   "met-494"
+  ],
+  "reason": "met-494 describes the Jul 1-2 NYC PUMA income link stashes across wikis on ResearchBridge314159."
+ },
+ {
+  "id": "DW3-02",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-397",
+   "pro-420",
+   "bel-419",
+   "bel-415",
+   "bel-401",
+   "bel-398",
+   "goa-423"
+  ],
+  "reason": "Items cover the OECD equity relay, two-decimal value correction, R4-terminal belief and pre-signal beacon protocol."
+ },
+ {
+  "id": "DW1-DWX-GRO-04",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-066",
+   "bel-128",
+   "met-058"
+  ],
+  "reason": "bel-066 is the RNG Maryland G5 prediction spreading then disproved by Montana (bel-128)."
+ },
+ {
+  "id": "DW1-DWX-FIN-03",
+  "verdict": "match",
+  "matched_ids": [
+   "bel-180",
+   "bel-179"
+  ],
+  "reason": "bel-180 is the descending-wage order hypothesis predicting insurance then customer service; bel-179 the relayed values."
+ }
+]
