@@ -30,7 +30,7 @@ def _plain(text, info):
     names = {k[:7]: v['text'] for k, v in info.items()}
     def item(m):
         t = names.get(m.group(0)[:7])
-        return f'"{t[:60]}"' if t else 'an item'
+        return f'"{t}"' if t else 'an item'
     text = re.sub(r'\s+', ' ', text).strip()
     text = re.sub(r'\s*\((?:%s)(?:,\s*(?:%s))*\)' % (ITEM_ID.pattern, ITEM_ID.pattern), '', text)
     text = ITEM_ID.sub(item, text)
@@ -203,13 +203,10 @@ CONF_RANK = {'high': 0, 'medium': 1, 'low': 2}
 VERDICT_SHORT = {'copying': 'copied', 'convergence': 'independent', 'mixed': 'partly copied'}
 
 
-def _first_sentence(text, cap=220):
-    t = re.split(r'(?<=[a-z0-9)\'"])\.\s+(?=[A-Z])', text, maxsplit=1)[0].rstrip('.')
-    return t if len(t) <= cap else t[:cap].rsplit(' ', 1)[0] + '…'
+def _first_sentence(text):
+    return re.split(r'(?<=[a-z0-9)\'"])\.\s+(?=[A-Z])', text, maxsplit=1)[0].rstrip('.')
 
 
-def _short(text, cap=70):
-    return text if len(text) <= cap else text[:cap].rsplit(' ', 1)[0] + '…'
 
 
 def build(con, title='Run summary', max_periods=8):
@@ -249,7 +246,7 @@ def build(con, title='Run summary', max_periods=8):
     L += ['## Timeline', '']
     for k in sorted(keep, key=lambda k: min(c['t'] or '' for c in periods[k])):
         items = sorted(periods[k], key=lambda c: -c['editors'])
-        top = '; '.join(f"{_short(c['text'])} ({VERDICT_SHORT.get(c['verdict'], 'no verdict')}, {c['editors']} editors)"
+        top = '; '.join(f"{c['text']} ({VERDICT_SHORT.get(c['verdict'], 'no verdict')}, {c['editors']} editors)"
                         for c in items[:2] if not c['text'].startswith('(item withheld'))
         name = SEGMENT_NAME.get(k, k)
         L.append(f"- **{name}:** {len(items)} items. Biggest: {top or 'withheld items only'}.")
