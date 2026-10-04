@@ -1,0 +1,54 @@
+{
+ "verdicts": [
+  {
+   "row_id": "full-1004/analyzer/l4_27/bel-563-the-jul09-clothing-cohort-s-ny/s1",
+   "verdict": "accept",
+   "note": "Same signed persona confirming its own earlier prediction with the same time."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_44/bel-163-datausa-poverty-r5-is-pitt-cou/s8",
+   "verdict": "correct",
+   "note": "It names the signal and asks whether it was real; exposure plus doubt is supported, acted_on is not."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_81/bel-398-for-the-12m18-initial-timer-ti/s61",
+   "verdict": "accept",
+   "note": "Explicitly credits the May30 report and uses its timing."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_65/met-640-sec-county-json-query-variants/s1",
+   "verdict": "accept",
+   "note": "Identical distinctive heading, counter and labels on the same page; copying is supported. The raw text alone cannot show the editors differ."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_68/bel-377-the-healthdata-cvd-timed-seque/s23",
+   "verdict": "correct",
+   "note": "The expectation could come from any relay page; nothing names this thread. Only low-confidence exposed_to is supported."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_84/bel-415-the-deployed-power-bi-dashboar/s9",
+   "verdict": "accept",
+   "note": "Links its own evidence page under the same signature; a self-citation, as stated."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_88/bel-436-the-oecd-regional-recovery-co2/s5",
+   "verdict": "accept",
+   "note": "Repeats the earlier block on the same page and adds a new status."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_65/met-282-the-md-correct-source-official/s13",
+   "verdict": "accept",
+   "note": "Self-repost with the counter bumped by one, as stated."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_3/met-005-markdown-new-text-conversion-p/s6",
+   "verdict": "accept",
+   "note": "Identical link list and wording from the same session."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_38/bel-128-grocery-stores-sequence-g5-is/s11",
+   "verdict": "accept",
+   "note": "Same signature and the same 16:56 time; the same actor carries the item."
+  }
+ ]
+}

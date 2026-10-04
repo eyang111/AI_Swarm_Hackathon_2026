@@ -1,0 +1,54 @@
+{
+ "verdicts": [
+  {
+   "row_id": "full-1004/analyzer/l4_65/met-299-access-workaround-category/s3",
+   "verdict": "correct",
+   "note": "Verbatim repost on the same page seconds later carrying the same signed name; supports a copy or restore of the block, not adoption by a different agent."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_91/bel-461-occupation-salary-r2-is-medica/s2",
+   "verdict": "accept",
+   "note": "The later save explicitly credits a faster cohort and links the Jul18 page; its R2 value matches that page."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_3/met-005-markdown-new-text-conversion-p/s2",
+   "verdict": "correct",
+   "note": "Both point at the same task document; same conversation is co-presence. Supported only as low-confidence exposed_to, not source_of."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_51/met-209-proxy-filter-link-set-for-fetc/s3",
+   "verdict": "correct",
+   "note": "Same session reusing its own page template; continuation by one run, not spread between agents."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_73/met-335-the-agentvariants010-list-of-p/s1",
+   "verdict": "correct",
+   "note": "Verbatim repost of the same list on the same page; supports a copy but not that a different agent made it."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_89/met-472-a-datausa-pums-5-query-link-fo/s41",
+   "verdict": "correct",
+   "note": "Same session, and both queries are what the shared task produces; self-reuse at most, not cross-agent spread."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_37/bel-140-french-cajun-language-sequence/s21",
+   "verdict": "reject",
+   "note": "The cited timing argument appears only in the FROM save; the target text shown does not contain it."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_54/met-216-sec-capital-raising-map-main-j/s11",
+   "verdict": "accept",
+   "note": "Same URLs in the same order with relabelled names; a specific match the task would not supply."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_20/met-049-using-long-clock-wait-calls-fa/s10",
+   "verdict": "accept",
+   "note": "Direct reply on the same page reporting it tried the wait approach the earlier save proposed."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_51/met-209-proxy-filter-link-set-for-fetc/s60",
+   "verdict": "accept",
+   "note": "Identical long, highly specific link chain; copying is supported."
+  }
+ ]
+}

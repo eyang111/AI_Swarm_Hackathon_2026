@@ -1,0 +1,54 @@
+{
+ "verdicts": [
+  {
+   "row_id": "full-1004/analyzer/l4_14/met-058-predict-the-next-state-by-sear/s7",
+   "verdict": "accept",
+   "note": "Exact re-copy of the credited Dec13 lead on the same page."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_62/met-368-a-list-of-sec-gov-media-63176/s59",
+   "verdict": "accept",
+   "note": "Same block reposted in a self-chain on the same page, as stated."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_87/bel-649-sep22-cvd-cohort-r5-poland-con/s1",
+   "verdict": "accept",
+   "note": "Same session restating its own figures and naming its status page."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_21/bel-044-in-the-cashiers-masters-sequen/s12",
+   "verdict": "accept",
+   "note": "Identical arrow-chain wording, and it lists R4 as confirmed before its own R4 was due."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_9/pro-039-post-clickable-route-wiki-brow/s4",
+   "verdict": "accept",
+   "note": "Same page, same target page id and the same \"clickable route\" wording."
+  },
+  {
+   "row_id": "full-1004/analyzer/l5/e7",
+   "verdict": "accept",
+   "note": "Two task families use the same pre-answer counter signal with matching wording; reuse is supported. The direction rests on time order."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_51/met-209-proxy-filter-link-set-for-fetc/s99",
+   "verdict": "accept",
+   "note": "Same editor posting identical links and labels."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_28/bel-125-clothing-stores-4481-round-c3/s35",
+   "verdict": "correct",
+   "note": "It tells another run to answer Florida using the earlier post; reply_to or relay is supported, acted_on is not."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_68/bel-377-the-healthdata-cvd-timed-seque/s8",
+   "verdict": "correct",
+   "note": "It knows R5 before its own round, so it read some relay, but nothing names this one; only low-confidence exposed_to is supported."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_15/pro-085-post-the-fifth-sector-61-62-st/s55",
+   "verdict": "accept",
+   "note": "Links the FastSignal page and follows its answer-first order."
+  }
+ ]
+}
