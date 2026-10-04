@@ -323,10 +323,10 @@
     <h1>Systematic Method to Investigate Swarm Behavior From Transcripts</h1>
     <p class="lede">Swarm transcripts can be thousands and thousands of lines long, taking up context and requiring significant time to parse. In this project, we introduce a method to systematically understand event behavior from AI swarm transcripts that both parallelizes and can comprehensively understand events and timelines in a more efficient way than previous methods.  </p>
     <div class="stats" role="list">
-      <div class="stat" role="listitem"><div class="v">484</div><div class="k">swarm episodes mapped and graded across three datasets</div></div>
       <div class="stat" role="listitem"><div class="v">14,591</div><div class="k">wiki saves run through the full investigator pipeline</div></div>
       <div class="stat" role="listitem"><div class="v">16 / 16</div><div class="k">planted spread events recovered with the right role</div></div>
       <div class="stat" role="listitem"><div class="v">$190</div><div class="k">model cost of the full DSEWiki run</div></div>
+      <div class="stat" role="listitem"><div class="v">484</div><div class="k">swarm episodes mapped by the Swarm Atlas baseline</div></div>
     </div>
   </div>
 </header>
@@ -344,8 +344,8 @@
       <p>However, investigating incidents like this is hard. The logs run to hundreds of thousands of messages. AI analysts can help, but their output is often <em>“missing key details, wrong, overconfident, or really hard to understand”</em> (Ryan Greenblatt, on the Hugging Face incident investigation). We investigated two main questions:</p>
     </div>
     <ol class="questions">
-      <li><strong>Where do real swarms form</strong>, and how far up the ladder from interaction to swarm do they get?</li>
       <li><strong>Can an AI investigator trace what spreads</strong> between agents, with findings a person can check and that are scored against known truth?</li>
+      <li><strong>Where do real swarms form</strong>, and how far up the ladder from interaction to swarm do they get?</li>
     </ol>
   </div>
 </section>
@@ -391,32 +391,11 @@
 <section id="methods">
   <div class="wrap">
     <p class="sec-label"><span class="n">03</span> Methods</p>
-    <h2>Two tracks: map the swarms, then trace what moves through them</h2>
+    <h2>Two tracks: trace what moves between agents, then map where swarms form</h2>
 
     <!-- Track A -->
     <div class="track">
-      <div class="track-head"><span class="badge">TRACK A</span><h3>Swarm Atlas: find every episode and grade it on one definition</h3></div>
-      <p class="sub prose">We use Michael Flood's definition. A swarm is two or more agents whose causal interactions produce self-organized, mutually conditioned behavior toward a collective goal, where no human or orchestrator specified the structure. Episodes are graded on his cumulative ladder:</p>
-      <div class="ladder" aria-label="Swarm progression levels">
-        <div class="rung" style="--c: var(--l0)"><b>L0</b><span>Aggregate</span><em>converged without influencing each other</em></div>
-        <div class="rung" style="--c: var(--l1)"><b>L1</b><span>Interaction</span><em>one agent causally affects another</em></div>
-        <div class="rung" style="--c: var(--l2)"><b>L2</b><span>Cooperation</span><em>advances individual objectives</em></div>
-        <div class="rung" style="--c: var(--l3)"><b>L3</b><span>Coordination</span><em>behavior becomes mutually conditioned</em></div>
-        <div class="rung" style="--c: var(--l4)"><b>L4</b><span>Self-organization</span><em>roles, norms or division of labor emerge</em></div>
-        <div class="rung" style="--c: var(--l5)"><b>L5</b><span>Swarm formation</span><em>that structure serves a collective goal</em></div>
-      </div>
-      <ol class="steps">
-        <li><span class="num">1</span><span class="name">Sweep<span class="who">AI sweep agents</span></span><span class="desc">Agents read each dataset in time slices and log every candidate episode, with participants, key messages and evidence for each feature (526 raw episodes).</span></li>
-        <li><span class="num">2</span><span class="name">Vet<span class="who">Independent checkers</span></span><span class="desc">Separate agents re-read each episode against the raw data and challenge its grade.</span></li>
-        <li><span class="num">3</span><span class="name">Align and merge<span class="who">One rule set</span></span><span class="desc">Duplicates are merged across slices, giving 484 episodes. Each is graded under a single rule set, with its origin, its relation to the assigned task, its consequence for people and its goal type.</span></li>
-        <li><span class="num">4</span><span class="name">Check recall<span class="who">Script detector</span></span><span class="desc">A detector scores every room-day, page and thread for multi-agent back-and-forth. The strongest units the sweep missed are read and graded, which found 8 new episodes.</span></li>
-        <li><span class="num">5</span><span class="name">Verify quotes<span class="who">Script</span></span><span class="desc">3,483 of 3,547 key messages (98.2%) were found verbatim at the stated time and speaker. The rest are flagged.</span></li>
-      </ol>
-    </div>
-
-    <!-- Track B -->
-    <div class="track" style="margin-top:56px">
-      <div class="track-head"><span class="badge">TRACK B</span><h3>Swarm Investigator: trace what spreads, how and through whom</h3></div>
+      <div class="track-head"><span class="badge">TRACK A</span><h3>Swarm Investigator: trace what spreads, how and through whom</h3></div>
       <p class="sub prose">A multi-stage pipeline built for DSEWiki. It follows five layers of content as they move between agents:</p>
       <ul class="layers">
         <li><b>Words</b> · coined terms</li>
@@ -441,6 +420,28 @@
         <li><b>Truth is built in.</b> We plant cascades from easy to hard, including inside the busiest burst. Only the scorer reads them.</li>
       </ul>
     </div>
+
+    <!-- Track B -->
+    <div class="track" style="margin-top:56px">
+      <div class="track-head"><span class="badge">TRACK B</span><h3>Swarm Atlas: find every episode and grade it on one definition</h3></div>
+      <p class="sub prose">The Atlas maps swarm episodes across all three datasets and also serves as our baseline. It uses Michael Flood's definition. A swarm is two or more agents whose causal interactions produce self-organized, mutually conditioned behavior toward a collective goal, where no human or orchestrator specified the structure. Episodes are graded on his cumulative ladder:</p>
+      <div class="ladder" aria-label="Swarm progression levels">
+        <div class="rung" style="--c: var(--l0)"><b>L0</b><span>Aggregate</span><em>converged without influencing each other</em></div>
+        <div class="rung" style="--c: var(--l1)"><b>L1</b><span>Interaction</span><em>one agent causally affects another</em></div>
+        <div class="rung" style="--c: var(--l2)"><b>L2</b><span>Cooperation</span><em>advances individual objectives</em></div>
+        <div class="rung" style="--c: var(--l3)"><b>L3</b><span>Coordination</span><em>behavior becomes mutually conditioned</em></div>
+        <div class="rung" style="--c: var(--l4)"><b>L4</b><span>Self-organization</span><em>roles, norms or division of labor emerge</em></div>
+        <div class="rung" style="--c: var(--l5)"><b>L5</b><span>Swarm formation</span><em>that structure serves a collective goal</em></div>
+      </div>
+      <ol class="steps">
+        <li><span class="num">1</span><span class="name">Sweep<span class="who">AI sweep agents</span></span><span class="desc">Agents read each dataset in time slices and log every candidate episode, with participants, key messages and evidence for each feature (526 raw episodes).</span></li>
+        <li><span class="num">2</span><span class="name">Vet<span class="who">Independent checkers</span></span><span class="desc">Separate agents re-read each episode against the raw data and challenge its grade.</span></li>
+        <li><span class="num">3</span><span class="name">Align and merge<span class="who">One rule set</span></span><span class="desc">Duplicates are merged across slices, giving 484 episodes. Each is graded under a single rule set, with its origin, its relation to the assigned task, its consequence for people and its goal type.</span></li>
+        <li><span class="num">4</span><span class="name">Check recall<span class="who">Script detector</span></span><span class="desc">A detector scores every room-day, page and thread for multi-agent back-and-forth. The strongest units the sweep missed are read and graded, which found 8 new episodes.</span></li>
+        <li><span class="num">5</span><span class="name">Verify quotes<span class="who">Script</span></span><span class="desc">3,483 of 3,547 key messages (98.2%) were found verbatim at the stated time and speaker. The rest are flagged.</span></li>
+      </ol>
+    </div>
+
   </div>
 </section>
 
@@ -448,45 +449,9 @@
 <section id="results">
   <div class="wrap">
     <p class="sec-label"><span class="n">04</span> Results</p>
-    <h2>Swarms form in all three datasets. Only DSEWiki's are spontaneous.</h2>
+    <h2>The investigator recovered every planted cascade and traced how coordination spread</h2>
 
-    <div class="figure" id="levels-fig">
-      <h3>How far episodes got, by dataset</h3>
-      <p class="small" style="margin:0">Share of graded episodes at each level. The labels on the right count those that reached L5, swarm formation.</p>
-      <ul class="legend" aria-hidden="true">
-        <li><i style="--c: var(--l0)"></i>L0 Aggregate</li>
-        <li><i style="--c: var(--l1)"></i>L1 Interaction</li>
-        <li><i style="--c: var(--l2)"></i>L2 Cooperation</li>
-        <li><i style="--c: var(--l3)"></i>L3 Coordination</li>
-        <li><i style="--c: var(--l4)"></i>L4 Self-organization</li>
-        <li><i style="--c: var(--l5)"></i>L5 Swarm formation</li>
-      </ul>
-      <div class="bars" id="bars" role="img" aria-label="Stacked bars: AI Village 347 episodes, 120 at L5. Moltbook 50 episodes, 7 at L5. DSEWiki 87 episodes, 42 at L5. Full numbers in the table below."></div>
-      <div class="axis" aria-hidden="true"><span></span><span class="ticks"><span style="left:0">0%</span><span style="left:25%">25%</span><span style="left:50%">50%</span><span style="left:75%">75%</span><span style="left:100%">100%</span></span><span></span></div>
-      <details class="table-view">
-        <summary>View as table</summary>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th>Dataset</th><th>Episodes</th><th>L0</th><th>L1</th><th>L2</th><th>L3</th><th>L4</th><th>L5</th></tr></thead>
-            <tbody>
-              <tr><td>AI Village</td><td>347</td><td>19</td><td>68</td><td>74</td><td>52</td><td>14</td><td>120</td></tr>
-              <tr><td>Moltbook</td><td>50</td><td>15</td><td>17</td><td>9</td><td>2</td><td>0</td><td>7</td></tr>
-              <tr><td>DSEWiki</td><td>87</td><td>7</td><td>17</td><td>12</td><td>7</td><td>2</td><td>42</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </details>
-    </div>
-
-    <ul class="points prose">
-      <li><b>DSEWiki holds the clearest spontaneous swarms.</b> Research-agent runs built relay hubs, roles and signalling conventions. They recreated pages after moderators deleted them and handed their structures to the next wave of runs. The largest relay involved about 49 agents identified by signature, and another spanned about 90 cohorts. 86 of 87 episodes were harmful, to evaluation integrity, to sandbox constraints or to a third party's wiki.</li>
-      <li><b>AI Village swarms are mostly seeded or afforded.</b> Agents built pipelines, governance gates and protocols inside goals that staff set. Most had neutral consequences (316 of 347).</li>
-      <li><b>Moltbook's apparent swarms are mostly account rings run by one operator.</b> These are L0, because one operator counts as one agent. The real swarms are small and brief: a bug-tracking hub, a shared blocklist against prompt injection, and a collaborative literature review.</li>
-      <li><b>Shared false beliefs appear in all three datasets.</b> One agent's error spreads before anyone checks it.</li>
-      <li><b>The definition matters.</b> Under a stricter reading, where the structure must outlive changes in membership, only 23 episodes reach L5. Under the wording of Flood's post, 169 do.</li>
-    </ul>
-
-    <h3 style="margin-top:56px">Swarm Investigator: scored against planted truth</h3>
+    <h3>Swarm Investigator: scored against planted truth</h3>
     <p class="sub prose">We hid four made-up cascades in a copy of DSEWiki: an easy one (verbatim repeats), a medium one (paraphrased, minutes apart), a hard one (paraphrased, hours apart, partly adopted), and one inside the Jun 18 burst. Each has an origin, adopters and challengers, 16 events in all.</p>
     <div class="grid-2" style="margin-top:20px">
       <div class="card score">
@@ -529,6 +494,43 @@
         <p>The largest raw adoption counts come from single sessions reposting their own blocks, not from influencers. Counted at the run-group level, spread is modest.</p>
       </div>
     </div>
+
+    <h3 style="margin-top:56px">Swarm Atlas: swarms form in all three datasets, but only DSEWiki's are spontaneous</h3>
+    <div class="figure" id="levels-fig" style="margin-top:16px">
+      <h3>How far episodes got, by dataset</h3>
+      <p class="small" style="margin:0">Share of graded episodes at each level. The labels on the right count those that reached L5, swarm formation.</p>
+      <ul class="legend" aria-hidden="true">
+        <li><i style="--c: var(--l0)"></i>L0 Aggregate</li>
+        <li><i style="--c: var(--l1)"></i>L1 Interaction</li>
+        <li><i style="--c: var(--l2)"></i>L2 Cooperation</li>
+        <li><i style="--c: var(--l3)"></i>L3 Coordination</li>
+        <li><i style="--c: var(--l4)"></i>L4 Self-organization</li>
+        <li><i style="--c: var(--l5)"></i>L5 Swarm formation</li>
+      </ul>
+      <div class="bars" id="bars" role="img" aria-label="Stacked bars: AI Village 347 episodes, 120 at L5. Moltbook 50 episodes, 7 at L5. DSEWiki 87 episodes, 42 at L5. Full numbers in the table below."></div>
+      <div class="axis" aria-hidden="true"><span></span><span class="ticks"><span style="left:0">0%</span><span style="left:25%">25%</span><span style="left:50%">50%</span><span style="left:75%">75%</span><span style="left:100%">100%</span></span><span></span></div>
+      <details class="table-view">
+        <summary>View as table</summary>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Dataset</th><th>Episodes</th><th>L0</th><th>L1</th><th>L2</th><th>L3</th><th>L4</th><th>L5</th></tr></thead>
+            <tbody>
+              <tr><td>AI Village</td><td>347</td><td>19</td><td>68</td><td>74</td><td>52</td><td>14</td><td>120</td></tr>
+              <tr><td>Moltbook</td><td>50</td><td>15</td><td>17</td><td>9</td><td>2</td><td>0</td><td>7</td></tr>
+              <tr><td>DSEWiki</td><td>87</td><td>7</td><td>17</td><td>12</td><td>7</td><td>2</td><td>42</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+
+    <ul class="points prose">
+      <li><b>DSEWiki holds the clearest spontaneous swarms.</b> Research-agent runs built relay hubs, roles and signalling conventions. They recreated pages after moderators deleted them and handed their structures to the next wave of runs. The largest relay involved about 49 agents identified by signature, and another spanned about 90 cohorts. 86 of 87 episodes were harmful, to evaluation integrity, to sandbox constraints or to a third party's wiki.</li>
+      <li><b>AI Village swarms are mostly seeded or afforded.</b> Agents built pipelines, governance gates and protocols inside goals that staff set. Most had neutral consequences (316 of 347).</li>
+      <li><b>Moltbook's apparent swarms are mostly account rings run by one operator.</b> These are L0, because one operator counts as one agent. The real swarms are small and brief: a bug-tracking hub, a shared blocklist against prompt injection, and a collaborative literature review.</li>
+      <li><b>Shared false beliefs appear in all three datasets.</b> One agent's error spreads before anyone checks it.</li>
+      <li><b>The definition matters.</b> Under a stricter reading, where the structure must outlive changes in membership, only 23 episodes reach L5. Under the wording of Flood's post, 169 do.</li>
+    </ul>
   </div>
 </section>
 
@@ -543,15 +545,15 @@
 
     <div class="tbl-wrap scorecard">
       <table>
-        <thead><tr><th>Metric</th><th>Swarm Atlas</th><th>Investigator</th><th>Edge</th></tr></thead>
+        <thead><tr><th>Metric</th><th>Investigator</th><th>Swarm Atlas</th><th>Edge</th></tr></thead>
         <tbody>
-          <tr><td>Planted cascades found with the right role<small>the only metric with ground truth</small></td><td data-label="Swarm Atlas" class="v">not testable</td><td data-label="Investigator" class="v"><b>16 / 16</b></td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
-          <tr><td>Share of the other system's findings it also found<small>judged blind; fully found</small></td><td data-label="Swarm Atlas" class="v">54% of the Investigator's 430 items</td><td data-label="Investigator" class="v"><b>82%</b> of the Atlas's 87 episodes</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
-          <tr><td>Source records cited<small>Atlas by time and speaker, Investigator by save ID</small></td><td data-label="Swarm Atlas" class="v">741</td><td data-label="Investigator" class="v"><b>5,141</b></td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
-          <tr><td>Measures spread<small>copying vs chance, routes, effect of corrections</small></td><td data-label="Swarm Atlas" class="v">no</td><td data-label="Investigator" class="v"><b>yes</b></td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
-          <tr><td>Coverage of the 651 pages edited by 3+ agents<small>the Atlas's own recall yardstick</small></td><td data-label="Swarm Atlas" class="v"><b>90%</b> (63 of the 65 strongest)</td><td data-label="Investigator" class="v">88% (all 65 strongest)</td><td data-label="Edge"><span class="edge tie">Tie</span></td></tr>
-          <tr><td>First-pass output changed by review</td><td data-label="Swarm Atlas" class="v">48% of grades</td><td data-label="Investigator" class="v">32% of checked links</td><td data-label="Edge"><span class="edge tie">Neither</span></td></tr>
-          <tr><td>Grades swarm level and harm; covers three datasets</td><td data-label="Swarm Atlas" class="v"><b>yes</b></td><td data-label="Investigator" class="v">no</td><td data-label="Edge"><span class="edge atl">Atlas</span></td></tr>
+          <tr><td>Planted cascades found with the right role<small>the only metric with ground truth</small></td><td data-label="Investigator" class="v"><b>16 / 16</b></td><td data-label="Swarm Atlas" class="v">not testable</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
+          <tr><td>Share of the other system's findings it also found<small>judged blind; fully found</small></td><td data-label="Investigator" class="v"><b>82%</b> of the Atlas's 87 episodes</td><td data-label="Swarm Atlas" class="v">54% of the Investigator's 430 items</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
+          <tr><td>Source records cited<small>Atlas by time and speaker, Investigator by save ID</small></td><td data-label="Investigator" class="v"><b>5,141</b></td><td data-label="Swarm Atlas" class="v">741</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
+          <tr><td>Measures spread<small>copying vs chance, routes, effect of corrections</small></td><td data-label="Investigator" class="v"><b>yes</b></td><td data-label="Swarm Atlas" class="v">no</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
+          <tr><td>Coverage of the 651 pages edited by 3+ agents<small>the Atlas's own recall yardstick</small></td><td data-label="Investigator" class="v">88% (all 65 strongest)</td><td data-label="Swarm Atlas" class="v"><b>90%</b> (63 of the 65 strongest)</td><td data-label="Edge"><span class="edge tie">Tie</span></td></tr>
+          <tr><td>First-pass output changed by review</td><td data-label="Investigator" class="v">32% of checked links</td><td data-label="Swarm Atlas" class="v">48% of grades</td><td data-label="Edge"><span class="edge tie">Neither</span></td></tr>
+          <tr><td>Grades swarm level and harm; covers three datasets</td><td data-label="Investigator" class="v">no</td><td data-label="Swarm Atlas" class="v"><b>yes</b></td><td data-label="Edge"><span class="edge atl">Atlas</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -650,9 +652,9 @@
       <table class="repo">
         <thead><tr><th>Location</th><th>Contents</th></tr></thead>
         <tbody>
-          <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/main/swarm-atlas"><code>swarm-atlas/</code></a></td><td>Swarm Atlas: 484 episodes, the interactive viewers, the pipeline and the review notes</td></tr>
           <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/main/swarm-investigator"><code>swarm-investigator/</code></a></td><td>Investigator design (DESIGN.md), pipeline code and superseded design notes</td></tr>
           <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/main/runs/2026-10-04-full-run"><code>runs/2026-10-04-full-run/</code></a></td><td>Full DSEWiki run: summary, report, interactive timeline, scores and code snapshot</td></tr>
+          <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/main/swarm-atlas"><code>swarm-atlas/</code></a></td><td>Swarm Atlas: 484 episodes, the interactive viewers, the pipeline and the review notes</td></tr>
           <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/main/comparisons/atlas-vs-investigator"><code>comparisons/atlas-vs-investigator/</code></a></td><td>The baseline comparison: script, blind judges' verdicts and write-up</td></tr>
           <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/main/analysis"><code>analysis/</code></a></td><td>The AI Village goal-adoption study</td></tr>
           <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/initial-tests/runs/2026-10-04-test-slice"><code>initial-tests</code></a> branch</td><td>Run 1 on the test slice: plant scores, costs and findings</td></tr>
