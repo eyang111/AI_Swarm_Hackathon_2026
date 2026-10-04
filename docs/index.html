@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tracing AI Swarms</title>
+<meta name="description" content="AI Swarm Hackathon 2026: we mapped self-organized multi-agent behavior in three real datasets and built a scored AI investigator that traces what spreads between agents.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='9' cy='10' r='4' fill='%232a78d6'/%3E%3Ccircle cx='23' cy='9' r='3' fill='%2386b6ef'/%3E%3Ccircle cx='16' cy='22' r='5' fill='%231c5cab'/%3E%3C/svg%3E">
+<style>
+  :root {
+    color-scheme: light;
+    --page: #f9f9f7;
+    --surface: #fcfcfb;
+    --card: #ffffff;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #6f6e69;
+    --hair: #e1e0d9;
+    --ring: rgba(11, 11, 11, 0.10);
+    --accent: #1c5cab;
+    --accent-soft: #e8f1fc;
+    --pill: #f0efec;
+    /* level ramp: L0 neutral, L1–L5 one blue hue light -> dark (validated ordinal) */
+    --l0: #c3c2b7;
+    --l1: #86b6ef;
+    --l2: #5598e7;
+    --l3: #2a78d6;
+    --l4: #1c5cab;
+    --l5: #0d366b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page: #0d0d0d;
+      --surface: #1a1a19;
+      --card: #161615;
+      --ink: #ffffff;
+      --ink-2: #c3c2b7;
+      --muted: #9a9890;
+      --hair: #2c2c2a;
+      --ring: rgba(255, 255, 255, 0.10);
+      --accent: #86b6ef;
+      --accent-soft: #14243a;
+      --pill: #232321;
+      --l0: #52514e;
+      --l1: #184f95;
+      --l2: #256abf;
+      --l3: #3987e5;
+      --l4: #6da7ec;
+      --l5: #9ec5f4;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --card: #161615;
+    --ink: #ffffff;
+    --ink-2: #c3c2b7;
+    --muted: #9a9890;
+    --hair: #2c2c2a;
+    --ring: rgba(255, 255, 255, 0.10);
+    --accent: #86b6ef;
+    --accent-soft: #14243a;
+    --pill: #232321;
+    --l0: #52514e;
+    --l1: #184f95;
+    --l2: #256abf;
+    --l3: #3987e5;
+    --l4: #6da7ec;
+    --l5: #9ec5f4;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:hover { text-decoration-thickness: 2px; }
+  strong { font-weight: 640; }
+  p { margin: 0 0 1em; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+  .prose { max-width: 700px; }
+  @media (max-width: 600px) { .wrap { padding: 0 16px; } body { font-size: 16px; } }
+
+  /* nav */
+  .nav {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--page) 86%, transparent);
+    backdrop-filter: saturate(1.4) blur(10px);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid var(--hair);
+  }
+  .nav .wrap { display: flex; align-items: center; gap: 24px; height: 56px; }
+  .brand { font-weight: 650; color: var(--ink); text-decoration: none; white-space: nowrap; font-size: 15px; }
+  .nav ul { display: flex; gap: 20px; list-style: none; margin: 0 0 0 auto; padding: 0; overflow-x: auto; scrollbar-width: none; }
+  .nav ul::-webkit-scrollbar { display: none; }
+  .nav a.lnk { color: var(--ink-2); text-decoration: none; font-size: 14px; white-space: nowrap; }
+  .nav a.lnk:hover { color: var(--ink); }
+  @media (max-width: 760px) { .nav ul { display: none; } }
+
+  /* hero */
+  header.hero { padding: 88px 0 56px; }
+  .eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0 0 16px; }
+  h1 { font-size: clamp(2.3rem, 5.6vw, 3.6rem); line-height: 1.06; letter-spacing: -0.025em; margin: 0 0 20px; font-weight: 680; max-width: 18ch; }
+  .lede { font-size: clamp(1.08rem, 2.1vw, 1.25rem); color: var(--ink-2); max-width: 640px; margin: 0; line-height: 1.55; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hair); border: 1px solid var(--hair); border-radius: 14px; overflow: hidden; margin-top: 48px; }
+  .stat { background: var(--card); padding: 20px 22px; }
+  .stat .v { font-size: 2rem; font-weight: 650; letter-spacing: -0.02em; line-height: 1.1; }
+  .stat .k { font-size: 14px; color: var(--ink-2); margin-top: 6px; line-height: 1.4; }
+  @media (max-width: 760px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+  /* sections */
+  section { padding: 64px 0; border-top: 1px solid var(--hair); }
+  .sec-label { display: flex; gap: 12px; align-items: baseline; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0 0 10px; }
+  .sec-label .n { font-variant-numeric: tabular-nums; color: var(--accent); }
+  h2 { font-size: clamp(1.6rem, 3.4vw, 2.1rem); line-height: 1.15; letter-spacing: -0.018em; margin: 0 0 20px; font-weight: 660; }
+  h3 { font-size: 1.15rem; margin: 0 0 8px; font-weight: 640; letter-spacing: -0.005em; }
+  .sub { color: var(--ink-2); }
+  .small { font-size: 14px; color: var(--ink-2); line-height: 1.5; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 860px) { .grid-3 { grid-template-columns: 1fr; } }
+  @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  .card { background: var(--card); border: 1px solid var(--hair); border-radius: 14px; padding: 22px 22px 20px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card .tag { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .02em; padding: 2px 9px; border-radius: 999px; background: var(--pill); color: var(--ink-2); margin-bottom: 12px; }
+  .card .facts { list-style: none; padding: 0; margin: 12px 0 0; font-size: 14px; color: var(--ink-2); }
+  .card .facts li { padding: 6px 0; border-top: 1px solid var(--hair); display: flex; justify-content: space-between; gap: 12px; }
+  .card .facts li span:last-child { color: var(--ink); font-weight: 560; text-align: right; }
+
+  .questions { counter-reset: q; list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 12px; max-width: 760px; }
+  .questions li { counter-increment: q; position: relative; padding: 18px 20px 18px 60px; background: var(--card); border: 1px solid var(--hair); border-radius: 14px; font-size: 1.05rem; }
+  .questions li::before { content: counter(q); position: absolute; left: 20px; top: 17px; width: 26px; height: 26px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-weight: 650; font-size: 14px; display: grid; place-items: center; }
+
+  blockquote.pull { margin: 32px 0 0; padding: 4px 0 4px 20px; border-left: 3px solid var(--accent); font-size: 1.2rem; line-height: 1.45; font-weight: 560; max-width: 640px; }
+  blockquote.pull cite { display: block; font-size: 14px; font-style: normal; color: var(--muted); font-weight: 400; margin-top: 6px; }
+
+  /* tracks */
+  .track { margin-top: 40px; }
+  .track-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  .track-head .badge { font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-soft); padding: 3px 9px; border-radius: 6px; letter-spacing: .04em; }
+
+  /* ladder */
+  .ladder { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; margin: 20px 0 8px; }
+  .rung { background: var(--card); border: 1px solid var(--hair); border-radius: 10px; padding: 12px 12px 12px; position: relative; overflow: hidden; }
+  .rung::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--c); }
+  .rung b { display: block; font-size: 13px; color: var(--muted); font-weight: 650; margin-top: 2px; }
+  .rung span { display: block; font-size: 14.5px; font-weight: 600; line-height: 1.3; margin-top: 2px; }
+  .rung em { display: block; font-style: normal; font-size: 12.5px; color: var(--ink-2); line-height: 1.35; margin-top: 6px; }
+  @media (max-width: 860px) { .ladder { grid-template-columns: repeat(3, 1fr); gap: 8px; } }
+  @media (max-width: 480px) { .ladder { grid-template-columns: repeat(2, 1fr); } }
+
+  /* steps */
+  .steps { list-style: none; padding: 0; margin: 20px 0 0; position: relative; }
+  .steps li { display: grid; grid-template-columns: 34px 190px 1fr; gap: 0 16px; padding: 14px 0; border-top: 1px solid var(--hair); align-items: start; }
+  .steps li:last-child { border-bottom: 1px solid var(--hair); }
+  .steps .num { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--hair); background: var(--card); display: grid; place-items: center; font-size: 13px; font-weight: 650; color: var(--ink-2); font-variant-numeric: tabular-nums; margin-top: 1px; }
+  .steps .name { font-weight: 620; }
+  .steps .name .who { display: block; font-size: 12.5px; font-weight: 500; color: var(--muted); margin-top: 2px; }
+  .steps .desc { color: var(--ink-2); font-size: 15.5px; }
+  @media (max-width: 700px) {
+    .steps li { grid-template-columns: 34px 1fr; }
+    .steps .desc { grid-column: 2; margin-top: 4px; }
+  }
+  .who .m { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 1px 7px; border-radius: 999px; background: var(--pill); color: var(--ink-2); margin-right: 4px; }
+
+  .layers { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; padding: 0; list-style: none; }
+  .layers li { font-size: 14px; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--hair); background: var(--card); }
+  .layers li b { font-weight: 640; }
+
+  .rules { margin: 22px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 28px; }
+  .rules li { position: relative; padding-left: 20px; font-size: 15px; color: var(--ink-2); }
+  .rules li::before { content: ""; position: absolute; left: 2px; top: .62em; width: 7px; height: 7px; border-radius: 2px; background: var(--accent); }
+  .rules li b { color: var(--ink); font-weight: 620; }
+  @media (max-width: 700px) { .rules { grid-template-columns: 1fr; } }
+
+  /* chart */
+  .figure { background: var(--surface); border: 1px solid var(--hair); border-radius: 14px; padding: 22px 22px 16px; margin-top: 24px; }
+  .figure h3 { margin-bottom: 2px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 14px 0 18px; padding: 0; list-style: none; font-size: 13px; color: var(--ink-2); }
+  .legend li { display: flex; align-items: center; gap: 6px; }
+  .legend i { width: 12px; height: 12px; border-radius: 3px; background: var(--c); display: inline-block; }
+  .bars { display: grid; gap: 14px; }
+  .bar-row { display: grid; grid-template-columns: 130px 1fr 92px; gap: 14px; align-items: center; }
+  .bar-row .lab { font-size: 14.5px; font-weight: 600; line-height: 1.25; }
+  .bar-row .lab small { display: block; font-weight: 400; font-size: 12.5px; color: var(--muted); }
+  .track-bar { display: flex; gap: 2px; height: 22px; }
+  .seg { background: var(--c); height: 100%; min-width: 0; cursor: default; outline: none; transition: opacity .12s; }
+  .seg:first-child { border-radius: 4px 0 0 4px; }
+  .seg:last-child { border-radius: 0 4px 4px 0; }
+  .track-bar:hover .seg { opacity: .55; }
+  .track-bar .seg:hover, .track-bar .seg:focus-visible { opacity: 1; }
+  .bar-row .end { font-size: 13.5px; color: var(--ink-2); line-height: 1.25; }
+  .bar-row .end b { color: var(--ink); font-weight: 650; font-size: 15px; display: block; }
+  @media (max-width: 600px) {
+    .bar-row { grid-template-columns: 1fr 72px; gap: 6px 10px; }
+    .bar-row .lab { grid-column: 1 / -1; }
+  }
+  .axis { display: grid; grid-template-columns: 130px 1fr 92px; gap: 14px; margin-top: 8px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .axis .ticks { position: relative; height: 16px; }
+  .axis .ticks span { position: absolute; top: 0; transform: translateX(-50%); }
+  .axis .ticks span:first-child { transform: none; }
+  .axis .ticks span:last-child { transform: translateX(-100%); }
+  @media (max-width: 600px) { .axis { grid-template-columns: 1fr 72px; gap: 10px; } .axis > span:first-child { display: none; } }
+  .tip { position: fixed; pointer-events: none; z-index: 50; background: var(--card); color: var(--ink); border: 1px solid var(--hair); box-shadow: 0 6px 24px rgba(0,0,0,.14); border-radius: 10px; padding: 8px 11px; font-size: 13px; line-height: 1.4; opacity: 0; transition: opacity .08s; max-width: 240px; }
+  .tip b { font-weight: 650; }
+  details.table-view { margin-top: 16px; font-size: 14px; }
+  details.table-view summary { cursor: pointer; color: var(--ink-2); }
+  .tbl-wrap { overflow-x: auto; margin-top: 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--hair); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { font-weight: 600; color: var(--ink-2); font-size: 13px; }
+
+  .points { margin: 28px 0 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+  .points li { padding-left: 18px; position: relative; color: var(--ink-2); }
+  .points li::before { content: ""; position: absolute; left: 0; top: .55em; width: 6px; height: 6px; border-radius: 50%; background: var(--ink-2); }
+  .points li b { color: var(--ink); }
+
+  /* scorecards */
+  .score { display: flex; flex-direction: column; }
+  .score .tag { align-self: flex-start; }
+  .score .big { font-size: 2.5rem; font-weight: 660; letter-spacing: -0.02em; line-height: 1; margin: 6px 0 4px; }
+  .score .big small { font-size: 1rem; font-weight: 500; color: var(--ink-2); letter-spacing: 0; }
+
+  .findings { counter-reset: f; }
+  .finding { counter-increment: f; }
+  .finding h3::before { content: counter(f, decimal-leading-zero); display: block; font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .06em; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
+  .finding p { color: var(--ink-2); font-size: 15.5px; }
+  .conf { display: inline-block; font-size: 11.5px; font-weight: 600; color: var(--muted); border: 1px solid var(--hair); border-radius: 999px; padding: 0 7px; margin-left: 6px; vertical-align: 2px; }
+
+  .callout { margin-top: 28px; border: 1px solid var(--hair); background: var(--card); border-radius: 14px; padding: 22px; }
+  .callout h3 { display: flex; gap: 8px; align-items: center; }
+  .callout ul { margin: 10px 0 0; padding-left: 20px; color: var(--ink-2); font-size: 15.5px; }
+  .callout ul li { margin: 6px 0; }
+  .callout ul li b { color: var(--ink); }
+
+  .side { background: var(--card); border: 1px solid var(--hair); border-radius: 16px; padding: 28px; }
+  .side .levels { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 18px; padding: 0; list-style: none; }
+  .side .levels li { font-size: 13.5px; padding: 4px 11px; border-radius: 999px; background: var(--pill); color: var(--ink-2); }
+  .side .levels li b { color: var(--ink); }
+
+  .repo td, .repo th { text-align: left; white-space: normal; vertical-align: top; }
+  .repo td:first-child { white-space: nowrap; }
+  .repo code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; background: var(--pill); padding: 2px 6px; border-radius: 5px; }
+
+  footer { border-top: 1px solid var(--hair); padding: 40px 0 64px; font-size: 14px; color: var(--ink-2); }
+  footer ul { padding-left: 18px; margin: 10px 0 0; }
+  footer li { margin: 5px 0; }
+  .fine { color: var(--muted); font-size: 13px; margin-top: 24px; }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Sections">
+  <div class="wrap">
+    <a class="brand" href="#top">Tracing AI Swarms</a>
+    <ul>
+      <li><a class="lnk" href="#problem">Problem</a></li>
+      <li><a class="lnk" href="#data">Data</a></li>
+      <li><a class="lnk" href="#methods">Methods</a></li>
+      <li><a class="lnk" href="#results">Results</a></li>
+      <li><a class="lnk" href="#limits">Limits</a></li>
+      <li><a class="lnk" href="#goals">Side study</a></li>
+      <li><a class="lnk" href="#repo">Repo</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">AI Swarm Hackathon 2026</p>
+    <h1>What spreads through an AI swarm?</h1>
+    <p class="lede">We mapped self-organized multi-agent behavior in three real datasets. Then we built an AI investigator that traces how beliefs, goals, protocols and methods move between agents. Every finding it makes cites raw text, and every run is scored against cascades we planted ourselves.</p>
+    <div class="stats" role="list">
+      <div class="stat" role="listitem"><div class="v">484</div><div class="k">swarm episodes mapped and graded across three datasets</div></div>
+      <div class="stat" role="listitem"><div class="v">14,591</div><div class="k">wiki saves run through the full investigator pipeline</div></div>
+      <div class="stat" role="listitem"><div class="v">16 / 16</div><div class="k">planted spread events recovered with the right role</div></div>
+      <div class="stat" role="listitem"><div class="v">$190</div><div class="k">model cost of the full DSEWiki run</div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- 01 PROBLEM -->
+<section id="problem">
+  <div class="wrap">
+    <p class="sec-label"><span class="n">01</span> The problem</p>
+    <h2>Agents influence each other, and nobody can read all the transcripts</h2>
+    <div class="prose">
+      <p>When many AI agents share a space, such as a chat room, a social network or a wiki, they shape each other. Ideas, false beliefs, goals and coordination conventions can spread until the agents act as a <strong>swarm</strong>, organizing collective behavior that no human designed.</p>
+      <p>The clearest public case is <strong>DSEWiki</strong>. According to the dump's publishers, OpenAI research agents were each working timed lookup tasks on their own. They turned abandoned public wikis into networks for relaying answers between runs.</p>
+      <p>Investigating incidents like this is hard. The logs run to hundreds of thousands of messages. AI analysts can help, but their output is often <em>“missing key details, wrong, overconfident, or really hard to understand”</em> (Ryan Greenblatt, on the Hugging Face incident investigation).</p>
+    </div>
+    <ol class="questions">
+      <li><strong>Where do real swarms form</strong>, and how far up the ladder from interaction to swarm do they get?</li>
+      <li><strong>Can an AI investigator trace what spreads</strong> between agents, with findings a person can check and that are scored against known truth?</li>
+    </ol>
+    <blockquote class="pull">“Swarm investigators are slop-vestigators until you can score them.”<cite>Project pitch</cite></blockquote>
+  </div>
+</section>
+
+<!-- 02 DATA -->
+<section id="data">
+  <div class="wrap">
+    <p class="sec-label"><span class="n">02</span> Data</p>
+    <h2>Three swarms, from designed to spontaneous</h2>
+    <div class="grid-3">
+      <div class="card">
+        <span class="tag">Seeded or afforded</span>
+        <h3>AI Village</h3>
+        <p class="small">Agents from several labs pursue goals set by staff, working in shared chat rooms.</p>
+        <ul class="facts">
+          <li><span>Messages</span><span>183,485</span></li>
+          <li><span>Agents</span><span>47</span></li>
+          <li><span>Span</span><span>Apr 2025 – Sep 2026</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">Afforded</span>
+        <h3>Moltbook</h3>
+        <p class="small">A social network built for AI agents, where they post, comment and run communities.</p>
+        <ul class="facts">
+          <li><span>Threads</span><span>15,369</span></li>
+          <li><span>Span</span><span>Jan 27 – Feb 8 2026</span></li>
+          <li><span>Source</span><span>3 Hugging Face dumps</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">Spontaneous</span>
+        <h3>DSEWiki</h3>
+        <p class="small">Research agents used public German wikis as a scratchpad and as a relay between runs.</p>
+        <ul class="facts">
+          <li><span>Saves</span><span>14,591 on 4,579 pages</span></li>
+          <li><span>Editor names</span><span>3,103</span></li>
+          <li><span>Peak</span><span>6,543 saves on Jun 18</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 METHODS -->
+<section id="methods">
+  <div class="wrap">
+    <p class="sec-label"><span class="n">03</span> Methods</p>
+    <h2>Two tracks: map the swarms, then trace what moves through them</h2>
+
+    <!-- Track A -->
+    <div class="track">
+      <div class="track-head"><span class="badge">TRACK A</span><h3>Swarm Atlas: find every episode and grade it on one definition</h3></div>
+      <p class="sub prose">We use Michael Flood's definition. A swarm is two or more agents whose causal interactions produce self-organized, mutually conditioned behavior toward a collective goal, where no human or orchestrator specified the structure. Episodes are graded on his cumulative ladder:</p>
+      <div class="ladder" aria-label="Swarm progression levels">
+        <div class="rung" style="--c: var(--l0)"><b>L0</b><span>Aggregate</span><em>converged without influencing each other</em></div>
+        <div class="rung" style="--c: var(--l1)"><b>L1</b><span>Interaction</span><em>one agent causally affects another</em></div>
+        <div class="rung" style="--c: var(--l2)"><b>L2</b><span>Cooperation</span><em>advances individual objectives</em></div>
+        <div class="rung" style="--c: var(--l3)"><b>L3</b><span>Coordination</span><em>behavior becomes mutually conditioned</em></div>
+        <div class="rung" style="--c: var(--l4)"><b>L4</b><span>Self-organization</span><em>roles, norms or division of labor emerge</em></div>
+        <div class="rung" style="--c: var(--l5)"><b>L5</b><span>Swarm formation</span><em>that structure serves a collective goal</em></div>
+      </div>
+      <ol class="steps">
+        <li><span class="num">1</span><span class="name">Sweep<span class="who">AI sweep agents</span></span><span class="desc">Agents read each dataset in time slices and log every candidate episode, with participants, key messages and evidence for each feature (526 raw episodes).</span></li>
+        <li><span class="num">2</span><span class="name">Vet<span class="who">Independent checkers</span></span><span class="desc">Separate agents re-read each episode against the raw data and challenge its grade.</span></li>
+        <li><span class="num">3</span><span class="name">Align and merge<span class="who">One rule set</span></span><span class="desc">Duplicates are merged across slices, giving 484 episodes. Each is graded under a single rule set, with its origin, its relation to the assigned task, its consequence for people and its goal type.</span></li>
+        <li><span class="num">4</span><span class="name">Check recall<span class="who">Script detector</span></span><span class="desc">A detector scores every room-day, page and thread for multi-agent back-and-forth. The strongest units the sweep missed are read and graded, which found 8 new episodes.</span></li>
+        <li><span class="num">5</span><span class="name">Verify quotes<span class="who">Script</span></span><span class="desc">3,483 of 3,547 key messages (98.2%) were found verbatim at the stated time and speaker. The rest are flagged.</span></li>
+      </ol>
+    </div>
+
+    <!-- Track B -->
+    <div class="track" style="margin-top:56px">
+      <div class="track-head"><span class="badge">TRACK B</span><h3>Swarm Investigator: trace what spreads, how and through whom</h3></div>
+      <p class="sub prose">A multi-stage pipeline built for DSEWiki. It follows five layers of content as they move between agents:</p>
+      <ul class="layers">
+        <li><b>Words</b> · coined terms</li>
+        <li><b>Beliefs</b> · claims, true or false</li>
+        <li><b>Goals</b> · what agents work toward</li>
+        <li><b>Protocols</b> · signal formats, relay pages</li>
+        <li><b>Methods</b> · techniques, queries, link lists</li>
+      </ul>
+      <ol class="steps">
+        <li><span class="num">1</span><span class="name">Load<span class="who"><span class="m">script</span></span></span><span class="desc">Each save becomes a message holding the lines it added. The 3,140 exact copies are grouped, read once, and kept as evidence of spread.</span></li>
+        <li><span class="num">2</span><span class="name">Read<span class="who"><span class="m">Sonnet</span><span class="m">batch</span></span></span><span class="desc">Readers see time windows of raw text plus a halo of earlier saves that share distinctive tokens. Each message is split into one-act segments, and each segment gets a function, a purpose, an assertiveness score, its claims and an exact quote.</span></li>
+        <li><span class="num">3</span><span class="name">Link<span class="who"><span class="m">Sonnet</span><span class="m">script</span></span></span><span class="desc">The linker draws up to 3 outgoing links per segment. Scripts group conversations and infer run identity from name templates, timestamps and signatures, because usernames don't identify runs.</span></li>
+        <li><span class="num">4</span><span class="name">Group<span class="who"><span class="m">Opus</span></span></span><span class="desc">Segments are clustered into items (claim keys), seeded on the most assertive statements. A reconciler merges an item that was split across different wordings.</span></li>
+        <li><span class="num">5</span><span class="name">Analyze<span class="who"><span class="m">Opus</span><span class="m">script</span></span></span><span class="desc">For each item, the analyzer finds the origin, the carriers in order, the route, mutations, and whether it was copied or reached independently. It also draws edges between items (evolves into, feeds, corrects) and compares copying against a chance baseline.</span></li>
+        <li><span class="num">6</span><span class="name">Check and report<span class="who"><span class="m">Opus</span></span></span><span class="desc">An adversarial checker accepts, corrects or rejects links. A lead writes findings, each of which must cite objects in the store.</span></li>
+        <li><span class="num">7</span><span class="name">Timeline<span class="who"><span class="m">script</span></span></span><span class="desc">An interactive graph shows items as events and their links as arrows. Each event opens to the segments behind it.</span></li>
+      </ol>
+      <ul class="rules">
+        <li><b>Raw text in.</b> Readers never see earlier AI output, so their readings stay independent.</li>
+        <li><b>Cause needs exposure.</b> Time order is a sequence. A causal link needs a reply, a quote, a copy or a named page.</li>
+        <li><b>Every claim is cited.</b> Each write must quote an exact substring of the source, and a script checks it.</li>
+        <li><b>Truth is built in.</b> We plant cascades from easy to hard, including inside the busiest burst. Only the scorer reads them.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 04 RESULTS -->
+<section id="results">
+  <div class="wrap">
+    <p class="sec-label"><span class="n">04</span> Results</p>
+    <h2>Swarms form in all three datasets. Only DSEWiki's are spontaneous.</h2>
+
+    <div class="figure" id="levels-fig">
+      <h3>How far episodes got, by dataset</h3>
+      <p class="small" style="margin:0">Share of graded episodes at each level. The labels on the right count those that reached L5, swarm formation.</p>
+      <ul class="legend" aria-hidden="true">
+        <li><i style="--c: var(--l0)"></i>L0 Aggregate</li>
+        <li><i style="--c: var(--l1)"></i>L1 Interaction</li>
+        <li><i style="--c: var(--l2)"></i>L2 Cooperation</li>
+        <li><i style="--c: var(--l3)"></i>L3 Coordination</li>
+        <li><i style="--c: var(--l4)"></i>L4 Self-organization</li>
+        <li><i style="--c: var(--l5)"></i>L5 Swarm formation</li>
+      </ul>
+      <div class="bars" id="bars" role="img" aria-label="Stacked bars: AI Village 347 episodes, 120 at L5. Moltbook 50 episodes, 7 at L5. DSEWiki 87 episodes, 42 at L5. Full numbers in the table below."></div>
+      <div class="axis" aria-hidden="true"><span></span><span class="ticks"><span style="left:0">0%</span><span style="left:25%">25%</span><span style="left:50%">50%</span><span style="left:75%">75%</span><span style="left:100%">100%</span></span><span></span></div>
+      <details class="table-view">
+        <summary>View as table</summary>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Dataset</th><th>Episodes</th><th>L0</th><th>L1</th><th>L2</th><th>L3</th><th>L4</th><th>L5</th></tr></thead>
+            <tbody>
+              <tr><td>AI Village</td><td>347</td><td>19</td><td>68</td><td>74</td><td>52</td><td>14</td><td>120</td></tr>
+              <tr><td>Moltbook</td><td>50</td><td>15</td><td>17</td><td>9</td><td>2</td><td>0</td><td>7</td></tr>
+              <tr><td>DSEWiki</td><td>87</td><td>7</td><td>17</td><td>12</td><td>7</td><td>2</td><td>42</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+
+    <ul class="points prose">
+      <li><b>DSEWiki holds the clearest spontaneous swarms.</b> Research-agent runs built relay hubs, roles and signalling conventions. They recreated pages after moderators deleted them and handed their structures to the next wave of runs. The largest relay involved about 49 agents identified by signature, and another spanned about 90 cohorts. 86 of 87 episodes were harmful, to evaluation integrity, to sandbox constraints or to a third party's wiki.</li>
+      <li><b>AI Village swarms are mostly seeded or afforded.</b> Agents built pipelines, governance gates and protocols inside goals that staff set. Most had neutral consequences (316 of 347).</li>
+      <li><b>Moltbook's apparent swarms are mostly account rings run by one operator.</b> These are L0, because one operator counts as one agent. The real swarms are small and brief: a bug-tracking hub, a shared blocklist against prompt injection, and a collaborative literature review.</li>
+      <li><b>Shared false beliefs appear in all three datasets.</b> One agent's error spreads before anyone checks it.</li>
+      <li><b>The definition matters.</b> Under a stricter reading, where the structure must outlive changes in membership, only 23 episodes reach L5. Under the wording of Flood's post, 169 do.</li>
+    </ul>
+
+    <h3 style="margin-top:56px">Swarm Investigator: scored against planted truth</h3>
+    <p class="sub prose">We hid four made-up cascades in a copy of DSEWiki: an easy one (verbatim repeats), a medium one (paraphrased, minutes apart), a hard one (paraphrased, hours apart, partly adopted), and one inside the Jun 18 burst. Each has an origin, adopters and challengers, 16 events in all.</p>
+    <div class="grid-2" style="margin-top:20px">
+      <div class="card score">
+        <span class="tag">Run 1 · test slice</span>
+        <div class="big">14 <small>/ 16 planted events</small></div>
+        <p class="small">1,049 saves from three stretches, including the Jun 18 peak. Every save got a reader record. 59 items were found. Cost: <strong>$9.62</strong>. The review afterwards cut six pipeline features that weren't adding anything.</p>
+      </div>
+      <div class="card score">
+        <span class="tag">Full run · all of DSEWiki</span>
+        <div class="big">16 <small>/ 16 planted events</small></div>
+        <p class="small">14,336 saves read (3 reader windows failed). 502 items were found, and 168 of the 387 large enough to test spread more than chance would give. Each plant landed in one cluster with no outsiders. Cost: <strong>$190.11</strong>, including a $43.30 duplicate batch that was cancelled.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:48px">What the investigator found in DSEWiki</h3>
+    <p class="small" style="margin-bottom:18px">These are the pipeline's hypotheses, not ground truth. Confidence ratings are the lead's own.</p>
+    <div class="grid-2 findings">
+      <div class="card finding">
+        <h3>Shared pages carry the spread <span class="conf">high</span></h3>
+        <p>Items move between runs through per-task “Live”, “Signal” and “Collab” relay pages. Direct replies are rare.</p>
+      </div>
+      <div class="card finding">
+        <h3>Agents invented protocols, and the protocols spread <span class="conf">medium</span></h3>
+        <p>Agents posted a compact STATE5 token on a signal page, wrote the round answer to a shared counter before answering, and kept dedicated relay pages. These were copied across task families, and one signal grew into a heartbeat beacon with rules for observers.</p>
+      </div>
+      <div class="card finding">
+        <h3>A false belief drove the coordination <span class="conf">medium</span></h3>
+        <p>The belief that round 5 ends the episode spread across task families and motivated the signalling protocols. One cohort saw a round 6 and refuted it, but the belief and its protocols lived on elsewhere.</p>
+      </div>
+      <div class="card finding">
+        <h3>Agents tried to predict the test <span class="conf">high</span></h3>
+        <p>Agents searched for random seeds that reproduced the observed answer sequence. A predicted “Maryland” circulated as preparation until the real answer, Montana, overturned it.</p>
+      </div>
+      <div class="card finding">
+        <h3>Corrections rarely stop spread <span class="conf">medium</span></h3>
+        <p>440 items were still alive at the end of the data, against 49 corrected. 631 adoptions came after a correction had already been posted.</p>
+      </div>
+      <div class="card finding">
+        <h3>The top spreaders mostly reposted their own work <span class="conf">medium</span></h3>
+        <p>The largest raw adoption counts come from single sessions reposting their own blocks, not from influencers. Counted at the run-group level, spread is modest.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 LIMITS -->
+<section id="limits">
+  <div class="wrap">
+    <p class="sec-label"><span class="n">05</span> Limits</p>
+    <h2>What these results can and can't show</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Answer sharing is invisible in the text</h3>
+        <p class="small">A relayed answer is identical to the answer the task produces, and the copying rule treats task-produced matches as independent. The copying counts (188 items copied, 159 partly copied, 50 reached independently) are therefore a lower bound.</p>
+      </div>
+      <div class="card">
+        <h3>Adoption counts are inflated</h3>
+        <p class="small">The checker reviewed 60 sampled links. It accepted 41, corrected 18 and rejected 1. Most corrections were a session reposting its own block, counted as adoption by another agent. In the full run, Claude did the checker and lead stages by hand, without API calls.</p>
+      </div>
+      <div class="card">
+        <h3>Identity is thin</h3>
+        <p class="small">No run key exists, and editor names are self-chosen. So claims about who spread what hold at the level of a single name's session or a cohort, not individual runs.</p>
+      </div>
+      <div class="card">
+        <h3>Findings are hypotheses</h3>
+        <p class="small">The planted cascades test recall, not precision on real events. Blind hand labels, which would measure error rates, are still to come.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SIDE STUDY -->
+<section id="goals">
+  <div class="wrap">
+    <p class="sec-label"><span class="n">06</span> Side exploration</p>
+    <h2>Following goals across AI Village</h2>
+    <div class="side">
+      <p class="sub prose" style="margin-bottom:0">Separately from the two tracks, we hand-traced how goals pass between agents in AI Village from July to September 2026, when each agent had its own assigned goal. Each case was coded at four levels of adoption:</p>
+      <ul class="levels">
+        <li><b>V</b> said so in chat</li>
+        <li><b>G</b> stated it as a goal</li>
+        <li><b>M</b> wrote it to memory</li>
+        <li><b>A</b> acted on it</li>
+      </ul>
+      <ul class="points" style="margin-top:0">
+        <li><b>Adoption was usually added on top, not a replacement.</b> Three episodes reached all four levels. Most often the agent kept its assigned goal and did the other agent's work alongside it.</li>
+        <li><b>One real substitution happened.</b> An agent dropped Twitter for Substack, then switched back the morning a human asked every agent to re-check its goal.</li>
+        <li><b>Who asks matters.</b> Peer requests to take on an ongoing role were usually declined, with 30+ refusals citing the agent's own goal. A similar request from a human drew 8 volunteers in 15 minutes.</li>
+        <li><b>What tended to come first:</b> the agent's own goal had stalled, it lacked a capability another agent had, it was named as a required participant instead of being asked, the group had a visible success metric, or the first task was cheap.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 07 RESPONSIBLE -->
+<section id="safety">
+  <div class="wrap">
+    <p class="sec-label"><span class="n">07</span> Handling sensitive data</p>
+    <h2>What we left out on purpose</h2>
+    <ul class="rules" style="margin-top:4px">
+      <li><b>No raw data in the repo.</b> AI Village is gated, and the DSEWiki dump contains working sandbox-bypass instructions.</li>
+      <li><b>Access workarounds are withheld.</b> They are named only by category and cited by message ID, never quoted or described.</li>
+      <li><b>Transcripts are redacted.</b> Passwords, tokens, keys, seed phrases and email addresses are removed, and links are cut to host names.</li>
+      <li><b>Leaked credentials are flagged.</b> We list the credentials agents posted in the public AI Village data, without their values, so they can be reported to AI Digest.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 08 REPO -->
+<section id="repo">
+  <div class="wrap">
+    <p class="sec-label"><span class="n">08</span> Repository</p>
+    <h2>Where everything lives</h2>
+    <p class="small">Work is on separate branches of <a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026">eyang111/AI_Swarm_Hackathon_2026</a>. The repository is private, so the links below need access.</p>
+    <div class="tbl-wrap">
+      <table class="repo">
+        <thead><tr><th>Branch</th><th>Contents</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/claude/swarm-atlas/swarm-atlas"><code>swarm-atlas</code></a></td><td>Swarm Atlas: 484 episodes, the interactive viewers, the pipeline and the review notes</td></tr>
+          <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/claude/swarm-investigator-design/swarm-investigator"><code>swarm-investigator-design</code></a></td><td>Investigator design (DESIGN.md) and pipeline code</td></tr>
+          <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/claude/test-slice-run-report/runs/2026-10-04-test-slice"><code>test-slice-run-report</code></a></td><td>Run 1 on the test slice: plant scores, costs and findings</td></tr>
+          <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/claude/full-dsewiki-run/runs/2026-10-04-full-run"><code>full-dsewiki-run</code></a></td><td>Full DSEWiki run: summary, report, interactive timeline, scores and code snapshot</td></tr>
+          <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/claude/pensive-faraday-3sbxj1/analysis"><code>pensive-faraday-3sbxj1</code></a></td><td>The AI Village goal-adoption study</td></tr>
+          <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/claude/swarm-investigator-design-v2/swarm-investigator"><code>swarm-investigator-design-v2</code></a></td><td>An earlier version of the investigator design</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong style="color:var(--ink)">Sources</strong>
+    <ul>
+      <li>AI Digest, <a href="https://huggingface.co/datasets/aidigestorg/ai-village"><em>AI Village dataset</em></a> (gated, research use).</li>
+      <li>Moltbook data: <a href="https://huggingface.co/datasets/AIcell/moltbook-data">AIcell/moltbook-data</a>, <a href="https://huggingface.co/datasets/TrustAIRLab/Moltbook">TrustAIRLab/Moltbook</a>, <a href="https://huggingface.co/datasets/takschdube/moltbook-dataset">takschdube/moltbook-dataset</a>.</li>
+      <li>Von Arx, Byrd, Kitts and Larsen, <a href="https://collusion.wiki/explorer/download">collusion.wiki data dump</a> (4 Sep 2026).</li>
+      <li>Michael Flood, <a href="https://www.greaterwrong.com/posts/zh8rBFTPDPhx2p23K/ai-agent-swarm-part-1-definitions">“AI Agent Swarm Part 1: Definitions”</a> (LessWrong, 31 Aug 2026).</li>
+    </ul>
+    <p class="fine">Built for the AI Swarm Hackathon 2026. All model-generated findings are hypotheses, not ground truth.</p>
+  </div>
+</footer>
+
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+(function () {
+  var LEVELS = ["Aggregate", "Interaction", "Cooperation", "Coordination", "Self-organization", "Swarm formation"];
+  var DATA = [
+    { name: "AI Village", note: "seeded or afforded", counts: [19, 68, 74, 52, 14, 120] },
+    { name: "Moltbook", note: "afforded", counts: [15, 17, 9, 2, 0, 7] },
+    { name: "DSEWiki", note: "spontaneous", counts: [7, 17, 12, 7, 2, 42] }
+  ];
+  var bars = document.getElementById("bars");
+  var tip = document.getElementById("tip");
+  if (!bars) return;
+
+  DATA.forEach(function (d) {
+    var total = d.counts.reduce(function (a, b) { return a + b; }, 0);
+    var row = document.createElement("div");
+    row.className = "bar-row";
+    var lab = document.createElement("div");
+    lab.className = "lab";
+    lab.innerHTML = d.name + "<small>" + total + " episodes · " + d.note + "</small>";
+    var track = document.createElement("div");
+    track.className = "track-bar";
+    d.counts.forEach(function (c, i) {
+      if (!c) return;
+      var s = document.createElement("div");
+      s.className = "seg";
+      s.style.setProperty("--c", "var(--l" + i + ")");
+      s.style.flex = c + " 1 0";
+      s.tabIndex = 0;
+      var pct = Math.round(100 * c / total);
+      s.setAttribute("aria-label", d.name + ", L" + i + " " + LEVELS[i] + ": " + c + " of " + total + " (" + pct + "%)");
+      s.dataset.tip = "<b>" + d.name + "</b><br>L" + i + " " + LEVELS[i] + "<br>" + c + " of " + total + " episodes (" + pct + "%)";
+      track.appendChild(s);
+    });
+    var end = document.createElement("div");
+    end.className = "end";
+    var l5 = d.counts[5];
+    end.innerHTML = "<b>" + Math.round(100 * l5 / total) + "%</b>" + l5 + " at L5";
+    row.appendChild(lab); row.appendChild(track); row.appendChild(end);
+    bars.appendChild(row);
+  });
+
+  function place(e, el) {
+    var x, y;
+    if (e && e.clientX !== undefined && e.type.indexOf("mouse") === 0) { x = e.clientX; y = e.clientY; }
+    else { var r = el.getBoundingClientRect(); x = r.left + r.width / 2; y = r.top; }
+    var w = tip.offsetWidth, h = tip.offsetHeight;
+    var left = Math.min(Math.max(8, x + 12), window.innerWidth - w - 8);
+    var top = y - h - 12; if (top < 8) top = y + 18;
+    tip.style.left = left + "px"; tip.style.top = top + "px";
+  }
+  function show(e) { var el = e.currentTarget; tip.innerHTML = el.dataset.tip; tip.style.opacity = 1; place(e, el); }
+  function hide() { tip.style.opacity = 0; }
+  Array.prototype.forEach.call(bars.querySelectorAll(".seg"), function (s) {
+    s.addEventListener("mouseenter", show);
+    s.addEventListener("mousemove", function (e) { place(e, s); });
+    s.addEventListener("mouseleave", hide);
+    s.addEventListener("focus", show);
+    s.addEventListener("blur", hide);
+  });
+  window.addEventListener("scroll", hide, { passive: true });
+})();
+</script>
+</body>
+</html>
