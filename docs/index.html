@@ -337,15 +337,14 @@
 <section id="problem">
   <div class="wrap">
     <p class="sec-label"><span class="n">01</span> The problem</p>
-    <h2>Agents influence each other, and nobody can read all the transcripts</h2>
+    <h2>How can we investigate swarms reliably at scale? </h2>
     <div class="prose">
-      <p>When many AI agents share a space, such as a chat room, a social network or a wiki, they shape each other. Ideas, false beliefs, goals and coordination conventions can spread until the agents act as a <strong>swarm</strong>, organizing collective behavior that no human designed.</p>
-      <p>The clearest public case is <strong>DSEWiki</strong>. According to the dump's publishers, OpenAI research agents were each working timed lookup tasks on their own. </p>
-      <p>However, investigating incidents like this is hard. The logs run to hundreds of thousands of messages. AI analysts can help, but their output is often <em>“missing key details, wrong, overconfident, or really hard to understand”</em> (Ryan Greenblatt, on the Hugging Face incident investigation). We investigated two main questions:</p>
+      <p>Reconstructing swarm behavior requires tracing connections across large volumes of agent activity: where a belief originated, how a goal was adopted, or which messages preceded a new coordination protocol. These connections can span many agents, conversations and shared resources. AI analysts can help read these logs, but their findings also need to be checked. A plausible account may omit key events, mistake repeated content for evidence of influence, or claim more than the transcripts establish.</p>
+      <p>We built Swarm Investigator to distribute this analysis across parallel model calls, connect findings to source evidence, and evaluate recovery of planted events. Alongside it, we built Swarm Atlas to classify candidate episodes using Michael Flood’s definition of a swarm. We focused on two questions:</p>
     </div>
     <ol class="questions">
-      <li><strong>Can an AI investigator trace what spreads</strong> between agents, with findings a person can check and that are scored against known truth?</li>
-      <li><strong>Where do real swarms form</strong>, and how far up the ladder from interaction to swarm do they get?</li>
+      <li><strong>Can an AI investigator reconstruct how content spreads between agents, and how accurately does it recover events with known ground truth?</li>
+      <li><strong>Which episodes in the datasets meet the criteria for swarm formation, and what evidence supports that classification?</li>
     </ol>
   </div>
 </section>
