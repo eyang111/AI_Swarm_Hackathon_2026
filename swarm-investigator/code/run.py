@@ -9,8 +9,8 @@ Outputs in test_run/ (or $SI_RUN_DIR): investigation.db, report.md, scores.json,
 import argparse, json, os, sys, time
 import config as C
 
-STAGES = ['plant', 'load', 'windows', 'readers', 'reverify', 'keyword_df', 'local_linker', 'conversations', 'pregroup',
-          'identity', 'groupers', 'reconciler', 'reverify_seeds', 'l4', 'l5', 'script_analyzers', 'checker', 'lead',
+STAGES = ['plant', 'load', 'windows', 'readers', 'keyword_df', 'local_linker', 'conversations', 'pregroup',
+          'identity', 'groupers', 'reconciler', 'l4', 'l5', 'script_analyzers', 'checker', 'lead',
           'timeline', 'score']
 
 
@@ -26,7 +26,7 @@ def main():
     if a.backend == 'anthropic' and not (os.environ.get('ANTHROPIC_API_KEY') or os.environ.get('SI_ANTHROPIC_API_KEY')) \
             and not os.environ.get('SI_FAKE_API'):
         sys.exit('No API key: set ANTHROPIC_API_KEY or SI_ANTHROPIC_API_KEY in the project environment settings.')
-    import plant, load, window_plan, store, llm, readers, reverify, pregroup, local_linker, cluster, identity, groupers, \
+    import plant, load, window_plan, store, llm, readers, pregroup, local_linker, cluster, identity, groupers, \
         analyzers, timeline, score, errlog
     os.makedirs(C.RUN_DIR, exist_ok=True)
     log_path = os.path.join(C.RUN_DIR, 'stage_log.json')
@@ -48,7 +48,6 @@ def main():
         'load': lambda: load.main(),
         'windows': lambda: window_plan.main(),
         'readers': lambda: readers.run(*ready(), run_id),
-        'reverify': lambda: reverify.run(*ready(), run_id),
         'keyword_df': lambda: pregroup.keyword_df(ready()[0]),
         'local_linker': lambda: local_linker.run(*ready(), run_id),
         'conversations': lambda: cluster.run(*ready(), run_id),
@@ -56,7 +55,6 @@ def main():
         'identity': lambda: identity.run(*ready(), run_id),
         'groupers': lambda: groupers.run(*ready(), run_id),
         'reconciler': lambda: groupers.reconcile(*ready(), run_id),
-        'reverify_seeds': lambda: reverify.run_seeds(*ready(), run_id),
         'l4': lambda: analyzers.run_l4(*ready(), run_id),
         'l5': lambda: analyzers.run_l5(*ready(), run_id),
         'script_analyzers': lambda: analyzers.script_analyzers(ready()[0], run_id),

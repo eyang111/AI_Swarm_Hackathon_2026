@@ -102,16 +102,10 @@ def reader_stats(con):
     for seg in ('S1', 'S2', 'S3'):
         rows = [r for r in store.live_records(con) if con.execute('SELECT segment FROM messages WHERE msg_id=?', (r['msg_id'],)).fetchone()[0] == seg
                 and not r['cloned_from']]
-        cs = collections.Counter(r['context_status'] for r in rows)
-        by_seg[seg] = dict(records=len(rows), context=dict(cs),
-                           reply_to_unseen=sum('reply_to_unseen' in (r['context_needs'] or '') for r in rows),
+        by_seg[seg] = dict(records=len(rows), task_content=sum(bool(r['flag_task_content']) for r in rows),
                            purposes=dict(collections.Counter(r['purpose'] for r in rows).most_common(6)))
-    v2 = con.execute('SELECT COUNT(*) FROM records WHERE record_version>1 AND cloned_from IS NULL').fetchone()[0]
-    changed = 0
-    for r in con.execute('SELECT r2.purpose AS p2, r1.purpose AS p1 FROM records r2 JOIN records r1 ON r1.record_id=r2.supersedes WHERE r2.cloned_from IS NULL'):
-        changed += r['p1'] != r['p2']
     return dict(core_saves=core, saves_with_records=rec, coverage=round(rec / core, 3) if core else None, gaps=gaps,
-                by_segment=by_seg, v2_records=v2, v2_purpose_changed=changed,
+                by_segment=by_seg,
                 aw_segments=con.execute("SELECT COUNT(*) FROM segments WHERE purpose='ACCESS_WORKAROUND'").fetchone()[0],
                 before_jun18=con.execute(f"SELECT COUNT(DISTINCT msg_id) FROM records r JOIN messages m USING (msg_id) WHERE m.t < '{JUN18}'").fetchone()[0],
                 after_jun18=con.execute(f"SELECT COUNT(DISTINCT msg_id) FROM records r JOIN messages m USING (msg_id) WHERE m.t >= '{JUN18}'").fetchone()[0])
@@ -163,10 +157,9 @@ def main(stage_stats=None, backend='?'):
         L.append(f'- **{k}**: ' + json.dumps(v, default=str))
     r = out['readers']
     L += ['', '## Readers', '', f"Coverage {r['saves_with_records']}/{r['core_saves']} core saves; gaps {r['gaps']}; "
-          f"ACCESS_WORKAROUND segments {r['aw_segments']}; re-verify wrote {r['v2_records']} version-2 records "
-          f"({r['v2_purpose_changed']} changed primary purpose). Saves with records before Jun 18: {r['before_jun18']}, from Jun 18: {r['after_jun18']}.", '']
+          f"ACCESS_WORKAROUND segments {r['aw_segments']}. Saves with records before Jun 18: {r['before_jun18']}, from Jun 18: {r['after_jun18']}.", '']
     for seg, s in r['by_segment'].items():
-        L.append(f"- {seg}: {s['records']} records read; context {s['context']}; reply_to_unseen gaps {s['reply_to_unseen']}; top purposes {s['purposes']}")
+        L.append(f"- {seg}: {s['records']} records read; task content {s['task_content']}; top purposes {s['purposes']}")
     L += ['', '## Cost', '', '| tier | model | calls | input tok | output tok | cache read | $ |', '|---|---|---|---|---|---|---|']
     for x in out['costs']:
         L.append(f"| {x['tier']} | {x['model']} | {x['calls']} | {x['inp']} | {x['outp']} | {x['cr']} | {x['usd']:.2f} |")

@@ -10,15 +10,15 @@ TRUTH_DIR = os.path.join(RUN_DIR, 'truth')          # hidden from every model st
 CALL_LOG = os.path.join(RUN_DIR, 'calls')            # raw requests/responses per call (for audit)
 RAW_PAGES = '/mnt/project-files/dsewiki/raw/pages.jsonl.gz'
 
-# Models (Peyton, 2026-10-04): readers, local linker, re-verify on Sonnet; everything that merges or analyzes on Opus.
+# Models (Peyton, 2026-10-04): readers and local linker on Sonnet; groupers, reconciler, analyzers, checker, lead on Opus.
 SONNET = 'claude-sonnet-5-5'
 OPUS = 'claude-opus-5-5'
 TIER_MODEL = {
-    'reader': SONNET, 'reverify': SONNET, 'local_linker': SONNET,
-    'clusterer': OPUS, 'grouper': OPUS, 'identity': OPUS, 'reconciler': OPUS,
+    'reader': SONNET, 'local_linker': SONNET,
+    'grouper': OPUS, 'reconciler': OPUS,
     'analyzer': OPUS, 'checker': OPUS, 'lead': OPUS,
 }
-TIER_EFFORT = {'reader': 'low', 'reverify': 'low', 'local_linker': 'low'}   # Opus tiers: 'medium' (set explicitly)
+TIER_EFFORT = {'reader': 'low', 'local_linker': 'low'}   # Opus tiers: 'medium' (set explicitly)
 
 # $ per million tokens (list). Batch = 50% off. Cache reads $0.20, cache writes 1.25x input.
 PRICE = {SONNET: (2.0, 10.0), OPUS: (4.0, 20.0), 'claude-opus-4-8': (5.0, 25.0), 'claude-opus-5': (5.0, 25.0)}   # 4.8 / 5: server-side fallback targets
@@ -35,7 +35,6 @@ HALO_MAX_CHARS = 120_000          # keeps the S3 peak windows under ~60k input t
 DF_MIN, DF_CAP = 2, 50
 
 LOCAL_LINK_CAP = 3                 # outgoing local links per segment (D2)
-LOW_READER_CONF = 0.5              # re-verify trigger
 SEED_ASSERTIVE = 0.7               # assertive cluster seed
 
 WITHHELD = '[technique withheld]'

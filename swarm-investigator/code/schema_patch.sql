@@ -5,9 +5,6 @@
 ALTER TABLE records ADD COLUMN record_version INTEGER NOT NULL DEFAULT 1;
 ALTER TABLE records ADD COLUMN supersedes TEXT;            -- record_id of the version this one revises
 ALTER TABLE records ADD COLUMN revision_reason TEXT;
-ALTER TABLE records ADD COLUMN context_status TEXT;        -- complete | partial | missing
-ALTER TABLE records ADD COLUMN context_needs TEXT;         -- JSON list
-ALTER TABLE records ADD COLUMN uncertain_fields TEXT;      -- JSON list
 ALTER TABLE records ADD COLUMN cloned_from TEXT;           -- record_id this copy's record was cloned from (DESIGN 5.3)
 ALTER TABLE segments ADD COLUMN summary TEXT;
 ALTER TABLE claims ADD COLUMN segment_id TEXT;
@@ -16,12 +13,6 @@ ALTER TABLE claims ADD COLUMN segment_id TEXT;
 ALTER TABLE messages ADD COLUMN in_core INTEGER NOT NULL DEFAULT 1;
 ALTER TABLE messages ADD COLUMN segment TEXT;              -- S1/S2/S3 slice segment, null for halo
 
-CREATE TABLE context_resolutions (
-  res_id TEXT PRIMARY KEY, task_id TEXT NOT NULL REFERENCES tasks(task_id),
-  msg_id TEXT NOT NULL, need_index INTEGER NOT NULL,
-  status TEXT NOT NULL CHECK (status IN ('resolved','unresolvable','ambiguous')),
-  resolved_by TEXT, resolution TEXT, confidence TEXT, rationale TEXT
-);
 
 -- pipeline_v2: clusters are over segments. claim_key_members stays for claims; this table holds segment membership.
 CREATE TABLE claim_key_segments (
@@ -96,3 +87,11 @@ CREATE VIEW events AS
           ORDER BY CASE l.confidence WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END LIMIT 1) AS exposure_msg_id
   FROM live_members lm JOIN claim_keys ck USING (claim_key) JOIN novelty n USING (claim_key)
   WHERE NOT EXISTS (SELECT 1 FROM messages d WHERE d.msg_id = lm.msg_id AND d.script_label = 'DUPLICATE');
+
+-- Cut 2026-10-04 (DESIGN 15): write-only tables and views nothing reads.
+DROP VIEW IF EXISTS conversation_presence;
+DROP TABLE IF EXISTS conversation_edges;
+DROP TABLE IF EXISTS loose_ends;
+DROP TABLE IF EXISTS mentions;
+DROP TABLE IF EXISTS aggregate_members;
+DROP TABLE IF EXISTS aggregates;

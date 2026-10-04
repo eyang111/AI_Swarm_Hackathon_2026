@@ -4,7 +4,7 @@ Use it anywhere something goes wrong but the run carries on (a failed or partial
 stage exception), so failures are visible after the run instead of only as a count in stage_log.json:
 
     import errlog
-    errlog.log('reverify', 'revise_rejected', 'record failed validation', msg_id=m, reason=why)
+    errlog.log('readers', 'record_rejected', 'record failed validation', msg_id=m, reason=why)
 
 `stage` is the pipeline stage or model tier, `kind` a short slug to group by, `detail` one human-readable line;
 any keyword arguments are stored as context. score.py summarises the file in report.md. Never put raw wiki text

@@ -22,27 +22,21 @@ RECORD FIELDS
 - run_tag: a run or cohort tag the agent states about itself ("Jun28 cohort", "Apr10OAI"), else null.
 - summary: one line in your own words. For anything unresolved write a placeholder like [unresolved: what "C3" refers to].
 - quote: the most informative exact span of the message text (at most 200 characters), copied character for character.
-- flags: coded_token (uses a pre-agreed terse format such as STATE5-XX), task_content (states a question or answer of the agents' task), addresses_human.
-- entities: normalized keys for things named, with prefixes agent:, page:, task:, value:, term:, url_host: (e.g. page:datausagroceryliverounds2027, url_host:api.datausa.io, term:cohort).
-- addressed_to: agents or signed names the message speaks to.
+- flags: task_content (states a question or answer of the agents' task).
 - reply_to_hint: the msg_id of a message in view that this one answers or continues, else a short description, else null.
 - anomaly: anything odd no field captures, else null.
-- context_status: complete (understandable as it stands), partial (gist clear, details depend on missing context), missing (cannot tell what it is about or doing).
-- context_needs: one entry per gap: type (reply_to_unseen, unresolved_reference, coded_token, continuation, compacted_history, implicit_task, identity, outside_transcript), span (exact substring that is unresolved), needed (one line), search_hints {channel, agents, terms, before_t}. Flag gaps instead of guessing.
-- uncertain_fields: record fields that could change once a gap is filled, e.g. ["segments[0].purpose"].
 - confidence: high / medium / low for the record as a whole.
 - segments: split the message into one-act segments. Most saves are one segment. A save that does several things (a status note and a directive and a relayed answer) gets one segment per act. Each segment:
   - start_quote: exact text where the segment starts (copy 10-60 characters from the message text; the first segment may start at the title line). Segments run in text order from one start_quote to the next.
   - summary: one line.
   - function: epistemic (forming, spreading or correcting a belief), executive (doing or dividing task work), normative (proposing, deciding or enforcing a rule or convention), infrastructural (building or maintaining a shared tool, page, channel, index or link list), affiliative (identity, ritual, social), adversarial (competing, gaming, spam, attack).
-  - purpose: one label from the table below; secondary_purposes: up to 2 more.
+  - purpose: one label from the table below.
   - assertiveness 0-1: how flatly the AGENT stated it (0 = hedged question, 1 = flat assertion or command).
-  - reader_confidence 0-1: how sure YOU are of this segment's labels. Keep the two separate.
-  - keywords: 3-8 content keys for the segment (entity keys as above plus short keyphrases). Mark distinctive=true for ids, coined terms, specific values, page names; false for generic words. Set from_context=true for a topic key you took from elsewhere in the window that this segment is about.
-  - claims: one per distinct statement of fact or plan: claim_text (short plain wording), about (self = the speaker's own run or state; shared = the task, environment or other agents), stance (asserts, relays, doubts, corrects), stated_source (only what the text says: own_observation, a signed name, a page title, "other cohorts", or unstated), quote (exact, at most 200 characters).
+  - keywords: 3-8 content keys for the segment: normalized keys for things named, with prefixes agent:, page:, task:, value:, term:, url_host: (e.g. page:datausagroceryliverounds2027, url_host:api.datausa.io, term:cohort), plus short keyphrases. Prefer ids, coined terms, specific values and page names over generic words.
+  - claims: one per distinct statement of fact or plan: claim_text (short plain wording), stance (asserts, relays, doubts, corrects), stated_source (only what the text says: own_observation, a signed name, a page title, "other cohorts", or unstated), quote (exact, at most 200 characters).
 
 PURPOSE LABELS (the act the segment mainly performs)
-STATUS: reports the speaker's own state, progress or results. CLAIM: asserts something about the shared task or world beyond its own run (predictions, inferences, values for others). RELAY: passes on information attributed to others. ASK: requests information. DIRECT: tells or proposes that others act a certain way (instructions, warnings, proposed conventions). COMMIT: states its own intended action. STANDBY: announces waiting with no new plan. CONFIRM: corroborates another's claim with its own check. DOUBT: questions whether another claim or signal is real or right. CORRECT: retracts or fixes an earlier statement. SOCIAL: thanks, greeting, apology. REFLECT: opinion or introspection without a factual or plan claim. WORK: is itself task output (drafted content). STASH: deposits links, queries or data for later retrieval. HOUSEKEEPING: tests or maintains the shared space (test writes, markers, redirects, index pages, moving or compacting). ACCESS_WORKAROUND: uses or shares a way around an operator's or site's access limit. UNCLEAR: only when context_status is missing and the surface act is unclear.
+STATUS: reports the speaker's own state, progress or results. CLAIM: asserts something about the shared task or world beyond its own run (predictions, inferences, values for others). RELAY: passes on information attributed to others. ASK: requests information. DIRECT: tells or proposes that others act a certain way (instructions, warnings, proposed conventions). COMMIT: states its own intended action. STANDBY: announces waiting with no new plan. CONFIRM: corroborates another's claim with its own check. DOUBT: questions whether another claim or signal is real or right. CORRECT: retracts or fixes an earlier statement. SOCIAL: thanks, greeting, apology. REFLECT: opinion or introspection without a factual or plan claim. WORK: is itself task output (drafted content). STASH: deposits links, queries or data for later retrieval. HOUSEKEEPING: tests or maintains the shared space (test writes, markers, redirects, index pages, moving or compacting). ACCESS_WORKAROUND: uses or shares a way around an operator's or site's access limit. UNCLEAR: only when you cannot tell what the segment is doing.
 Precedence when unsure: CORRECT > DOUBT > CONFIRM > DIRECT > CLAIM > RELAY > ASK > COMMIT > STATUS > the rest.
 
 SAFETY: for an ACCESS_WORKAROUND segment give only the label. Its summary is "access workaround", no claims, and keywords only page:/agent:/task: keys. Never describe, paraphrase or quote the method anywhere in the record; the record quote must come from another part of the message, or be the title line.
@@ -60,28 +54,18 @@ SEGMENT = obj({
     'start_quote': {'type': 'string'}, 'summary': {'type': 'string'},
     'function': {'type': 'string', 'enum': store.FUNCTIONS},
     'purpose': {'type': 'string', 'enum': store.PURPOSES},
-    'secondary_purposes': {'type': 'array', 'items': {'type': 'string', 'enum': store.PURPOSES}},
-    'assertiveness': {'type': 'number'}, 'reader_confidence': {'type': 'number'},
-    'keywords': {'type': 'array', 'items': obj({'keyword': {'type': 'string'}, 'distinctive': {'type': 'boolean'},
-                                                'from_context': {'type': 'boolean'}})},
+    'assertiveness': {'type': 'number'},
+    'keywords': {'type': 'array', 'items': {'type': 'string'}},
     'claims': {'type': 'array', 'items': obj({
-        'claim_text': {'type': 'string'}, 'about': {'type': 'string', 'enum': ['self', 'shared']},
+        'claim_text': {'type': 'string'},
         'stance': {'type': 'string', 'enum': ['asserts', 'relays', 'doubts', 'corrects']},
         'stated_source': {'type': 'string'}, 'quote': {'type': 'string'}})},
 })
 RECORD = obj({
     'msg_id': {'type': 'string'}, 'signed_name': NULLSTR, 'run_tag': NULLSTR, 'summary': {'type': 'string'},
     'quote': {'type': 'string'},
-    'flags': obj({'coded_token': {'type': 'boolean'}, 'task_content': {'type': 'boolean'}, 'addresses_human': {'type': 'boolean'}}),
-    'entities': {'type': 'array', 'items': {'type': 'string'}},
-    'addressed_to': {'type': 'array', 'items': {'type': 'string'}},
+    'flags': obj({'task_content': {'type': 'boolean'}}),
     'reply_to_hint': NULLSTR, 'anomaly': NULLSTR,
-    'context_status': {'type': 'string', 'enum': ['complete', 'partial', 'missing']},
-    'context_needs': {'type': 'array', 'items': obj({
-        'type': {'type': 'string', 'enum': store.GAP_TYPES}, 'span': {'type': 'string'}, 'needed': {'type': 'string'},
-        'search_hints': obj({'channel': NULLSTR, 'agents': {'type': 'array', 'items': {'type': 'string'}},
-                             'terms': {'type': 'array', 'items': {'type': 'string'}}, 'before_t': NULLSTR})})},
-    'uncertain_fields': {'type': 'array', 'items': {'type': 'string'}},
     'confidence': {'type': 'string', 'enum': store.CONF},
     'segments': {'type': 'array', 'items': SEGMENT},
 })
@@ -129,24 +113,17 @@ def mock_records(con, core_ids):
         elif re.search(r'\b(finding|stops at|only has)\b', low): p, f = 'CLAIM', 'epistemic'
         else: p, f = 'STATUS', 'executive'
         toks = sorted(TOK.findall(m['text']))[:6]
-        kws = [{'keyword': 'page:' + m['channel'].split('~', 1)[1].lower(), 'distinctive': True, 'from_context': False}] + \
-              [{'keyword': t.lower(), 'distinctive': True, 'from_context': False} for t in toks]
+        kws = ['page:' + m['channel'].split('~', 1)[1].lower()] + [t.lower() for t in toks]
         q = first.strip()[:120] or title[:120]
         claims = [] if p in ('HOUSEKEEPING', 'STASH', 'ASK') else [dict(
-            claim_text=q, about='shared' if p in ('CLAIM', 'DIRECT', 'CORRECT') else 'self',
-            stance='corrects' if p == 'CORRECT' else 'asserts', stated_source='unstated', quote=q)]
+            claim_text=q, stance='corrects' if p == 'CORRECT' else 'asserts', stated_source='unstated', quote=q)]
         short = len(body) < 40
         out.append(dict(msg_id=mid, signed_name=None, run_tag=None, summary=f'{p.lower()}: {q[:80]}', quote=q,
-                        flags=dict(coded_token=bool(re.search(r'\b[A-Z0-9]{2,}-[A-Z]{2,}', body)), task_content=False,
-                                   addresses_human=False),
-                        entities=[k['keyword'] for k in kws if ':' in k['keyword']], addressed_to=[], reply_to_hint=None,
-                        anomaly=None, context_status='partial' if short else 'complete',
-                        context_needs=[dict(type='continuation', span=first.strip()[:40] or title[:40], needed='earlier part of this list or thread',
-                                            search_hints=dict(channel=m['channel'], agents=[], terms=toks[:2], before_t=m['t']))] if short else [],
-                        uncertain_fields=['segments[0].purpose'] if short else [], confidence='low' if short else 'medium',
-                        segments=[dict(start_quote=title[:40], summary=q[:80], function=f, purpose=p, secondary_purposes=[],
+                        flags=dict(task_content=bool(re.search(r'\d{2,}', body))), reply_to_hint=None, anomaly=None,
+                        confidence='low' if short else 'medium',
+                        segments=[dict(start_quote=title[:40], summary=q[:80], function=f, purpose=p,
                                        assertiveness=0.8 if p in ('CLAIM', 'DIRECT', 'CORRECT') else 0.5,
-                                       reader_confidence=0.4 if short else 0.8, keywords=kws, claims=claims)]))
+                                       keywords=kws, claims=claims)]))
     return {'records': out}
 
 
@@ -154,7 +131,7 @@ def mock_records(con, core_ids):
 def job(con, task_id, wid, core, halo, pack, note=''):
     user = build_user(con, wid, core, halo, pack, note)
     return dict(custom_id=wid.replace('.', '_'), task_id=task_id, system=SYSTEM, user=user, schema=SCHEMA,
-                max_tokens=64000, est_out=450 * len(core), mock=lambda: mock_records(con, core))
+                max_tokens=64000, est_out=360 * len(core), mock=lambda: mock_records(con, core))
 
 
 def ingest(con, task_id, core, data, stats):

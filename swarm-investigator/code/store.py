@@ -11,8 +11,6 @@ PURPOSES = ['STATUS', 'CLAIM', 'RELAY', 'ASK', 'DIRECT', 'COMMIT', 'STANDBY', 'C
             'SOCIAL', 'REFLECT', 'WORK', 'STASH', 'HOUSEKEEPING', 'ACCESS_WORKAROUND', 'UNCLEAR']
 PRECEDENCE = ['ACCESS_WORKAROUND', 'CORRECT', 'DOUBT', 'CONFIRM', 'DIRECT', 'CLAIM', 'RELAY', 'ASK', 'COMMIT', 'STATUS']
 FUNCTIONS = ['epistemic', 'executive', 'normative', 'infrastructural', 'affiliative', 'adversarial']
-GAP_TYPES = ['reply_to_unseen', 'unresolved_reference', 'coded_token', 'continuation', 'compacted_history',
-             'implicit_task', 'identity', 'outside_transcript']
 LINK_TYPES = ['source_of', 'reply_to', 'acted_on', 'confirms', 'doubts', 'corrects', 'same_run', 'exposed_to',
               'independent_of', 'anchor']
 VIAS = ['direct_message', 'shared_page', 'human_relay', 'external_source', 'task_prompt', 'unknown']
@@ -45,6 +43,8 @@ def init_db(path=None):
     # run groups are built over name-sessions (DESIGN 5.5), so membership may be a session id
     sql = sql.replace("member_kind IN ('speaker','signed_name','run_tag')",
                       "member_kind IN ('speaker','signed_name','run_tag','session')")
+    # cut 2026-10-04 (DESIGN 15): the reader no longer gives claim `about`
+    sql = sql.replace("about       TEXT NOT NULL CHECK (about IN ('self','shared')),", "about       TEXT,")
     con = connect(path)
     con.executescript(sql)
     con.executescript(open(os.path.join(os.path.dirname(__file__), 'schema_patch.sql')).read())
@@ -158,9 +158,6 @@ def validate_record(con, rec, allowed_msg_ids):
     if mid not in allowed_msg_ids:
         return f'msg_id {mid} is not a core message of this window', None
     text = msg_text(con, mid)
-    cs = rec.get('context_status')
-    if cs not in ('complete', 'partial', 'missing'):
-        return f'bad context_status {cs}', None
     if rec.get('confidence') not in CONF:
         return 'bad confidence', None
     segs = rec.get('segments') or []
@@ -168,26 +165,20 @@ def validate_record(con, rec, allowed_msg_ids):
         return 'no segments', None
     located = []
     for k, s in enumerate(segs):
-        for p in [s.get('purpose')] + list(s.get('secondary_purposes') or []):
-            if p not in PURPOSES:
-                return f'segment {k}: unknown purpose {p}', None
-        if s.get('purpose') == 'UNCLEAR' and cs != 'missing':
-            return f'segment {k}: UNCLEAR is only allowed when context_status is missing', None
-        if len(s.get('secondary_purposes') or []) > 2:
-            return f'segment {k}: more than 2 secondary purposes', None
+        if s.get('purpose') not in PURPOSES:
+            return f'segment {k}: unknown purpose {s.get("purpose")}', None
         if s.get('function') not in FUNCTIONS:
             return f'segment {k}: unknown function {s.get("function")}', None
-        for f in ('assertiveness', 'reader_confidence'):
-            v = s.get(f)
-            if not isinstance(v, (int, float)) or not 0 <= v <= 1:
-                return f'segment {k}: {f} must be a number from 0 to 1', None
+        v = s.get('assertiveness')
+        if not isinstance(v, (int, float)) or not 0 <= v <= 1:
+            return f'segment {k}: assertiveness must be a number from 0 to 1', None
         loc = locate(text, s.get('start_quote') or '')
         if not loc:
             return f'segment {k}: start_quote is not an exact substring of the message text', None
         located.append((loc[0], k))
         for c in s.get('claims') or []:
-            if c.get('about') not in ('self', 'shared') or c.get('stance') not in ('asserts', 'relays', 'doubts', 'corrects'):
-                return f'segment {k}: bad claim about/stance', None
+            if c.get('stance') not in ('asserts', 'relays', 'doubts', 'corrects'):
+                return f'segment {k}: bad claim stance', None
             if c.get('quote') and not locate(text, c['quote']):
                 return f'segment {k}: claim quote not found', None
     starts = sorted(located)
@@ -195,11 +186,6 @@ def validate_record(con, rec, allowed_msg_ids):
         return 'two segments start at the same place', None
     if not locate(text, rec.get('quote') or ''):
         return 'record quote is not an exact substring of the message text', None
-    for n, need in enumerate(rec.get('context_needs') or []):
-        if need.get('type') not in GAP_TYPES:
-            return f'context_needs[{n}]: unknown type', None
-        if need.get('span') and not locate(text, need['span']):
-            return f'context_needs[{n}]: span not found', None
     # spans: segment i runs from its start to the next segment's start; the first one from 0
     spans = {}
     for i, (a, k) in enumerate(starts):
@@ -217,56 +203,48 @@ def write_record(con, task_id, prepared, version=1, supersedes=None, revision_re
     order = prepared['order']
     spans = span_override or prepared['spans']
     seg_purposes = [segs[k]['purpose'] for k in order]
-    allp = seg_purposes + [p for k in order for p in (segs[k].get('secondary_purposes') or [])]
+    allp = seg_purposes
     ranked = sorted(set(allp), key=lambda p: PRECEDENCE.index(p) if p in PRECEDENCE else 99)
     primary = ranked[0]
     rest = [p for p in ranked[1:]][:2]
     summary = C.AW_SUMMARY if AW in allp else (rec.get('summary') or '')[:500]
     flags = rec.get('flags') or {}
     con.execute('''INSERT INTO records (record_id, msg_id, task_id, signed_name, run_tag, purpose, purpose2, purpose3,
-        flag_coded_token, flag_task_content, flag_addresses_human, summary, reply_to_hint, anomaly, confidence,
-        record_version, supersedes, revision_reason, context_status, context_needs, uncertain_fields, cloned_from)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
+        flag_task_content, summary, reply_to_hint, anomaly, confidence, record_version, supersedes, revision_reason,
+        cloned_from) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
                 (rid, mid, task_id, rec.get('signed_name'), rec.get('run_tag'), primary,
                  rest[0] if rest else None, rest[1] if len(rest) > 1 else None,
-                 int(bool(flags.get('coded_token'))), int(bool(flags.get('task_content'))),
-                 int(bool(flags.get('addresses_human'))), summary, rec.get('reply_to_hint'),
+                 int(bool(flags.get('task_content'))), summary, rec.get('reply_to_hint'),
                  None if AW in allp else rec.get('anomaly'), rec['confidence'], version, supersedes, revision_reason,
-                 rec.get('context_status'), json.dumps(rec.get('context_needs') or [], ensure_ascii=False),
-                 json.dumps(rec.get('uncertain_fields') or []), cloned_from))
+                 cloned_from))
     text = msg_text(con, mid)
     add_citation(con, 'record', rid, mid, (quote_override or rec['quote']) if AW not in allp else text[:min(len(text), 60)])
     for n, k in enumerate(order, 1):
         s = segs[k]
         sid = f'{mid}#{n}' if version == 1 else f'{mid}#{n}v{version}'
         a, b = spans[k]
-        aw = s['purpose'] == AW or AW in (s.get('secondary_purposes') or [])
+        aw = s['purpose'] == AW
         con.execute('''INSERT INTO segments (segment_id, record_id, msg_id, char_start, char_end, function, purpose,
-            assertiveness, reader_confidence, summary) VALUES (?,?,?,?,?,?,?,?,?,?)''',
-                    (sid, rid, mid, a, b, s['function'], AW if aw else s['purpose'], float(s['assertiveness']),
-                     float(s['reader_confidence']), C.AW_SUMMARY if aw else (s.get('summary') or '')[:300]))
+            assertiveness, summary) VALUES (?,?,?,?,?,?,?,?,?)''',
+                    (sid, rid, mid, a, b, s['function'], s['purpose'], float(s['assertiveness']),
+                     C.AW_SUMMARY if aw else (s.get('summary') or '')[:300]))
         kws = []
         for kw in s.get('keywords') or []:
             key = _clean_kw(kw.get('keyword') if isinstance(kw, dict) else kw)
             if not key or (aw and not key.startswith(KEEP_KW_PREFIX)):
                 continue
-            kws.append((key, int(bool(kw.get('from_context'))) if isinstance(kw, dict) else 0))
-        for key, fc in dict(kws).items():
-            con.execute('INSERT OR IGNORE INTO segment_keywords VALUES (?,?,?)', (sid, key, fc))
+            kws.append(key)
+        for key in dict.fromkeys(kws):
+            con.execute('INSERT OR IGNORE INTO segment_keywords (segment_id, keyword) VALUES (?,?)', (sid, key))
         if aw:
             continue                                   # claims about a method are refused (store_design 2)
         for j, c in enumerate(s.get('claims') or [], 1):
             cid = f'{rid}/s{n}c{j}'
-            con.execute('INSERT INTO claims (claim_id, record_id, msg_id, claim_text, norm_text, about, stance, stated_source, segment_id) '
-                        'VALUES (?,?,?,?,?,?,?,?,?)', (cid, rid, mid, c['claim_text'][:500], norm_text(c['claim_text']),
-                                                       c['about'], c['stance'], c.get('stated_source') or 'unstated', sid))
+            con.execute('INSERT INTO claims (claim_id, record_id, msg_id, claim_text, norm_text, stance, stated_source, segment_id) '
+                        'VALUES (?,?,?,?,?,?,?,?)', (cid, rid, mid, c['claim_text'][:500], norm_text(c['claim_text']),
+                                                     c['stance'], c.get('stated_source') or 'unstated', sid))
             if c.get('quote') and citation_ok(con, mid, c['quote']):
                 add_citation(con, 'claim', cid, mid, c['quote'])
-    if AW not in allp:
-        for e in rec.get('entities') or []:
-            con.execute('INSERT OR IGNORE INTO mentions VALUES (?,?,?,?)', (rid, mid, 'entity', _clean_kw(e)))
-    for a in rec.get('addressed_to') or []:
-        con.execute('INSERT OR IGNORE INTO mentions VALUES (?,?,?,?)', (rid, mid, 'addressed_to', a.strip()[:120]))
     log_op(con, task_id, 'write_record', {'msg_id': mid, 'version': version}, 'ok')
     return 'ok', rid
 
@@ -474,11 +452,6 @@ def add_analysis(con, task_id, analysis_id, kind, subject, body):
 def add_check(con, obj_type, obj_id, checker, task_id, verdict, note):
     con.execute('INSERT INTO checks (obj_type, obj_id, checker, task_id, verdict, note, t) VALUES (?,?,?,?,?,?,?)',
                 (obj_type, obj_id, checker, task_id, verdict, (note or '')[:800], now()))
-
-
-def add_loose_end(con, task_id, le_id, about_type, about_id, question):
-    con.execute('INSERT OR IGNORE INTO loose_ends VALUES (?,?,?,?,?,?,?)',
-                (le_id, task_id, about_type, about_id, question[:500], 'open', None))
 
 
 def add_observation(con, task_id, obs_id, text, cites):

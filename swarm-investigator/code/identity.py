@@ -1,13 +1,13 @@
-"""Run identity (DESIGN.md 5.5, identity_findings.md): identity_candidates (script) + run-identity linker (Opus 5.5).
+"""Run identity (DESIGN.md 5.5, identity_findings.md): identity_candidates and run groups, script only.
 
 Unit = name-session (one name's saves split at gaps over 6 h; anonymous saves are singletons).
 Strong edges (template mint, timestamp mint, signature) are accepted by the script; medium edges (distinctive edit
-summary within 48 h, same date tag + topic word within 48 h) go to the linker. Merges are blocked by two different
+summary within 48 h, same date tag + topic word within 48 h) are recorded as 'proposed' and do not merge sessions.
+The Opus run-identity linker that judged medium edges was cut on 2026-10-04 (DESIGN 15): it accepted 10 of 77 in run #1. Merges are blocked by two different
 date tags or saves under 5 s apart on different pages. Run groups = connected components of accepted edges.
 """
 import collections, gzip, json, os, re
 import config as C, store, load
-from common import obj, arr, S, CONF, SAFETY, raw, chunks, dumps
 
 STAGE = 'identity'
 MON = 'jan feb mar apr may jun jul aug sep oct nov dec'.split()
@@ -113,54 +113,19 @@ def blocked(sess, a, b):
     return None
 
 
-SYSTEM = f"""You are the run-identity linker in an investigation of an AI agent swarm on German wikis (2026). {SAFETY}
-Editor names are self-chosen and reused; one run can use many names and many runs can share one. For each proposed pair of name-sessions, read both sides' raw added text and decide whether they are the same run: same task, same phrasing habits, references to its own earlier notes, and no contradictions (different cohort tags, conflicting claims about itself). Shared vocabulary in names is weak evidence; agents draw names from one common pool. Accept only when the text supports it; reject otherwise; low confidence is fine."""
-SCHEMA = obj({'decisions': arr(obj({'edge_id': {'type': 'integer'}, 'decision': {'type': 'string', 'enum': ['accept', 'reject']},
-                                    'confidence': CONF, 'rationale': S}))})
-
-
-def side(con, sess, sid):
-    lab, rs = sess[sid]
-    return dict(session=sid, name=lab if not lab.startswith('anon:') else '(anonymous)', n_saves=len(rs),
-                saves=[dict(msg_id=r['msg_id'], t=r['t'], page=r['channel'], raw=raw(con, r['msg_id'], 300)) for r in rs[:3]])
-
-
 def run(con, llm, run_id):
     sess = sessions(con)
     edges = candidate_edges(con, sess)
     stats = collections.Counter(sessions=len(sess), named_sessions=sum(not k.startswith('anon:') for k in sess))
-    medium = []
     for a, b, et, strength, ev in edges:
         why = blocked(sess, a, b)
         status = 'rejected' if why else ('accepted' if strength == 'strong' else 'proposed')
         if why:
             ev = dict(ev, blocked=why)
-        cur = con.execute('INSERT INTO identity_edges (session_a, session_b, edge_type, strength, evidence, status, decided_by) '
+        con.execute('INSERT INTO identity_edges (session_a, session_b, edge_type, strength, evidence, status, decided_by) '
                           'VALUES (?,?,?,?,?,?,?)', (a, b, et, strength, json.dumps(ev), status, 'script' if status != 'proposed' else None))
         stats[f'{et}:{status}'] += 1
-        if status == 'proposed':
-            medium.append((cur.lastrowid, a, b, et, ev))
-    jobs, meta = [], {}
-    for k, part in enumerate(chunks(medium, 25)):
-        tid = store.new_task(con, run_id, STAGE, {'id': f'id{k}', 'n': len(part)}, C.TIER_MODEL[STAGE])
-        payload = [dict(edge_id=eid, edge_type=et, evidence=ev, a=side(con, sess, a), b=side(con, sess, b)) for eid, a, b, et, ev in part]
-        jobs.append(dict(custom_id=f'id{k}', task_id=tid, system=SYSTEM, user='PAIRS:\n' + dumps(payload), schema=SCHEMA,
-                         max_tokens=16000, est_out=80 * len(part),
-                         mock=lambda part=part: {'decisions': [dict(edge_id=e[0], decision='reject', confidence='low',
-                                                                    rationale='mock: no text evidence checked') for e in part]}))
-        meta[f'id{k}'] = (tid, {e[0] for e in part})
     con.commit()
-    for res in llm.call_many(STAGE, jobs):
-        tid, ok_ids = meta[res['custom_id']]
-        if res['error']:
-            store.finish_task(con, tid, 'failed'); continue
-        for d in res['data'].get('decisions', []):
-            if d['edge_id'] in ok_ids:
-                st = 'accepted' if d['decision'] == 'accept' else 'rejected'
-                con.execute('UPDATE identity_edges SET status=?, decided_by=?, version=version+1, evidence=json_set(evidence, "$.linker", ?) '
-                            'WHERE edge_id=?', (st, tid, f'{d["confidence"]}: {d["rationale"][:300]}', d['edge_id']))
-                stats['linker_' + st] += 1
-        store.finish_task(con, tid)
     # run groups = components of accepted edges
     parent = {s: s for s in sess}
 

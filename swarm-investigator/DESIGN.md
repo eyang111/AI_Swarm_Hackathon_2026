@@ -9,8 +9,7 @@ reconciled).
 **Status (2026-10-04):** the whole pipeline is built ([`code/`](code/)) and has run once on a DSEWiki test slice
 ($9.62, 14 of 16 planted events recovered with the right role). Fixes made after that run pass the offline tests but
 have not been re-run against the API. A full DSEWiki run is **not authorized yet**. v5.1 (Peyton, 2026-10-04):
-the feature cuts from the run #1 review are **applied to this design** (section 15); the code still has the cut
-features until the code thread removes them.
+the feature cuts from the run #1 review are **applied** to this design and to the code (section 15).
 
 | Part | Where |
 |---|---|
@@ -451,7 +450,7 @@ third of Opus calls, inconsistently and at task level, and the fallback (Opus 4.
 
 **Cost.** Run #1 on the test slice (1,049 saves): **$9.62** (readers $2.21, local linker $1.26, L4 and L5 $3.20, the
 rest on Opus tiers). The cuts remove about $1.40 of that (seed re-verify $0.20, clusterer $0.67, identity linker
-$0.54) plus about 10–14% of reader output, so a slice run would be about $8. Full DSEWiki estimates before the cuts:
+$0.54) plus about 10–14% of reader output, so a slice run would be about $8 (mock estimate after the cuts: $6.97). Full DSEWiki estimates before the cuts:
 about **$85 all-batched** (`--batch-all`) or about **$135 with only readers batched**, range $70–150; expect roughly
 15% less after them. Estimates, not measurements.
 
@@ -511,8 +510,8 @@ code expects the slice and dump under `/mnt/project-files/` (not in the repo).
 | readers | `readers.py` | Sonnet, batch |
 | keyword_df, pregroup | `pregroup.py` | script |
 | local_linker | `local_linker.py` | Sonnet |
-| conversations | `cluster.py` | script (Opus part to remove) |
-| identity | `identity.py` | script (Opus part to remove) |
+| conversations | `cluster.py` | script |
+| identity | `identity.py` | script |
 | groupers, reconciler | `groupers.py` | Opus |
 | l4, l5, script analyzers, checker, lead | `analyzers.py` | Opus / script |
 | timeline | `timeline.py` | script |
@@ -527,8 +526,12 @@ rebuilt in `schema_patch.sql`); segment spans come from `start_quote`; the halo 
 groups are over name-sessions; the checker retracts what it rejects. Not built: replica reader agreement, AI Village
 loading, blind hand labels (Peyton's to make before looking at output).
 
-**Not yet in the code:** the section 15 cuts. `reverify.py`, the Opus calls in `cluster.py` and `identity.py`, the cut
-reader fields and the cut tables are still in `code/`. The thread "Test-slice run, fresh session" owns the code and makes these changes.
+**Cuts in the code** (section 15, done by the thread "Test-slice run, fresh session"): `reverify.py` moved to
+`code/archive/` and its stages removed from `run.py`; `cluster.py` is script grouping only; `identity.py` leaves
+medium edges proposed; the cut reader fields are gone from the reader schema (keywords are plain strings);
+`schema_patch.sql` drops the write-only tables; `store.py` accepts a null `claims.about`. `store_schema.sql` still
+defines the dropped tables and columns, which the patch removes at load. Mock and fake-API runs pass; the mock cost
+estimate for the slice fell from $8.54 to $6.97. No paid run since.
 
 **Changed since run #1** (by the thread "Test-slice run, fresh session"; mock, fake-API and unit tests pass; not re-run
 on the API):
@@ -544,7 +547,7 @@ on the API):
 
 From the review thread "Unnecessary pipeline features" ([archive copy](archive/review_unnecessary_features.md)),
 judged by whether a feature changes what the pipeline says about how ideas spread. Peyton approved all six cuts,
-including the two the review had marked "cut unless a rerun shows value". The code still contains them (section 14).
+including the two the review had marked "cut unless a rerun shows value". They are also removed from the code (section 14).
 
 | Cut | Evidence | Run #1 cost | Sections changed |
 |---|---|---|---|
@@ -665,7 +668,7 @@ cut at segment edges; AI Village windows aren't exercised.
 | 15 | Deletions | rarely limit exposure; ignored for now | — |
 
 **Still open**
-1. Remove the section 15 cuts from the code (owned by the thread "Test-slice run, fresh session").
+1. Optional cleanup: drop the cut tables and columns from `store_schema.sql` itself (the code works either way).
 2. Copy cascades across many pages: L4 needs copy-group `source_of` links to see them (the S3 case).
 3. Identity grouping is thin on the slice (55 of 495 name-sessions grouped); expected to improve on the full dump,
    where sessions aren't cut at slice edges.
