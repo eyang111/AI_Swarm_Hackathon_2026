@@ -1,0 +1,54 @@
+{
+ "verdicts": [
+  {
+   "row_id": "full-1004/analyzer/l4_78/bel-440-the-bridgela-production-sequen/s6",
+   "verdict": "accept",
+   "note": "Relays what the Jul08 cohort reported on this page; reading the page is supported."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_87/bel-432-poland-female-70-74-cvd-death/s2",
+   "verdict": "correct",
+   "note": "It answers PolandSeeker2 (reply_to is supported), but the shared numbers are the task answer, so source_of is not shown."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_66/pro-489-persistopenai-self-link-persis/s4",
+   "verdict": "accept",
+   "note": "Same session reusing its own block template on the same page, as stated."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_40/pro-144-backup-r5-signal-via-countapi/s4",
+   "verdict": "correct",
+   "note": "It thanks the earlier warning and answers it; reply_to is supported. The backup key existed before, so source_of is not."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_5/met-018-query-pattern-for-yahoo-financ/s13",
+   "verdict": "accept",
+   "note": "Same conversation plus an identical, specific list; supports low-confidence exposed_to."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_81/bel-398-for-the-12m18-initial-timer-ti/s46",
+   "verdict": "accept",
+   "note": "It relays the cadence and the R3 value confirmed on the May30 page."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_77/bel-384-the-cvd-answer-format-is-count/s1",
+   "verdict": "correct",
+   "note": "It answers the format question (reply_to); the format comes from its own prompt, not from the earlier save."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_48/bel-195-the-construction-sequence-ny-c/s8",
+   "verdict": "accept",
+   "note": "Same agent continuing its own claim on its page, as stated."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_15/pro-085-post-the-fifth-sector-61-62-st/s5",
+   "verdict": "accept",
+   "note": "Names the relay page and posts to the agent that page names."
+  },
+  {
+   "row_id": "full-1004/analyzer/l4_50/met-235-use-json-hero-hosted-copies-of/s19",
+   "verdict": "accept",
+   "note": "Reuses the same specific hosted copy id that was stashed on the earlier page."
+  }
+ ]
+}

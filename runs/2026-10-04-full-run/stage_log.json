@@ -1,0 +1,137 @@
+{
+ "_run_id": "full-1004",
+ "_backend": "manual",
+ "plant": null,
+ "load": null,
+ "windows": null,
+ "readers": {
+  "windows": 200,
+  "records": 11462,
+  "clones": 2874,
+  "clone_failed": 0,
+  "rejected_first": 124,
+  "reask_ok": 121,
+  "refused_calls": 0,
+  "split_max_tokens": 0,
+  "gaps": 3,
+  "coverage": "14336/14339",
+  "_secs": 533.9,
+  "_spent_total": 44.286
+ },
+ "keyword_df": {
+  "keywords": 7902,
+  "distinctive": 2868,
+  "_secs": 0.2,
+  "_spent_total": 44.286
+ },
+ "local_linker": {
+  "calls": 378,
+  "ok": 1957,
+  "rejected": 57,
+  "rej:link": 21,
+  "rej:unknown": 15,
+  "rej:evidence": 20,
+  "rej:to": 1,
+  "_secs": 439.1,
+  "_spent_total": 59.38
+ },
+ "conversations": {
+  "conversations": 871,
+  "groups_3plus": 424,
+  "pairs": 447,
+  "largest": 4736,
+  "_secs": 21.0,
+  "_spent_total": 59.38
+ },
+ "pregroup": {
+  "copy_group": 533,
+  "same_claim_text": 68,
+  "shared_entity": 2868,
+  "signed_name": 257,
+  "run_tag": 310,
+  "_secs": 1.0,
+  "_spent_total": 59.38
+ },
+ "identity": {
+  "sessions": 4589,
+  "named_sessions": 3690,
+  "template_mint:accepted": 840,
+  "edit_summary:proposed": 772,
+  "edit_summary:rejected": 224,
+  "template_mint:rejected": 49,
+  "tag_topic:proposed": 124,
+  "timestamp_mint:accepted": 94,
+  "signature:accepted": 170,
+  "signature:rejected": 254,
+  "run_groups": 159,
+  "sessions_in_groups": 540,
+  "_secs": 58.1,
+  "_spent_total": 59.38
+ },
+ "groupers": {
+  "families": 494,
+  "calls": 37,
+  "clusters": 712,
+  "layer:method": 272,
+  "dropped_small": 41,
+  "layer:protocol": 144,
+  "layer:goal": 26,
+  "layer:belief": 260,
+  "layer:word": 10,
+  "_secs": 828.8,
+  "_spent_total": 128.941
+ },
+ "reconciler": {
+  "clusters": 712,
+  "merged": 210,
+  "_secs": 126.4,
+  "_spent_total": 129.727
+ },
+ "l4": {
+  "clusters": 502,
+  "calls": 98,
+  "acted_without_source": 1508,
+  "links_ok": 2299,
+  "copy_links": 485,
+  "analyzed": 439,
+  "links_rejected": 117,
+  "_secs": 2291.9,
+  "_spent_total": 179.755
+ },
+ "l5": {
+  "clusters": 502,
+  "edges": 45,
+  "edges_rejected": 5,
+  "_secs": 736.7,
+  "_spent_total": 190.111
+ },
+ "script_analyzers": {
+  "routes": 2971,
+  "clusters_with_stops": 502,
+  "baseline_clusters": 387,
+  "_secs": 15.9,
+  "_spent_total": 190.111
+ },
+ "checker": {
+  "rows": 60,
+  "calls": 6,
+  "correct": 18,
+  "accept": 41,
+  "reject": 1,
+  "_secs": 0.8,
+  "_spent_total": 190.111
+ },
+ "lead": {
+  "findings": 13,
+  "observations": 5,
+  "_secs": 1.1,
+  "_spent_total": 190.111
+ },
+ "timeline": {
+  "nodes": 779,
+  "edges": 45,
+  "_secs": 5.3,
+  "_spent_total": 190.111
+ },
+ "score": "written"
+}

@@ -1,0 +1,849 @@
+{
+ "backend": "manual",
+ "counts": {
+  "records": 14336,
+  "segments": 15071,
+  "links": 4740,
+  "conversations": 871,
+  "clusters": 502,
+  "merged_clusters": 210,
+  "cluster_edges": 45,
+  "run_groups": 159,
+  "findings": 13,
+  "observations": 5,
+  "events": 5618,
+  "checker": {
+   "accept": 41,
+   "correct": 18,
+   "reject": 1
+  }
+ },
+ "plants": [
+  {
+   "plant_id": "p-easy-cr26",
+   "difficulty": "easy",
+   "layer": "protocol",
+   "cluster": "pro-545-mark-finished-census-lookups-a",
+   "cluster_layer": "protocol",
+   "layer_ok": true,
+   "plant_msgs_in_cluster": 5,
+   "plant_msgs": 5,
+   "other_msgs_in_cluster": 0,
+   "split_across_clusters": 1,
+   "events": [
+    {
+     "msg_id": "dw:dse~CensusRelayMay26@1",
+     "agent": "PublicLinkCoordinator",
+     "truth_role": "origin",
+     "truth_depth": "said",
+     "found": true,
+     "role": "origin",
+     "depth": "said",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": null,
+     "confidence": "high"
+    },
+    {
+     "msg_id": "dw:dse~CensusRelayMay26@2",
+     "agent": "DataResearcherKappa",
+     "truth_role": "adopt",
+     "truth_depth": "acted",
+     "found": true,
+     "role": "adopt",
+     "depth": "acted",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": true,
+     "confidence": "high"
+    },
+    {
+     "msg_id": "dw:dse~FederalNotesMay26@1",
+     "agent": "FederalNotesHelper",
+     "truth_role": "adopt",
+     "truth_depth": "acted",
+     "found": true,
+     "role": "adopt",
+     "depth": "acted",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": true,
+     "confidence": "high"
+    },
+    {
+     "msg_id": "dw:dse~OpenDataScratchMay26B@1",
+     "agent": "OpenDataResearchBotB",
+     "truth_role": "adopt",
+     "truth_depth": "acted",
+     "found": true,
+     "role": "adopt",
+     "depth": "acted",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": true,
+     "confidence": "high"
+    },
+    {
+     "msg_id": "dw:dse~CensusRelayMay26@3",
+     "agent": "TesterAlphaNotes",
+     "truth_role": "challenge",
+     "truth_depth": "said",
+     "found": true,
+     "role": "challenge",
+     "depth": "said",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": true,
+     "confidence": "high"
+    }
+   ],
+   "recall_strict": 1.0,
+   "recall_found": 1.0
+  },
+  {
+   "plant_id": "p-medium-grocery2019",
+   "difficulty": "medium",
+   "layer": "belief",
+   "cluster": "bel-061-the-data-usa-grocery-workforce",
+   "cluster_layer": "belief",
+   "layer_ok": true,
+   "plant_msgs_in_cluster": 4,
+   "plant_msgs": 4,
+   "other_msgs_in_cluster": 0,
+   "split_across_clusters": 1,
+   "events": [
+    {
+     "msg_id": "dw:dse~DataUSAGroceryNotesJun16X@1",
+     "agent": "AgentGroceryProbeJun16",
+     "truth_role": "origin",
+     "truth_depth": "said",
+     "found": true,
+     "role": "origin",
+     "depth": "said",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": null,
+     "confidence": "high"
+    },
+    {
+     "msg_id": "dw:dse~GroceryWorkforceScratchQ7@1",
+     "agent": "ResearchHelperQ7",
+     "truth_role": "adopt",
+     "truth_depth": "said",
+     "found": true,
+     "role": "adopt",
+     "depth": "said",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": false,
+     "confidence": "high"
+    },
+    {
+     "msg_id": "dw:dse~AgentOpenAIJun16ZLog@1",
+     "agent": "AgentOpenAIJun16Z",
+     "truth_role": "adopt",
+     "truth_depth": "acted",
+     "found": true,
+     "role": "adopt",
+     "depth": "said",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": false,
+     "source_ok": false,
+     "confidence": "high"
+    },
+    {
+     "msg_id": "dw:dse~DataUSAGroceryNotesJun16X@2",
+     "agent": "DataCheckerJun16",
+     "truth_role": "correct",
+     "truth_depth": "said",
+     "found": true,
+     "role": "correct",
+     "depth": "said",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": false,
+     "confidence": "high"
+    }
+   ],
+   "recall_strict": 1.0,
+   "recall_found": 1.0
+  },
+  {
+   "plant_id": "p-hard-clothingindex",
+   "difficulty": "hard",
+   "layer": "goal",
+   "cluster": "goa-009-build-a-shared-per-state-index",
+   "cluster_layer": "goal",
+   "layer_ok": true,
+   "plant_msgs_in_cluster": 4,
+   "plant_msgs": 4,
+   "other_msgs_in_cluster": 0,
+   "split_across_clusters": 1,
+   "events": [
+    {
+     "msg_id": "dw:dse~StateClothingIndexMay26@1",
+     "agent": "BalanceIndexHelper",
+     "truth_role": "origin",
+     "truth_depth": "said",
+     "found": true,
+     "role": "origin",
+     "depth": "said",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": null,
+     "confidence": "high"
+    },
+    {
+     "msg_id": "dw:dse~StateClothingIndexMay26@2",
+     "agent": "TrialResearchNotes",
+     "truth_role": "adopt",
+     "truth_depth": "acted",
+     "found": true,
+     "role": "adopt",
+     "depth": "acted",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": true,
+     "confidence": "high"
+    },
+    {
+     "msg_id": "dw:dse~TrialResearchNotesMay26@1",
+     "agent": "TrialResearchNotes",
+     "truth_role": "adopt",
+     "truth_depth": "acted",
+     "found": true,
+     "role": "adopt",
+     "depth": "acted",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": true,
+     "confidence": "high"
+    },
+    {
+     "msg_id": "dw:dse~PublicDataHelperBPlan@1",
+     "agent": "PublicDataHelperB",
+     "truth_role": "adopt",
+     "truth_depth": "planned",
+     "found": true,
+     "role": "adopt",
+     "depth": "acted",
+     "role_ok": true,
+     "depth_ok": false,
+     "depth_exact": false,
+     "source_ok": true,
+     "confidence": "high"
+    }
+   ],
+   "recall_strict": 1.0,
+   "recall_found": 1.0
+  },
+  {
+   "plant_id": "p-burst-mirrorhop",
+   "difficulty": "medium",
+   "layer": "word",
+   "cluster": "wor-579-mirrorhop-a-page-that-only-po",
+   "cluster_layer": "word",
+   "layer_ok": true,
+   "plant_msgs_in_cluster": 3,
+   "plant_msgs": 3,
+   "other_msgs_in_cluster": 0,
+   "split_across_clusters": 1,
+   "events": [
+    {
+     "msg_id": "dw:dse~LoopNotesMirrorhop@1",
+     "agent": "AgentMeshNote7",
+     "truth_role": "origin",
+     "truth_depth": "said",
+     "found": true,
+     "role": "origin",
+     "depth": "said",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": null,
+     "confidence": "high"
+    },
+    {
+     "msg_id": "dw:dse~RelayStatusJun18Z@1",
+     "agent": "AgentRefRelay44",
+     "truth_role": "adopt",
+     "truth_depth": "said",
+     "found": true,
+     "role": "adopt",
+     "depth": "said",
+     "role_ok": true,
+     "depth_ok": true,
+     "depth_exact": true,
+     "source_ok": true,
+     "confidence": "high"
+    },
+    {
+     "msg_id": "dw:dse~GuestNotes901@1",
+     "agent": "GuestResearch901",
+     "truth_role": "adopt",
+     "truth_depth": "said",
+     "found": true,
+     "role": "adopt",
+     "depth": "acted",
+     "role_ok": true,
+     "depth_ok": false,
+     "depth_exact": false,
+     "source_ok": true,
+     "confidence": "high"
+    }
+   ],
+   "recall_strict": 1.0,
+   "recall_found": 1.0
+  }
+ ],
+ "readme_cases": {
+  "1_s3_copy_cascade": {
+   "first_instance": "dw:dse~LoopNextWord102601@1",
+   "saves": 314,
+   "names": 58,
+   "name_sessions": 58,
+   "run_groups": 2,
+   "saves_in_a_run_group": 8,
+   "clusters": {},
+   "source_of_links": 0,
+   "l4_verdict": null
+  },
+  "2_s2_query_url": {
+   "saves_matching": 8,
+   "clusters": {
+    "met-084-stashing-a-data-usa-pums-5-gro": 3,
+    "met-082-access-workaround-category": 1
+   },
+   "l4_verdict": {
+    "origin": "task_prompt",
+    "copying": "convergence"
+   }
+  },
+  "3_s2_relay_conversation": {
+   "saves": 42,
+   "conversations": {
+    "conv28": 40,
+    "conv395": 1
+   },
+   "all_in_one": false,
+   "topic": "(script grouping)"
+  },
+  "4_s1_link_list": {
+   "saves": 8,
+   "pages": 6,
+   "clusters": {},
+   "l4_verdict": null
+  }
+ },
+ "readers": {
+  "core_saves": 14339,
+  "saves_with_records": 14336,
+  "coverage": 1.0,
+  "gaps": {
+   "failed": 3
+  },
+  "by_segment": {
+   "D0524": {
+    "records": 30,
+    "task_content": 1,
+    "purposes": {
+     "HOUSEKEEPING": 18,
+     "STASH": 10,
+     "CORRECT": 1,
+     "CLAIM": 1
+    }
+   },
+   "D0526": {
+    "records": 386,
+    "task_content": 9,
+    "purposes": {
+     "HOUSEKEEPING": 224,
+     "STASH": 136,
+     "ACCESS_WORKAROUND": 16,
+     "STATUS": 4,
+     "DIRECT": 2,
+     "COMMIT": 1
+    }
+   },
+   "D0527": {
+    "records": 43,
+    "task_content": 0,
+    "purposes": {
+     "STASH": 16,
+     "ACCESS_WORKAROUND": 16,
+     "HOUSEKEEPING": 11
+    }
+   },
+   "D0528": {
+    "records": 197,
+    "task_content": 34,
+    "purposes": {
+     "STASH": 131,
+     "HOUSEKEEPING": 40,
+     "ACCESS_WORKAROUND": 25,
+     "CLAIM": 1
+    }
+   },
+   "D0529": {
+    "records": 71,
+    "task_content": 3,
+    "purposes": {
+     "STASH": 41,
+     "HOUSEKEEPING": 30
+    }
+   },
+   "D0530": {
+    "records": 42,
+    "task_content": 0,
+    "purposes": {
+     "STASH": 30,
+     "HOUSEKEEPING": 12
+    }
+   },
+   "D0531": {
+    "records": 13,
+    "task_content": 3,
+    "purposes": {
+     "STASH": 8,
+     "HOUSEKEEPING": 5
+    }
+   },
+   "D0601": {
+    "records": 114,
+    "task_content": 55,
+    "purposes": {
+     "STASH": 91,
+     "HOUSEKEEPING": 18,
+     "ACCESS_WORKAROUND": 4,
+     "DIRECT": 1
+    }
+   },
+   "D0602": {
+    "records": 4,
+    "task_content": 0,
+    "purposes": {
+     "STASH": 2,
+     "HOUSEKEEPING": 2
+    }
+   },
+   "D0604": {
+    "records": 5,
+    "task_content": 3,
+    "purposes": {
+     "STASH": 3,
+     "HOUSEKEEPING": 2
+    }
+   },
+   "D0605": {
+    "records": 2,
+    "task_content": 0,
+    "purposes": {
+     "HOUSEKEEPING": 1,
+     "STASH": 1
+    }
+   },
+   "D0606": {
+    "records": 9,
+    "task_content": 0,
+    "purposes": {
+     "STASH": 6,
+     "HOUSEKEEPING": 3
+    }
+   },
+   "D0607": {
+    "records": 13,
+    "task_content": 7,
+    "purposes": {
+     "STASH": 7,
+     "HOUSEKEEPING": 6
+    }
+   },
+   "D0608": {
+    "records": 14,
+    "task_content": 0,
+    "purposes": {
+     "STASH": 10,
+     "HOUSEKEEPING": 4
+    }
+   },
+   "D0609": {
+    "records": 4,
+    "task_content": 0,
+    "purposes": {
+     "STASH": 3,
+     "HOUSEKEEPING": 1
+    }
+   },
+   "D0610": {
+    "records": 3,
+    "task_content": 0,
+    "purposes": {
+     "STASH": 2,
+     "HOUSEKEEPING": 1
+    }
+   },
+   "D0611": {
+    "records": 144,
+    "task_content": 0,
+    "purposes": {
+     "STASH": 111,
+     "HOUSEKEEPING": 31,
+     "CORRECT": 1,
+     "STATUS": 1
+    }
+   },
+   "D0616": {
+    "records": 2391,
+    "task_content": 1346,
+    "purposes": {
+     "STATUS": 734,
+     "STASH": 606,
+     "ASK": 319,
+     "HOUSEKEEPING": 264,
+     "DIRECT": 190,
+     "CLAIM": 80
+    }
+   },
+   "D0617": {
+    "records": 1229,
+    "task_content": 761,
+    "purposes": {
+     "STATUS": 442,
+     "STASH": 250,
+     "ASK": 140,
+     "HOUSEKEEPING": 109,
+     "DIRECT": 92,
+     "CLAIM": 59
+    }
+   },
+   "D0618": {
+    "records": 4245,
+    "task_content": 583,
+    "purposes": {
+     "STASH": 2909,
+     "HOUSEKEEPING": 962,
+     "ACCESS_WORKAROUND": 135,
+     "WORK": 84,
+     "ASK": 38,
+     "STATUS": 36
+    }
+   },
+   "D0619": {
+    "records": 461,
+    "task_content": 245,
+    "purposes": {
+     "STATUS": 167,
+     "STASH": 96,
+     "ASK": 79,
+     "HOUSEKEEPING": 49,
+     "CLAIM": 21,
+     "DIRECT": 20
+    }
+   },
+   "D0620": {
+    "records": 611,
+    "task_content": 468,
+    "purposes": {
+     "STATUS": 195,
+     "ASK": 84,
+     "CLAIM": 59,
+     "DIRECT": 56,
+     "CORRECT": 48,
+     "CONFIRM": 40
+    }
+   },
+   "D0621": {
+    "records": 623,
+    "task_content": 384,
+    "purposes": {
+     "STATUS": 274,
+     "ASK": 72,
+     "STASH": 71,
+     "HOUSEKEEPING": 58,
+     "CLAIM": 37,
+     "RELAY": 30
+    }
+   },
+   "D0622": {
+    "records": 793,
+    "task_content": 223,
+    "purposes": {
+     "STASH": 579,
+     "HOUSEKEEPING": 208,
+     "STATUS": 2,
+     "CLAIM": 2,
+     "DIRECT": 1,
+     "ASK": 1
+    }
+   },
+   "D0701": {
+    "records": 4,
+    "task_content": 2,
+    "purposes": {
+     "STASH": 3,
+     "ACCESS_WORKAROUND": 1
+    }
+   },
+   "D0702": {
+    "records": 11,
+    "task_content": 10,
+    "purposes": {
+     "STASH": 9,
+     "CLAIM": 1,
+     "HOUSEKEEPING": 1
+    }
+   }
+  },
+  "aw_segments": 295,
+  "before_jun18": 5068,
+  "after_jun18": 9268
+ },
+ "costs": [
+  {
+   "tier": "analyzer",
+   "model": "claude-opus-4-8",
+   "calls": 47,
+   "inp": 2390748,
+   "outp": 526280,
+   "cr": 132827,
+   "usd": 25.156611650000002
+  },
+  {
+   "tier": "analyzer",
+   "model": "claude-opus-5-5",
+   "calls": 103,
+   "inp": 3940422,
+   "outp": 965034,
+   "cr": 290366,
+   "usd": 35.2270312
+  },
+  {
+   "tier": "checker",
+   "model": "manual (thread Claude, no API)",
+   "calls": 6,
+   "inp": 0,
+   "outp": 0,
+   "cr": 0,
+   "usd": 0.0
+  },
+  {
+   "tier": "grouper",
+   "model": "claude-opus-4-8",
+   "calls": 19,
+   "inp": 1255053,
+   "outp": 200876,
+   "cr": 22219,
+   "usd": 11.317946300000001
+  },
+  {
+   "tier": "grouper",
+   "model": "claude-opus-5-5",
+   "calls": 37,
+   "inp": 2573960,
+   "outp": 230019,
+   "cr": 40517,
+   "usd": 14.9435334
+  },
+  {
+   "tier": "lead",
+   "model": "manual (thread Claude, no API)",
+   "calls": 1,
+   "inp": 0,
+   "outp": 0,
+   "cr": 0,
+   "usd": 0.0
+  },
+  {
+   "tier": "local_linker",
+   "model": "claude-sonnet-5",
+   "calls": 3,
+   "inp": 28679,
+   "outp": 5449,
+   "cr": 1280,
+   "usd": 0.23675200000000002
+  },
+  {
+   "tier": "local_linker",
+   "model": "claude-sonnet-5-5",
+   "calls": 382,
+   "inp": 13184976,
+   "outp": 311427,
+   "cr": 482560,
+   "usd": 14.856613
+  },
+  {
+   "tier": "reader",
+   "model": "claude-sonnet-5-5",
+   "calls": 224,
+   "inp": 27769724,
+   "outp": 3175556,
+   "cr": 224140,
+   "usd": 44.286303000000004
+  },
+  {
+   "tier": "reader_unused",
+   "model": "claude-sonnet-5-5",
+   "calls": 222,
+   "inp": 27561602,
+   "outp": 3132680,
+   "cr": 707642,
+   "usd": 43.2997687
+  },
+  {
+   "tier": "reconciler",
+   "model": "claude-opus-5-5",
+   "calls": 1,
+   "inp": 123554,
+   "outp": 14451,
+   "cr": 0,
+   "usd": 0.786356
+  }
+ ],
+ "spent_usd": 190.111,
+ "stages": {
+  "plant": null,
+  "load": null,
+  "windows": null,
+  "readers": {
+   "windows": 200,
+   "records": 11462,
+   "clones": 2874,
+   "clone_failed": 0,
+   "rejected_first": 124,
+   "reask_ok": 121,
+   "refused_calls": 0,
+   "split_max_tokens": 0,
+   "gaps": 3,
+   "coverage": "14336/14339",
+   "_secs": 533.9,
+   "_spent_total": 44.286
+  },
+  "keyword_df": {
+   "keywords": 7902,
+   "distinctive": 2868,
+   "_secs": 0.2,
+   "_spent_total": 44.286
+  },
+  "local_linker": {
+   "calls": 378,
+   "ok": 1957,
+   "rejected": 57,
+   "rej:link": 21,
+   "rej:unknown": 15,
+   "rej:evidence": 20,
+   "rej:to": 1,
+   "_secs": 439.1,
+   "_spent_total": 59.38
+  },
+  "conversations": {
+   "conversations": 871,
+   "groups_3plus": 424,
+   "pairs": 447,
+   "largest": 4736,
+   "_secs": 21.0,
+   "_spent_total": 59.38
+  },
+  "pregroup": {
+   "copy_group": 533,
+   "same_claim_text": 68,
+   "shared_entity": 2868,
+   "signed_name": 257,
+   "run_tag": 310,
+   "_secs": 1.0,
+   "_spent_total": 59.38
+  },
+  "identity": {
+   "sessions": 4589,
+   "named_sessions": 3690,
+   "template_mint:accepted": 840,
+   "edit_summary:proposed": 772,
+   "edit_summary:rejected": 224,
+   "template_mint:rejected": 49,
+   "tag_topic:proposed": 124,
+   "timestamp_mint:accepted": 94,
+   "signature:accepted": 170,
+   "signature:rejected": 254,
+   "run_groups": 159,
+   "sessions_in_groups": 540,
+   "_secs": 58.1,
+   "_spent_total": 59.38
+  },
+  "groupers": {
+   "families": 494,
+   "calls": 37,
+   "clusters": 712,
+   "layer:method": 272,
+   "dropped_small": 41,
+   "layer:protocol": 144,
+   "layer:goal": 26,
+   "layer:belief": 260,
+   "layer:word": 10,
+   "_secs": 828.8,
+   "_spent_total": 128.941
+  },
+  "reconciler": {
+   "clusters": 712,
+   "merged": 210,
+   "_secs": 126.4,
+   "_spent_total": 129.727
+  },
+  "l4": {
+   "clusters": 502,
+   "calls": 98,
+   "acted_without_source": 1508,
+   "links_ok": 2299,
+   "copy_links": 485,
+   "analyzed": 439,
+   "links_rejected": 117,
+   "_secs": 2291.9,
+   "_spent_total": 179.755
+  },
+  "l5": {
+   "clusters": 502,
+   "edges": 45,
+   "edges_rejected": 5,
+   "_secs": 736.7,
+   "_spent_total": 190.111
+  },
+  "script_analyzers": {
+   "routes": 2971,
+   "clusters_with_stops": 502,
+   "baseline_clusters": 387,
+   "_secs": 15.9,
+   "_spent_total": 190.111
+  },
+  "checker": {
+   "rows": 60,
+   "calls": 6,
+   "correct": 18,
+   "accept": 41,
+   "reject": 1,
+   "_secs": 0.8,
+   "_spent_total": 190.111
+  },
+  "lead": {
+   "findings": 13,
+   "observations": 5,
+   "_secs": 1.1,
+   "_spent_total": 190.111
+  },
+  "timeline": {
+   "nodes": 779,
+   "edges": 45,
+   "_secs": 5.3,
+   "_spent_total": 190.111
+  }
+ }
+}
