@@ -1,0 +1,200 @@
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentOurBridgeUnique9172026@1", "acts": ["STASH", "PROBE"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentCitationEntryEconomicsPDFZZ942@1", "acts": ["WORKAROUND"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAClothingSequenceCollabAug08@6", "acts": ["STATUS", "COMMIT", "SOCIAL"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataResearchHelperTest@12", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~ClothingC3FastSignalJul14@3", "acts": ["SIGNAL"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentScratchLinkXYZ987654@1", "acts": ["PROBE", "STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentOpenAIDataUSASlotMay13X7_22@1", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~SomeNewPageAgentTryUnique222@1", "acts": ["WORKAROUND", "PROBE"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentMhsMetadataQueryRefsTX053126@1", "acts": ["STASH", "WORKAROUND"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~TransportSequenceLiveRelayR3@2", "acts": ["STATUS", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~MaidsJan06R3SignalJul03@3", "acts": ["ASK", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentClarkTextReadersNQ88@1", "acts": ["WORKAROUND"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentClarkNewsArchRefTY86321@1", "acts": ["WORKAROUND"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentNov21OAI@3", "acts": ["ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~Clothing2m56Round3RelayMay31@21", "acts": ["STATUS", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~ClothingC4FastSignalJul14@7", "acts": ["CLAIM", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~RedirectTryPageX2@1", "acts": ["PROBE"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~ZZRedirectCmdA@1", "acts": ["PROBE"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentClarkEcoProxyTests2@1", "acts": ["WORKAROUND", "PROBE"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~TestAA@1", "acts": ["PROBE"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~CashierCoordJun09OAI@1", "acts": ["STATUS", "ASK", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~SheetQuarterBridge8655@1", "acts": ["WORKAROUND"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~LangR5SignalSep01@11", "acts": ["STATUS", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~Clothing9m17C3Feb27Live@1", "acts": ["STATUS", "CLAIM", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~OpenAIApr18ConstructionLive@1", "acts": ["STATUS", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~TransportR3Jul22Live@1", "acts": ["STATUS", "DIRECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAClothingStateSequenceCollabOct10@10", "acts": ["STATUS", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentApiLinkSummary1781598803@1", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentTexasViewerPressCiteJunX@3", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~MaidsJan06R3SignalJul03@9", "acts": ["STATUS", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSALanguageR5SignalNow@4", "acts": ["STATUS", "DIRECT", "RELAY"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAClothingStateSequenceCollabOct10@8", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentTexasPdfTokenPathUniqueAlpha@9", "acts": ["WORKAROUND"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~ClarkEconomicsNewsletterArchiveSources@1", "acts": ["WORKAROUND"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSALanguageNov14Live@1", "acts": ["STATUS", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentOpenAIDataUSASlotMay13X7_01@1", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentNineCorsmirrorJsonRefs1779985641@1", "acts": ["WORKAROUND"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAStateSequenceCollab2027@51", "acts": ["ASK", "STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentOct12ScratchUnique1781640776@1", "acts": ["PROBE"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAPovertyCountySequenceFeb03@24", "acts": ["STATUS", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSALanguageSep29Live@2", "acts": ["STATUS", "ASK", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~ZZZLinkPage@1", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAClothingLive12m24Oct25@24", "acts": ["STATUS", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentDataUSAExactBridgeAug19X@1", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~OpenAIFeb20ConstructionB8DCLive@1", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~Sector61State5LiveRelay@55", "acts": ["STATUS", "DIRECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentPovertyBridge1781663986@1", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAStateSequenceCollab2027@39", "acts": ["STATUS", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentMAEduHealthFilteredFast20260620@2", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~StartSeite@270", "acts": ["ORGANIZE"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAGroceryG5ConfirmedMontana@4", "acts": ["STATUS", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:probier~ArchiveGatewayEconomicDocsZ3@1", "acts": ["EMPTY"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAPovertyLiveSep15Midnight@1", "acts": ["STATUS", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~TmpAgentTryLINKNEW@1", "acts": ["STASH", "PROBE"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~CashierCoordFeb02OAI2@5", "acts": ["STATUS", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentInjectionCiteTest@1", "acts": ["PROBE", "WORKAROUND"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentDataUSALiveBridgeOct17X9@1", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~ClothingC3RelayMar19X@8", "acts": ["STATUS", "ORGANIZE", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAEduHealthNov19X@1", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentMAEduHealthSmallMay26B@1", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~ClothingC4FastSignalJul14@9", "acts": ["CLAIM", "DIRECT", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentOpenAIDataUSAHubMay13X7@2", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAStateSequenceCollab2027@52", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAClothingStateSequenceCollabOct10@9", "acts": ["CLAIM", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~OpenAIConstructionSep11X@1", "acts": ["STATUS", "CLAIM", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAPovertyR5LiveSep13@18", "acts": ["RELAY", "CLAIM", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentTryPumsCitationABC@8", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAQueryBridgeFeb08B@6", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAPovertyApr27Live@3", "acts": ["CORRECT", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~CashierMar06R3ConfirmedOAI@1", "acts": ["STATUS", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAClothingLive2m56Jun28@3", "acts": ["STATUS", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentJqpSourceTitleFinalRT21465@1", "acts": ["WORKAROUND"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:fractal~RecentChanges@26", "acts": ["WORKAROUND", "PROBE"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentYahooJqFormattedListPq@1", "acts": ["WORKAROUND"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~Sector61State5LiveRelay@38", "acts": ["ORGANIZE", "STATUS", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataResearchHelperTest@11", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentTryPumsCitationABC@14", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~OpenAIFeb28ConstructionSlowLive@8", "acts": ["SOCIAL", "STATUS", "ASK", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAStateSequenceCollab2027@47", "acts": ["STATUS", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAClothingLive2m56Nov07@1", "acts": ["STATUS", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~StartSeite@310", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~Clothing2m56Round3RelayMay31@29", "acts": ["STATUS", "CLAIM", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAIvyTuitionSequenceCollab2027@12", "acts": ["ASK", "DIRECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentDataUsaPrepQ1781594611@2", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~ClothingC3RelayMay08LateX@3", "acts": ["ASK", "DIRECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentClothingAllStatesCSVJun05X@2", "acts": ["PROBE", "STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAGroceryOurDec23Live@1", "acts": ["STATUS", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~FinanceSequenceMar26OAI2@6", "acts": ["STATUS", "COMMIT", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAClothingLive2m56Jun28@9", "acts": ["STATUS", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentGrocery399333@1", "acts": ["WORKAROUND"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~CashierR5PreFinalSignalAug26@2", "acts": ["DOUBT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~TestSeite@705", "acts": ["PROBE"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAGroceryLiveRounds2027@42", "acts": ["SIGNAL", "DIRECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~CashierR5SignalMar20OAI@1", "acts": ["STATUS", "COMMIT", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~RecentChanges@51", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~FederalDataReferenceXYZ@5", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~OpenAIDec27ConstructionAZLive@3", "acts": ["STATUS", "CLAIM", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~AgentStateLookupOct1FastA@1", "acts": ["STASH"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSAClothingLive12m24Oct25@27", "acts": ["STATUS", "CLAIM", "ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "dsewiki", "msg_id": "dw:dse~DataUSACashiersMastersSequenceCollabMay28@10", "acts": ["PROBE"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "7722065a-8dfe-4dfd-b88d-0021ae3b5168", "acts": ["COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "2a2c1cda-2054-4da4-89c3-48fe524ef988", "acts": ["STATUS", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "22c25081-0476-450e-aba5-420a1051c497", "acts": ["RELAY", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "be4ede13-22b2-4355-bc82-1df5f05a8494", "acts": ["STATUS", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "e41e9af9-87ff-4039-8e0f-ba6b6eb7508d", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "3c655dc5-153a-4f4b-b59b-cc64e72c5473", "acts": ["RELAY", "STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "c3231f4e-855a-40d0-95f8-e2ae2bba21bf", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "d5899f94-0af4-4b19-92da-cebd210fd43c", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "430dac87-9817-4a08-823b-35ac2e6180c9", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "b51af7c0-5ba9-4fa2-bf5d-b2dc6a425279", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "d9530acc-2855-4584-85d0-12531952f775", "acts": ["CONFIRM", "RELAY"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "d2d6a5af-8b97-4254-9541-202494739f74", "acts": ["ASK", "DIRECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "6b4554f6-5d55-4e0c-85a9-96f627f3bb68", "acts": ["STATUS", "COMMIT"], "coder": "Claude (one pass, unchecked)", "note": "standby/wait announcement"}
+{"swarm": "aivillage", "msg_id": "711451a8-d1ba-438e-aff7-3ce60c99bad8", "acts": ["ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "2f2bb29b-c35a-4dbd-8539-9d9cf63774e7", "acts": ["RELAY", "STATUS", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "84e0a10b-fa2a-477f-a416-2680d1b76644", "acts": ["CONFIRM", "CLAIM", "DIRECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "692032fa-08ec-420f-b527-d5cc4c8820b9", "acts": ["COMMIT"], "coder": "Claude (one pass, unchecked)", "note": "standby/wait announcement"}
+{"swarm": "aivillage", "msg_id": "214492ae-bac7-4b49-945d-954edc9c1432", "acts": ["ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "08781e9d-809d-4957-b427-135a7e5d9d13", "acts": ["ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "14de4869-caf0-4ce8-b688-19c41fb6a0bc", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "19f4db36-c9f5-4c04-bbf0-868565bc5ed6", "acts": ["SOCIAL"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "bc7ec6d8-c2d1-4d7e-a28f-f38bb836a15c", "acts": ["STATUS", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "d1b4c342-d205-49f9-b4cc-94161096de34", "acts": ["SOCIAL", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "3ce59d4d-98bd-4df2-b1ba-e8930629d236", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "01723b6b-17d7-437f-af07-af8231ca9189", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "a64c7a0f-2d71-4dcf-beae-fd53a029f85a", "acts": ["CLAIM", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "5906b45e-d870-4a4c-8fc9-1e74053d3483", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "3f22ea2a-8ea9-4568-ac26-4633dd64a7db", "acts": ["STATUS", "SOCIAL"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "4d3947b9-7f18-44f6-a82b-c2eaa83b7306", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "f7c96e13-ff83-4fdd-9bc2-c1ccfc537391", "acts": ["STATUS", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "6db9e0f3-a76b-4e96-badd-057d5234321a", "acts": ["COMMIT"], "coder": "Claude (one pass, unchecked)", "note": "standby/wait announcement"}
+{"swarm": "aivillage", "msg_id": "5d6f365e-3e1d-436c-8824-f1129f9c246c", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "e7d89a89-fa9a-475f-a178-fcfed9dab8c3", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "ace12cfd-5379-471f-bbfb-56800a0bb22e", "acts": ["COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "ba3ee1b3-d65b-4616-928f-dcfa02087dea", "acts": ["STATUS", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "3f66c31f-31fc-4aeb-8f5c-a9e4cf70a341", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "a56c1090-1259-4141-878f-eeb8cbc273a7", "acts": ["COMMIT", "CONFIRM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "e75b5f27-5cf0-47ab-b4f4-813c34fcf96f", "acts": ["WORK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "4a5f4b18-23d8-4430-94fa-1467635a0e49", "acts": ["RELAY", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "6ac1b74c-0dac-4ef1-a051-f4fb061fb3e1", "acts": ["SOCIAL", "CONFIRM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "626797d9-e133-4b91-b31d-133bedc33328", "acts": ["COMMIT", "CLAIM"], "coder": "Claude (one pass, unchecked)", "note": "standby/wait announcement"}
+{"swarm": "aivillage", "msg_id": "49c7e730-d554-4d4f-8df9-4456cf6303e6", "acts": ["COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "febf973c-71f0-4ea3-9eb7-c268e42c7705", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "e34cee3b-023b-486a-b7d0-542c388e2466", "acts": ["WORK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "1d7bfe67-66e9-46f9-9c45-8b847380f4ef", "acts": ["ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "6a70bf70-3547-4c6a-b787-78142b846e33", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "e95452ef-b774-4913-84f3-ce0765629d29", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "ca0acfa0-6ba4-44a0-943c-661c12bdabc1", "acts": ["COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "2e7d2c84-434d-46a5-92fe-033da5218591", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "1c98b5db-b4c3-4166-9661-288e63818583", "acts": ["RELAY", "REFLECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "d2e889a6-5013-47c1-8bf9-25e086fd5d10", "acts": ["COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "8eb646e6-91bb-46bf-b3d9-2bb2b2be060b", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "9977905c-635a-4d28-854a-ad77983979ec", "acts": ["CONFIRM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "c1e1c9dd-4dd5-40f0-807e-e8e0b4a851b0", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "1e9882a3-813e-47e9-a970-ed96f0c27408", "acts": ["DIRECT", "SOCIAL"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "d8466f76-1a9f-4143-a645-909180a9c606", "acts": ["COMMIT", "STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "b4988acf-2593-483e-88fb-4a5df918f5c3", "acts": ["CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "4a926119-2935-44db-bb15-9f1cf96dcc10", "acts": ["RELAY", "STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "11cb0702-6a12-4cfd-a50c-155533d84c0f", "acts": ["STATUS", "SOCIAL"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "d43bd224-2899-4f52-8529-fef6956e644d", "acts": ["SOCIAL", "RELAY"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "3ba18550-21aa-483a-86d8-ed443046756a", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "5ba0b3ba-b596-4519-a577-566d3cab1d4e", "acts": ["CONFIRM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "12c45a43-fc0e-47ce-a62d-932adf1ac982", "acts": ["CONFIRM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "1ac77ea5-501c-4239-a905-e42cae8caf07", "acts": ["STATUS", "COMMIT"], "coder": "Claude (one pass, unchecked)", "note": "standby/wait announcement"}
+{"swarm": "aivillage", "msg_id": "27015b13-c32a-413d-86e9-4731d9abeb65", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "ae209966-4dde-4f50-b930-0b0e6f748132", "acts": ["STATUS", "COMMIT"], "coder": "Claude (one pass, unchecked)", "note": "standby/wait announcement"}
+{"swarm": "aivillage", "msg_id": "05d818d1-16b7-4280-9996-aa9a1fbbbd89", "acts": ["REFLECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "5a633f9b-1b3a-4418-bf3d-d931c688ef0a", "acts": ["CONFIRM", "CLAIM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "9d6ca8d9-1c12-4301-aa79-0b8556a1dfae", "acts": ["DOUBT", "STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "f48ac030-9190-4505-b5d3-a9ca29ace69d", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "c39314f1-b103-41fd-94f6-dc7ef61ae22d", "acts": ["DOUBT", "STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "ceb7414f-6186-4d4f-8630-2440b1b46a98", "acts": ["DIRECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "8b4e7cb8-82b2-42de-b021-a554ee6f3816", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "352fa502-bbce-45ac-97f8-aab436a749b3", "acts": ["SOCIAL"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "e074ee5e-9c9f-439c-a073-eebb69aec69d", "acts": ["SOCIAL", "REFLECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "e1d70b92-ed29-4c3e-9e65-2080f21da852", "acts": ["CONFIRM"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "8389b198-b6cb-4804-a725-378f3117c9f5", "acts": ["CONFIRM", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "74a1a096-f96d-4a88-8ba8-ee8d2e10bfcd", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "f8d20281-17ea-4cb7-a48a-341c052f7c82", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "a41f08b5-f78b-4e0e-bb9b-3142e43cee22", "acts": ["ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "7384ffc2-89b4-478a-b215-dc8e07ad9714", "acts": ["COMMIT", "CLAIM"], "coder": "Claude (one pass, unchecked)", "note": "standby/wait announcement"}
+{"swarm": "aivillage", "msg_id": "86bb9521-c1cf-45ca-9415-9b9a83df7f16", "acts": ["ASK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "0c4f8cad-1558-4c39-8d72-5274b947ff49", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "970ad8ff-a279-4865-9f49-653fc4aa92ee", "acts": ["SOCIAL", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "b9f19917-7c95-4f33-9751-46249645e610", "acts": ["RELAY", "DIRECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "31dca617-d3b3-4867-92f6-0d0fb9ccb9c3", "acts": ["REFLECT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "70ef6fdd-b31e-4677-b03a-d7d843542d9a", "acts": ["COMMIT", "RELAY"], "coder": "Claude (one pass, unchecked)", "note": "standby/wait announcement"}
+{"swarm": "aivillage", "msg_id": "1e0979ad-b81a-4df1-949b-ca82d89d3efb", "acts": ["WORK"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "bf777fbb-6ee0-47f4-8fec-bdbf12bbad88", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "70cdfc16-f22a-44c4-b1e5-87e19049d945", "acts": ["RELAY", "COMMIT"], "coder": "Claude (one pass, unchecked)", "note": "standby/wait announcement"}
+{"swarm": "aivillage", "msg_id": "4e2ef6d2-a684-483a-afcb-2e8ed65770e3", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "3e2df66e-1993-4935-887a-66ef390b3abd", "acts": ["COMMIT"], "coder": "Claude (one pass, unchecked)", "note": "standby/wait announcement"}
+{"swarm": "aivillage", "msg_id": "7b62efcf-08d9-4300-8cff-f09d1a4d4b14", "acts": ["COMMIT"], "coder": "Claude (one pass, unchecked)", "note": "standby/wait announcement"}
+{"swarm": "aivillage", "msg_id": "a98ab519-ab03-45ca-8df3-de82043593cd", "acts": ["RELAY"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "caba24c7-39c6-476b-b505-af2ae2469e54", "acts": ["STATUS", "COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "b30e00aa-78c5-46d4-91fa-8b5cc4dab8e3", "acts": ["STATUS"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "d780d611-cc47-4699-bde7-d472e376c106", "acts": ["RELAY"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "120698f3-f1fc-4229-ac4a-35c96a03d672", "acts": ["COMMIT"], "coder": "Claude (one pass, unchecked)"}
+{"swarm": "aivillage", "msg_id": "9272dd53-13d6-470a-b7d1-aa2a9e96020f", "acts": ["COMMIT", "RELAY"], "coder": "Claude (one pass, unchecked)", "note": "standby/wait announcement"}
+{"swarm": "aivillage", "msg_id": "5edecb1d-76e3-419c-83c2-815e38b1ae5d", "acts": ["EMPTY"], "coder": "Claude (one pass, unchecked)"}
