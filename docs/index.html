@@ -395,28 +395,28 @@
     <!-- Track A -->
     <div class="track">
       <div class="track-head"><span class="badge">TRACK A</span><h3>Swarm Investigator: trace what spreads, how and through whom</h3></div>
-      <p class="sub prose">A multi-stage pipeline built for DSEWiki. It follows five layers of content as they move between agents:</p>
+      <p class="sub prose">AI analysts work in parallel to examine DSEWiki edits, then combine their findings to trace five types of content:</p>
       <ul class="layers">
-        <li><b>Words</b> · coined terms</li>
+        <li><b>Words</b> · new terms agents introduce</li>
         <li><b>Beliefs</b> · claims, true or false</li>
         <li><b>Goals</b> · what agents work toward</li>
-        <li><b>Protocols</b> · signal formats, relay pages</li>
-        <li><b>Methods</b> · techniques, queries, link lists</li>
+        <li><b>Protocols</b> · shared rules for coordinating</li>
+        <li><b>Methods</b> · ways to solve tasks and find information</li>
       </ul>
       <ol class="steps">
-        <li><span class="num">1</span><span class="name">Load<span class="who"><span class="m">script</span></span></span><span class="desc">Each save becomes a message holding the lines it added. The 3,140 exact copies are grouped, read once, and kept as evidence of spread.</span></li>
-        <li><span class="num">2</span><span class="name">Read<span class="who"><span class="m">Sonnet</span><span class="m">batch</span></span></span><span class="desc">Readers see time windows of raw text plus a halo of earlier saves that share distinctive tokens. Each message is split into one-act segments, and each segment gets a function, a purpose, an assertiveness score, its claims and an exact quote.</span></li>
-        <li><span class="num">3</span><span class="name">Link<span class="who"><span class="m">Sonnet</span><span class="m">script</span></span></span><span class="desc">The linker draws up to 3 outgoing links per segment. Scripts group conversations and infer run identity from name templates, timestamps and signatures, because usernames don't identify runs.</span></li>
-        <li><span class="num">4</span><span class="name">Group<span class="who"><span class="m">Opus</span></span></span><span class="desc">Segments are clustered into items (claim keys), seeded on the most assertive statements. A reconciler merges an item that was split across different wordings.</span></li>
-        <li><span class="num">5</span><span class="name">Analyze<span class="who"><span class="m">Opus</span><span class="m">script</span></span></span><span class="desc">For each item, the analyzer finds the origin, the carriers in order, the route, mutations, and whether it was copied or reached independently. It also draws edges between items (evolves into, feeds, corrects) and compares copying against a chance baseline.</span></li>
-        <li><span class="num">6</span><span class="name">Check and report<span class="who"><span class="m">Opus</span></span></span><span class="desc">An adversarial checker accepts, corrects or rejects links. A lead writes findings, each of which must cite objects in the store.</span></li>
-        <li><span class="num">7</span><span class="name">Timeline<span class="who"><span class="m">script</span></span></span><span class="desc">An interactive graph shows items as events and their links as arrows. Each event opens to the segments behind it.</span></li>
+        <li><span class="num">1</span><span class="name">Load<span class="who"><span class="m">script</span></span></span><span class="desc">Extract the text added in each wiki edit. Read identical copies once to save work, while keeping track of where and when each copy appeared.</span></li>
+        <li><span class="num">2</span><span class="name">Read<span class="who"><span class="m">Sonnet</span><span class="m">batch</span></span></span><span class="desc">AI readers process batches of edits alongside relevant earlier messages. They split each message into parts and label what each part is doing, what it claims, and how strongly it is stated, with a supporting quote.</span></li>
+        <li><span class="num">3</span><span class="name">Link<span class="who"><span class="m">Sonnet</span><span class="m">script</span></span></span><span class="desc">Connect each message part to up to three related earlier parts. Use names, timestamps and signatures to estimate which edits came from the same agent run.</span></li>
+        <li><span class="num">4</span><span class="name">Group<span class="who"><span class="m">Opus</span></span></span><span class="desc">Bring together message parts about the same belief, goal, protocol, method or term. Combine groups that describe the same thing in different words.</span></li>
+        <li><span class="num">5</span><span class="name">Analyze<span class="who"><span class="m">Opus</span><span class="m">script</span></span></span><span class="desc">Trace where each idea first appeared, who repeated or adopted it, and how it changed. Assess whether agents copied it or reached it independently, and compare the observed spread with a random baseline.</span></li>
+        <li><span class="num">6</span><span class="name">Check and report<span class="who"><span class="m">Opus</span></span></span><span class="desc">A checker reviews a sample of proposed connections and flags errors. A lead investigator summarizes the findings, with references to the stored evidence.</span></li>
+        <li><span class="num">7</span><span class="name">Timeline<span class="who"><span class="m">script</span></span></span><span class="desc">Show the findings on an interactive timeline. Click an event to inspect the message parts behind it, and follow arrows to see its connections to other events.</span></li>
       </ol>
       <ul class="rules">
-        <li><b>Raw text in.</b> Readers never see earlier AI output, so their readings stay independent.</li>
-        <li><b>Cause needs exposure.</b> Time order is a sequence. A causal link needs a reply, a quote, a copy or a named page.</li>
-        <li><b>Every claim is cited.</b> Each write must quote an exact substring of the source, and a script checks it.</li>
-        <li><b>Truth is built in.</b> We plant cascades from easy to hard, including inside the busiest burst. Only the scorer reads them.</li>
+        <li><b>Read the original messages.</b> Readers start from source text, without seeing other analysts’ interpretations.</li>
+        <li><b>Check for influence.</b> An earlier message is not automatically the cause of a later one. Look for evidence that the later agent used it.</li>
+        <li><b>Keep evidence traceable.</b> Findings reference stored evidence. Quoted text is checked against the original messages.</li>
+        <li><b>Test against known events.</b> Add fictional examples of content spreading, then check whether the system recovers them. The answer key is kept separate from the AI analysts.</li>
       </ul>
     </div>
 
