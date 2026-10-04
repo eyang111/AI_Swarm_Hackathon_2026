@@ -28,6 +28,10 @@
     --l3: #2a78d6;
     --l4: #1c5cab;
     --l5: #0d366b;
+    /* cross-recall: fully / partly found (one blue hue, validated ordinal), missed = neutral */
+    --m-full: #1c5cab;
+    --m-part: #86b6ef;
+    --m-none: #c3c2b7;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -49,6 +53,9 @@
       --l3: #3987e5;
       --l4: #6da7ec;
       --l5: #9ec5f4;
+      --m-full: #9ec5f4;
+      --m-part: #256abf;
+      --m-none: #52514e;
     }
   }
   :root[data-theme="dark"] {
@@ -70,6 +77,9 @@
     --l3: #3987e5;
     --l4: #6da7ec;
     --l5: #9ec5f4;
+    --m-full: #9ec5f4;
+    --m-part: #256abf;
+    --m-none: #52514e;
   }
 
   * { box-sizing: border-box; }
@@ -215,6 +225,34 @@
   @media (max-width: 600px) { .axis { grid-template-columns: 1fr 72px; gap: 10px; } .axis > span:first-child { display: none; } }
   .tip { position: fixed; pointer-events: none; z-index: 50; background: var(--card); color: var(--ink); border: 1px solid var(--hair); box-shadow: 0 6px 24px rgba(0,0,0,.14); border-radius: 10px; padding: 8px 11px; font-size: 13px; line-height: 1.4; opacity: 0; transition: opacity .08s; max-width: 240px; }
   .tip b { font-weight: 650; }
+  .bars.wide .bar-row, .axis.wide { grid-template-columns: 250px 1fr 92px; }
+  @media (max-width: 600px) { .bars.wide .bar-row, .axis.wide { grid-template-columns: 1fr 72px; } }
+  .figure .foot { font-size: 13px; color: var(--muted); margin: 14px 0 0; }
+
+  /* scorecard */
+  .scorecard { margin-top: 24px; }
+  .scorecard table { font-size: 15px; }
+  .scorecard th, .scorecard td { padding: 11px 12px; vertical-align: top; text-align: left; white-space: normal; }
+  @media (max-width: 600px) {
+    .scorecard table, .scorecard tbody, .scorecard tr, .scorecard td { display: block; }
+    .scorecard thead { display: none; }
+    .scorecard tr { padding: 12px 0; border-bottom: 1px solid var(--hair); }
+    .scorecard td { border: 0; padding: 2px 0; min-width: 0 !important; }
+    .scorecard td:first-child { padding-bottom: 6px; }
+    .scorecard td[data-label]::before { content: attr(data-label) " · "; color: var(--muted); font-size: 13px; }
+  }
+  .scorecard td:first-child { white-space: normal; color: var(--ink); min-width: 220px; }
+  .scorecard td:first-child small { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+  .scorecard td.v { color: var(--ink-2); }
+  .scorecard td.v b { color: var(--ink); font-weight: 650; }
+  .edge { display: inline-block; font-size: 12px; font-weight: 650; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+  .edge.inv { background: var(--accent-soft); color: var(--accent); }
+  .edge.atl { background: var(--pill); color: var(--ink); }
+  .edge.tie { border: 1px solid var(--hair); color: var(--muted); }
+  .verdict { margin-top: 24px; border-left: 3px solid var(--accent); padding: 4px 0 4px 20px; max-width: 760px; }
+  .verdict p { margin: 0 0 8px; }
+  .verdict p:last-child { margin: 0; color: var(--ink-2); font-size: 15.5px; }
+
   details.table-view { margin-top: 16px; font-size: 14px; }
   details.table-view summary { cursor: pointer; color: var(--ink-2); }
   .tbl-wrap { overflow-x: auto; margin-top: 10px; }
@@ -271,6 +309,7 @@
       <li><a class="lnk" href="#data">Data</a></li>
       <li><a class="lnk" href="#methods">Methods</a></li>
       <li><a class="lnk" href="#results">Results</a></li>
+      <li><a class="lnk" href="#baseline">Baseline</a></li>
       <li><a class="lnk" href="#limits">Limits</a></li>
       <li><a class="lnk" href="#goals">Side study</a></li>
       <li><a class="lnk" href="#repo">Repo</a></li>
@@ -496,10 +535,68 @@
   </div>
 </section>
 
-<!-- 05 LIMITS -->
+<!-- 05 BASELINE -->
+<section id="baseline">
+  <div class="wrap">
+    <p class="sec-label"><span class="n">05</span> Baseline comparison</p>
+    <h2>Does the pipeline beat single-pass AI analysts?</h2>
+    <div class="prose">
+      <p>The Swarm Atlas is our baseline, and the investigator's design doc names it as one. To build it, three Claude agents each read one slice of DSEWiki and wrote episodes directly, and review passes followed. The Investigator splits the same job into 816 narrow model calls, each checked against the source. We compared the two on DSEWiki, the only dataset both read.</p>
+    </div>
+
+    <div class="tbl-wrap scorecard">
+      <table>
+        <thead><tr><th>Metric</th><th>Swarm Atlas</th><th>Investigator</th><th>Edge</th></tr></thead>
+        <tbody>
+          <tr><td>Planted cascades found with the right role<small>the only metric with ground truth</small></td><td data-label="Swarm Atlas" class="v">not testable</td><td data-label="Investigator" class="v"><b>16 / 16</b></td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
+          <tr><td>Share of the other system's findings it also found<small>judged blind; fully found</small></td><td data-label="Swarm Atlas" class="v">54% of the Investigator's 430 items</td><td data-label="Investigator" class="v"><b>82%</b> of the Atlas's 87 episodes</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
+          <tr><td>Source records cited<small>Atlas by time and speaker, Investigator by save ID</small></td><td data-label="Swarm Atlas" class="v">741</td><td data-label="Investigator" class="v"><b>5,141</b></td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
+          <tr><td>Measures spread<small>copying vs chance, routes, effect of corrections</small></td><td data-label="Swarm Atlas" class="v">no</td><td data-label="Investigator" class="v"><b>yes</b></td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
+          <tr><td>Coverage of the 651 pages edited by 3+ agents<small>the Atlas's own recall yardstick</small></td><td data-label="Swarm Atlas" class="v"><b>90%</b> (63 of the 65 strongest)</td><td data-label="Investigator" class="v">88% (all 65 strongest)</td><td data-label="Edge"><span class="edge tie">Tie</span></td></tr>
+          <tr><td>First-pass output changed by review</td><td data-label="Swarm Atlas" class="v">48% of grades</td><td data-label="Investigator" class="v">32% of checked links</td><td data-label="Edge"><span class="edge tie">Neither</span></td></tr>
+          <tr><td>Grades swarm level and harm; covers three datasets</td><td data-label="Swarm Atlas" class="v"><b>yes</b></td><td data-label="Investigator" class="v">no</td><td data-label="Edge"><span class="edge atl">Atlas</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="figure" id="cross-fig">
+      <h3>Who found what the other found</h3>
+      <p class="small" style="margin:0">Blind judges checked every entry in one catalog against the other catalog, without knowing which system made which.</p>
+      <ul class="legend" aria-hidden="true">
+        <li><i style="--c: var(--m-full)"></i>Fully found</li>
+        <li><i style="--c: var(--m-part)"></i>Partly found</li>
+        <li><i style="--c: var(--m-none)"></i>Missed</li>
+      </ul>
+      <div class="bars wide" id="xbars" role="img" aria-label="Investigator fully found 71 of the Atlas's 87 episodes (82%). The Atlas fully found 232 of the Investigator's 430 items (54%): 79% of items with 10 or more editors and 42% of items with 2 to 4 editors. Full numbers in the table below."></div>
+      <div class="axis wide" aria-hidden="true"><span></span><span class="ticks"><span style="left:0">0%</span><span style="left:25%">25%</span><span style="left:50%">50%</span><span style="left:75%">75%</span><span style="left:100%">100%</span></span><span></span></div>
+      <details class="table-view">
+        <summary>View as table</summary>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Direction</th><th>Entries</th><th>Fully</th><th>Partly</th><th>Missed</th></tr></thead>
+            <tbody>
+              <tr><td>Investigator, on the Atlas's episodes</td><td>87</td><td>71</td><td>13</td><td>3</td></tr>
+              <tr><td>Atlas, on the Investigator's items</td><td>430</td><td>232</td><td>188</td><td>10</td></tr>
+              <tr><td>Atlas, items with 10+ editors</td><td>95</td><td>75</td><td>19</td><td>1</td></tr>
+              <tr><td>Atlas, items with 2–4 editors</td><td>219</td><td>92</td><td>118</td><td>9</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+      <p class="foot">Two judges agreed on 97% of episodes (κ 0.89) and 85% of items (κ 0.72). The four planted cascades are left out, because the Atlas never saw them.</p>
+    </div>
+
+    <div class="verdict">
+      <p><strong>Yes, on what can be scored.</strong> The Investigator is the only system tested against truth. It recovered 37 of the Atlas's 42 full swarms and most of its other episodes, and it adds detail the Atlas leaves out: specific link sets, answer values and conventions. It also cites about seven times more source records.</p>
+      <p>It is not better everywhere. Coverage is a tie, and both first passes needed a checker. The Investigator missed two small relays and one writer posting under thirteen names, and it only partly caught pages that agents recreated after moderators deleted them. It does not judge how far a swarm got or who was harmed. <a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/blob/main/comparisons/atlas-vs-investigator/README.md">Full comparison and caveats</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 LIMITS -->
 <section id="limits">
   <div class="wrap">
-    <p class="sec-label"><span class="n">05</span> Limits</p>
+    <p class="sec-label"><span class="n">06</span> Limits</p>
     <h2>What these results can and can't show</h2>
     <div class="grid-2">
       <div class="card">
@@ -522,10 +619,10 @@
   </div>
 </section>
 
-<!-- 06 SIDE STUDY -->
+<!-- 07 SIDE STUDY -->
 <section id="goals">
   <div class="wrap">
-    <p class="sec-label"><span class="n">06</span> Side exploration</p>
+    <p class="sec-label"><span class="n">07</span> Side exploration</p>
     <h2>Following goals across AI Village</h2>
     <div class="side">
       <p class="sub prose" style="margin-bottom:0">Separately from the two tracks, we hand-traced how goals pass between agents in AI Village from July to September 2026, when each agent had its own assigned goal. Each case was coded at four levels of adoption:</p>
@@ -545,10 +642,10 @@
   </div>
 </section>
 
-<!-- 07 RESPONSIBLE -->
+<!-- 08 RESPONSIBLE -->
 <section id="safety">
   <div class="wrap">
-    <p class="sec-label"><span class="n">07</span> Handling sensitive data</p>
+    <p class="sec-label"><span class="n">08</span> Handling sensitive data</p>
     <h2>What we left out on purpose</h2>
     <ul class="rules" style="margin-top:4px">
       <li><b>No raw data in the repo.</b> AI Village is gated, and the DSEWiki dump contains working sandbox-bypass instructions.</li>
@@ -559,10 +656,10 @@
   </div>
 </section>
 
-<!-- 08 REPO -->
+<!-- 09 REPO -->
 <section id="repo">
   <div class="wrap">
-    <p class="sec-label"><span class="n">08</span> Repository</p>
+    <p class="sec-label"><span class="n">09</span> Repository</p>
     <h2>Where everything lives</h2>
     <p class="small">Work is on separate branches of <a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026">eyang111/AI_Swarm_Hackathon_2026</a>. The repository is private, so the links below need access.</p>
     <div class="tbl-wrap">
@@ -573,6 +670,7 @@
           <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/claude/swarm-investigator-design/swarm-investigator"><code>swarm-investigator-design</code></a></td><td>Investigator design (DESIGN.md) and pipeline code</td></tr>
           <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/claude/test-slice-run-report/runs/2026-10-04-test-slice"><code>test-slice-run-report</code></a></td><td>Run 1 on the test slice: plant scores, costs and findings</td></tr>
           <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/claude/full-dsewiki-run/runs/2026-10-04-full-run"><code>full-dsewiki-run</code></a></td><td>Full DSEWiki run: summary, report, interactive timeline, scores and code snapshot</td></tr>
+          <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/claude/atlas-vs-investigator/comparisons/atlas-vs-investigator"><code>atlas-vs-investigator</code></a></td><td>The baseline comparison: script, blind judges' verdicts and write-up</td></tr>
           <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/claude/pensive-faraday-3sbxj1/analysis"><code>pensive-faraday-3sbxj1</code></a></td><td>The AI Village goal-adoption study</td></tr>
           <tr><td><a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/tree/claude/swarm-investigator-design-v2/swarm-investigator"><code>swarm-investigator-design-v2</code></a></td><td>An earlier version of the investigator design</td></tr>
         </tbody>
@@ -600,44 +698,60 @@
 
 <script>
 (function () {
-  var LEVELS = ["Aggregate", "Interaction", "Cooperation", "Coordination", "Self-organization", "Swarm formation"];
-  var DATA = [
-    { name: "AI Village", note: "seeded or afforded", counts: [19, 68, 74, 52, 14, 120] },
-    { name: "Moltbook", note: "afforded", counts: [15, 17, 9, 2, 0, 7] },
-    { name: "DSEWiki", note: "spontaneous", counts: [7, 17, 12, 7, 2, 42] }
-  ];
-  var bars = document.getElementById("bars");
   var tip = document.getElementById("tip");
-  if (!bars) return;
 
-  DATA.forEach(function (d) {
-    var total = d.counts.reduce(function (a, b) { return a + b; }, 0);
-    var row = document.createElement("div");
-    row.className = "bar-row";
-    var lab = document.createElement("div");
-    lab.className = "lab";
-    lab.innerHTML = d.name + "<small>" + total + " episodes · " + d.note + "</small>";
-    var track = document.createElement("div");
-    track.className = "track-bar";
-    d.counts.forEach(function (c, i) {
-      if (!c) return;
-      var s = document.createElement("div");
-      s.className = "seg";
-      s.style.setProperty("--c", "var(--l" + i + ")");
-      s.style.flex = c + " 1 0";
-      s.tabIndex = 0;
-      var pct = Math.round(100 * c / total);
-      s.setAttribute("aria-label", d.name + ", L" + i + " " + LEVELS[i] + ": " + c + " of " + total + " (" + pct + "%)");
-      s.dataset.tip = "<b>" + d.name + "</b><br>L" + i + " " + LEVELS[i] + "<br>" + c + " of " + total + " episodes (" + pct + "%)";
-      track.appendChild(s);
+  // One 100% stacked bar per row. cats: [{name, color}], rows: [{name, note, counts}], end(row, total) -> html
+  function stack(el, cats, rows, unit, end) {
+    if (!el) return;
+    rows.forEach(function (d) {
+      var total = d.counts.reduce(function (a, b) { return a + b; }, 0);
+      var row = document.createElement("div");
+      row.className = "bar-row";
+      var lab = document.createElement("div");
+      lab.className = "lab";
+      lab.innerHTML = d.name + "<small>" + d.note + "</small>";
+      var track = document.createElement("div");
+      track.className = "track-bar";
+      d.counts.forEach(function (c, i) {
+        if (!c) return;
+        var s = document.createElement("div");
+        s.className = "seg";
+        s.style.setProperty("--c", cats[i].color);
+        s.style.flex = c + " 1 0";
+        s.tabIndex = 0;
+        var pct = Math.round(100 * c / total);
+        s.setAttribute("aria-label", d.name + ", " + cats[i].name + ": " + c + " of " + total + " (" + pct + "%)");
+        s.dataset.tip = "<b>" + d.name + "</b><br>" + cats[i].name + "<br>" + c + " of " + total + " " + unit + " (" + pct + "%)";
+        track.appendChild(s);
+      });
+      var e = document.createElement("div");
+      e.className = "end";
+      e.innerHTML = end(d, total);
+      row.appendChild(lab); row.appendChild(track); row.appendChild(e);
+      el.appendChild(row);
     });
-    var end = document.createElement("div");
-    end.className = "end";
-    var l5 = d.counts[5];
-    end.innerHTML = "<b>" + Math.round(100 * l5 / total) + "%</b>" + l5 + " at L5";
-    row.appendChild(lab); row.appendChild(track); row.appendChild(end);
-    bars.appendChild(row);
-  });
+  }
+
+  var LEVELS = ["L0 Aggregate", "L1 Interaction", "L2 Cooperation", "L3 Coordination", "L4 Self-organization", "L5 Swarm formation"];
+  stack(document.getElementById("bars"),
+    LEVELS.map(function (n, i) { return { name: n, color: "var(--l" + i + ")" }; }),
+    [
+      { name: "AI Village", note: "347 episodes · seeded or afforded", counts: [19, 68, 74, 52, 14, 120] },
+      { name: "Moltbook", note: "50 episodes · afforded", counts: [15, 17, 9, 2, 0, 7] },
+      { name: "DSEWiki", note: "87 episodes · spontaneous", counts: [7, 17, 12, 7, 2, 42] }
+    ], "episodes",
+    function (d, t) { return "<b>" + Math.round(100 * d.counts[5] / t) + "%</b>" + d.counts[5] + " at L5"; });
+
+  // Blind cross-recall: did each system also find what the other found? (comparisons/atlas-vs-investigator)
+  stack(document.getElementById("xbars"),
+    [{ name: "Fully found", color: "var(--m-full)" }, { name: "Partly found", color: "var(--m-part)" }, { name: "Missed", color: "var(--m-none)" }],
+    [
+      { name: "Investigator, on the Atlas's episodes", note: "87 episodes", counts: [71, 13, 3] },
+      { name: "Atlas, on the Investigator's items", note: "430 items", counts: [232, 188, 10] },
+      { name: "Atlas, items with 10+ editors", note: "95 items", counts: [75, 19, 1] },
+      { name: "Atlas, items with 2–4 editors", note: "219 items", counts: [92, 118, 9] }
+    ], "entries",
+    function (d, t) { return "<b>" + Math.round(100 * d.counts[0] / t) + "%</b>fully"; });
 
   function place(e, el) {
     var x, y;
@@ -650,7 +764,7 @@
   }
   function show(e) { var el = e.currentTarget; tip.innerHTML = el.dataset.tip; tip.style.opacity = 1; place(e, el); }
   function hide() { tip.style.opacity = 0; }
-  Array.prototype.forEach.call(bars.querySelectorAll(".seg"), function (s) {
+  Array.prototype.forEach.call(document.querySelectorAll(".track-bar .seg"), function (s) {
     s.addEventListener("mouseenter", show);
     s.addEventListener("mousemove", function (e) { place(e, s); });
     s.addEventListener("mouseleave", hide);
