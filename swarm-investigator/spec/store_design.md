@@ -20,6 +20,7 @@ Neither `reader_format.md` nor `row_format.md` is edited by this file.
 | Provenance | `runs`, `tasks`, `citations`, `ops`, `checks` | store tools, citation script, checkers |
 | L1 reader | `records`, `claims`, `mentions` | readers |
 | Pre-grouping | `candidates`, `candidate_members` | script (reader_format section 4) |
+| Conversations | `conversations`, `conversation_members`, `conversation_edges` (+ view `conversation_presence`) | script first pass, then clusterer agent (section 2a) |
 | L2 linker | `claim_keys`(+members), `links`, `run_groups`(+members), `aggregates`(+members) | linkers |
 | L3 | `loose_ends`, `observations`, `findings` | trackers, lead, summarizers |
 | Views | `live_links`, `live_members`, `novelty`, `events` | computed, never written |
@@ -33,12 +34,32 @@ Notes on choices that aren't obvious:
 - **`links.type` adds `exposed_to`** to reader_format's list: "this speaker had seen that message before writing" without claiming it was the source. row_format needs it for `exposure_msg_id`. The tool rejects a link whose `to` message is later than its `from` message.
 - **Safety.** If a record's labels include `ACCESS_WORKAROUND`, the tool stores a fixed summary ("access workaround; see msg_id"), refuses free-text claims about the method, and sets `citations.redact = 1`. The exact quote stays for the citation check; every export and summarizer-facing query shows `[technique withheld]`.
 
+## 2a. Conversation layer (added 2026-10-04 at Peyton's request)
+
+Rooms interleave several conversations, and on DSEWiki one conversation often runs across several pages. This layer separates them and records how they split, merge, drift and resume. It sits between readers and linkers, and the cascade tracer and mutation tracker read it.
+
+**How it's built**
+1. Script first pass (`cluster.py`, no AI): connects messages by the readers' `reply_to_hint`, short time gaps in the same channel, shared `entities`, chains of saves on one page, and (DSEWiki) a save that names another page saved shortly before. Connected groups become candidate conversations.
+2. Clusterer agent (tier `clusterer`): looks only at the unclear spots: candidates that are too big (likely two conversations), messages that bridge two candidates, and topic changes. It writes the topic line, moves members, and records `split`, `merge`, `drift` (same people, new topic) and `resume` (an old conversation picked up again) edges, each anchored on the message where it happens with a checked quote.
+
+**Rules**
+- Same as other groups: header + member rows, every change reversible with `retracted_by`, every member has a `basis` and confidence.
+- A message may belong to two conversations. That is how a bridge (and so a merge) is recorded.
+- Membership is evidence of presence, not proof of exposure. The cascade tracer may use `conversation_presence` to support an `exposed_to` link, but the link still needs its own rationale, and low-confidence membership can't be its only support.
+
+**What it feeds**
+- Cascade tracer: who was in the conversation when an item appeared, and whether an item crossed into a new conversation at a merge.
+- Mutation tracker: variants that appear right after a split.
+- Routes analyzer: a new `via` value is not needed; a jump across a merge edge counts as `direct_message` or `shared_page` as usual, and the edge is cited.
+
+**Effect on reader windows** (for the "Reader windows and linker division" thread and DESIGN.md): readers still run on time windows, because the readers' reply hints are an input to clustering. Once the conversation layer exists, the halo for a window can be chosen by conversation (earlier messages of the conversations active in the window) instead of only by recency or tokens. That is an option for a second reader pass, not a change to the first one.
+
 ## 3. Tools (the only way in)
 
 Readers:
 - `get_window(swarm, t_start, t_end, channel=None, halo=0)`: the raw messages, verbatim, with the script fields. `channel=None` returns a global time slice across all channels (the DSEWiki window unit); `halo` adds earlier messages marked context-only; on DSEWiki the window planner supplies the halo list itself (last 50 plus token-routed saves, DESIGN.md 5.2).
 - `search(query, before=None)`: FTS over messages. `before` lets a reader look back without seeing the future.
-- `write_record(record, claims[], mentions[])`: one call per message, atomic. Rejects on bad msg_id, bad quote, unknown label, more than 2 secondary labels.
+- `write_record(record, claims[], mentions[])`: atomic per message. In v2 readers return a whole window as one structured output and `store.py` calls this for each record, then re-asks rejected ones (DESIGN.md 6.1). Rejects on bad msg_id, bad quote, unknown label, more than 2 secondary labels.
 
 Linkers and trackers additionally:
 - `get_records(msg_ids | claim_key | entity | cand_id)`, `get_candidates(basis)`.
@@ -56,8 +77,9 @@ Every tool returns either `ok` with ids, or `rejected: <reason>` so the agent ca
 
 1. `load.py` (about 1 hour): AI Village from `chat_flat.jsonl.gz`, DSEWiki from `revisions.jsonl.gz` with added-text extraction; compute `len`, `n_urls`, `gap_prev_s`, `text_hash`, `dup_of` (exact hash only first; near-dup later if time), `script_label`, `copy_of`, `removed_text`.
 2. `store.py` (2 to 3 hours): the tools above as plain Python functions, exposed to subagents as tools (or a CLI they call through Bash). Citation check and the safety rule live here.
-3. `pregroup.py` (about 1 hour): candidates from dup chains, `norm_text`, shared entities, signed names and run tags.
-4. Run readers on a few windows, then linkers, then the analyzers below. `checks` gets filled by the citation script and the adversarial checker.
+3. `cluster.py` (about 1 hour): the conversation first pass in section 2a. Written now, run after readers (it uses their reply hints), followed by the clusterer agent.
+4. `pregroup.py` (about 1 hour): candidates from dup chains, `norm_text`, shared entities, signed names and run tags.
+5. Run readers on a few windows, then linkers, then the analyzers below. `checks` gets filled by the citation script and the adversarial checker.
 
 Skip for now: `records.jsonl.gz` off-site texts, near-duplicate shingling, cross-lab checker.
 

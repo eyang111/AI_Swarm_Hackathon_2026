@@ -35,7 +35,7 @@ Share of back-referring messages whose nearest referent falls outside the reader
 
 The distribution is bimodal: a big short-range mass (minutes) and a long tail (days). The halo kills most of the first; nothing window-shaped touches the second. Bigger windows buy little after a 50-message halo.
 
-**DSEWiki build split** (5,129 revisions before 2026-06-18; held-out part not read)
+**DSEWiki build split** (5,129 revisions before 2026-06-18; held-out part not read. Holdout dropped 2026-10-04; DSEWiki windows are now set by DESIGN.md 5.2, burst-aware with a token-routed halo.)
 
 | | value |
 |---|---|
@@ -85,7 +85,7 @@ Divide the work along two axes instead:
 
 **C. Reconciler (the global tokens).** One pass over all claim keys' canonical texts (thousands of short lines, fits one context) to catch the same claim landing in two families under different wording. It proposes merges via `merge_claim_keys` with a rationale; merges stay reversible. This is the content-space version of Swin's shift: a second partition (by claim meaning instead of by entity) so a boundary of the first partition isn't permanent.
 
-**D. Run-identity linker.** Identity is its own axis: families keyed on `signed_name`, `run_tag`, `ip16` and page-title date tags. On DSEWiki everything per-agent depends on it, so it runs before trackers join adoption by run group.
+**D. Run-identity linker.** Identity is its own axis: families keyed on `signed_name`, `run_tag` and page-title date tags (`ip16` measured as noise and dropped; method in DESIGN.md 5.5 and identity_findings.md). On DSEWiki everything per-agent depends on it, so it runs before trackers join adoption by run group.
 
 **Order:** readers -> local linkers -> gap resolver (reader_format 2a) -> `pregroup.py` -> family linkers + run-identity linker (parallel) -> reconciler -> trackers / lead.
 

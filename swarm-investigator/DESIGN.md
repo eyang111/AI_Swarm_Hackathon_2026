@@ -1,4 +1,4 @@
-# Swarm Investigator: design (consolidated, v2 2026-10-04)
+# Swarm Investigator: design (consolidated, v3 2026-10-04)
 
 One document for everything designed so far. It summarizes and links the spec files in `spec/`, which stay the
 detailed source for each part. Where the files disagreed, this document follows the most recent decision and says
@@ -7,8 +7,9 @@ adopted for each.
 
 Status: design only. No pipeline code (`load.py`, `store.py`, `window_plan.py`, `pregroup.py`, prompts) exists yet.
 Changes in v2 (Peyton, 2026-10-04): holdout dropped; burst-aware windows; Sonnet readers in one-shot batches, Opus
-analyzers; exact-copy collapsing; refusal handling and an export screen. Run identity is being investigated in the
-thread "DSEWiki agent identity" and will be folded in when it reports.
+analyzers; exact-copy collapsing; refusal handling and an export screen. v3: run-identity method from the thread
+"DSEWiki agent identity" (section 5.5, `spec/identity_findings.md`); conversation layer from the thread "Investigator
+database and analyzers" (section 4.6, `spec/store_design.md` 2a), approved by Peyton 2026-10-04.
 
 | Spec file | What it holds | Status |
 |---|---|---|
@@ -17,6 +18,7 @@ thread "DSEWiki agent identity" and will be folded in when it reports.
 | [`spec/store_design.md`](spec/store_design.md) + [`spec/store_schema.sql`](spec/store_schema.sql) | SQLite store `investigation.db`, write tools, analyzers v2 | draft; schema updated for v2 |
 | [`spec/windowing_and_linkers.md`](spec/windowing_and_linkers.md) | reader windows (core + halo + context pack), linker division by content | draft; DSEWiki windows superseded by section 5.2 here |
 | [`spec/taxonomy_dev_codes.jsonl`](spec/taxonomy_dev_codes.jsonl) | 100 DSEWiki + 100 AI Village messages hand-coded with purpose labels (one Claude pass, unchecked; not truth) | dev set |
+| [`spec/identity_findings.md`](spec/identity_findings.md) | DSEWiki name measurements and the run-identity method; scripts in `identity_scripts/` | new, 2026-10-04 |
 | [`spec/dsewiki_SCHEMA.md`](spec/dsewiki_SCHEMA.md) | what is in the DSEWiki dump and how identity is recorded | reference |
 
 ---
@@ -62,6 +64,7 @@ raw messages (verbatim, loader script; exact copies grouped)
   -> store.py validates; rejected records go back once with the reason
   -> local linkers (Sonnet): short-range links inside each window
   -> gap resolver (Sonnet): fills reader "missing context" flags, versions records
+  -> conversation layer: cluster.py (script) + clusterer (Opus) on the unclear spots
   -> pregroup.py (script): candidate families from shared entities, claim text, copy groups, signed names
   -> family linkers + run-identity linker (Opus)
   -> reconciler (Opus): merges claim keys that landed in different families
@@ -83,6 +86,7 @@ text_hash, dup_of, copy_of, removed_text, script_label in {DUPLICATE, EMPTY}`).
 - **`removed_text`**: lines the save deleted. 215 saves add nothing; readers see their removals marked `removed:`
   so a deletion can be recorded as an act.
 - **`copy_of`**: see 5.3.
+- **`ip16`** is kept as a raw field but carries no identity signal (5.5).
 
 ### 4.2 Reader record (L1), one per message (reader_format section 2)
 `signed_name, run_tag, purpose (1 primary + up to 2 secondary), flags (coded_token, task_content, addresses_human),
@@ -119,7 +123,19 @@ In the store, `events` is computed from claim-key members and links: first membe
 `corrects` = correct; else adopt; depth = acted if an `acted_on` link leaves that message, planned if the record is
 `COMMIT`, else said. `DUPLICATE` messages never count as adoption; a cross-label copy can (5.3).
 
-### 4.5 Store (store_design, store_schema.sql)
+### 4.5 Conversations (new in v3, store_design 2a)
+Rooms interleave several conversations, and on DSEWiki one conversation often spans several pages. `cluster.py`
+(no AI) links messages by readers' `reply_to_hint`, short gaps in the same channel, shared entities, page save
+chains, and saves naming a page saved shortly before; connected groups are candidate conversations. A clusterer
+agent then handles only the unclear spots (oversized candidates, bridging messages, topic changes): writes the topic
+line, moves members, and records `split`, `merge`, `drift` and `resume` edges, each anchored on a message with a
+checked quote. Tables `conversations`, `conversation_members` (a message may bridge two), `conversation_edges`, view
+`conversation_presence`. All reversible. Membership is evidence of presence, not proof of exposure: an `exposed_to`
+link may cite it but needs its own rationale. Feeds the cascade tracer (who was present when an item appeared;
+items crossing a merge) and the mutation tracker (variants right after a split). Readers still run on time windows;
+a conversation-chosen halo is an option for a second reader pass.
+
+### 4.6 Store (store_design, store_schema.sql)
 One SQLite file, WAL, one writer process. Agents never write SQL; they call tools in `store.py`, which check and
 append. Append-only with `retracted_by`. Groups are header + membership tables. All quotes in one `citations` table,
 located by offset, rejected unless an exact substring of at most 200 characters. Every AI row carries `task_id` ->
@@ -184,10 +200,41 @@ The most-copied text appears 555 times on 555 pages.
 Divided by content, not time: (A) local linkers per window for replies and evaluation acts; (B) family linkers over
 connected components of the candidate graph (shared entities with a document-frequency cap, same normalized claim
 text, copy groups, signed names), whole timeline, split at ~300 records; (C) one reconciler over all claim-key texts;
-(D) a run-identity linker on `signed_name`, `run_tag`, `ip16`, title date tags (method pending the identity thread).
+(D) a run-identity linker (5.5).
 
-Order: readers -> local linkers -> gap resolver -> pregroup.py -> family + run-identity linkers -> reconciler ->
-analyzers / lead.
+Order: readers -> local linkers -> gap resolver -> conversation layer -> pregroup.py -> family + run-identity linkers ->
+reconciler -> analyzers / lead.
+
+### 5.5 Run identity (new in v3; details in `spec/identity_findings.md`)
+**What the names show.** 1,332 of 3,103 names are used once. 729 of those look like a more common name, but that
+resemblance is worthless: agents draw names from one shared vocabulary (Agent / OpenAI / Research / Helper + topic +
+date tag + digits), and string-matched pairs share a page or tag about as often as random pairs. What does link
+names: one-off names sharing a template once trailing digits are stripped (382 names; e.g. a run minting a fresh
+`...WatcherX` + 6 digits name per save), and names embedding a Unix timestamp from the moment of saving (148 names,
+82% within an hour of the save). `ip16` is noise (same name within 60 s shares it 2.1% vs 1.6% at random): dropped.
+`page_family_cohort` is derived from titles, so it can't validate anything. Date tags are cohort labels, not dates
+or runs: one tag spans several topics and a median 80 hours.
+
+**Method.**
+1. Unit = *name-session*: one name's saves, split at gaps over 6 hours; anonymous saves are singletons.
+2. `identity_candidates.py` (script) proposes edges. Strong: template mint, timestamp mint, signature (after
+   checking it isn't quoted older text). Medium: distinctive edit summary (used by 5 or fewer names) within 48 h,
+   same date tag + non-generic topic word within 48 h, append chains (to measure).
+3. Strong edges merge directly. Medium edges go to the Opus run-identity linker, which reads both sides' added text.
+   Merges are blocked by two different date tags in added text, or saves under 5 seconds apart on different pages.
+4. Edges live in `identity_edges` (proposed / accepted / rejected, versioned); run groups are built from accepted
+   edges, so a bad merge is undone by rejecting one edge.
+5. Every per-agent result is reported at three levels: name-session, run group, cohort (date tag). A claim that holds
+   at only one level is flagged.
+
+**Ceiling.** Scripts alone put about 35% of saves in confident groups; 34% are generic names (e.g. `ResearchHelper`,
+35 variants over 28 days) that the linker must split by session and content; about 14% (one-off names with no signal,
+anonymous saves) can only be linked by what they wrote. There is no run key, so no grouping can be confirmed.
+On this dump, spread between cohorts and between pages is more defensible than spread between runs; state each claim
+at the coarsest level it survives.
+
+**Evaluation.** Synthetic renaming (give a distinctive name's saves fresh fake names, measure how many are put back
+together and how many land in the wrong group) and a contradiction rate. Not agreement with `page_family_cohort`.
 
 ## 6. Models and how calls are made (new in v2)
 
@@ -211,6 +258,7 @@ re-asks. The 3-window test (7.2) should also confirm that structured output and 
 ### 6.2 Linkers: Sonnet for local work, Opus for merges
 | Tier | Model | Why |
 |---|---|---|
+| clusterer | Opus 5.5 | only the unclear spots, few calls; a wrong split or merge misplaces whole cascades (my pick, not yet confirmed) |
 | local linker, gap resolver | Sonnet 5.5 | many short-range, mostly mechanical links; errors are local and cheap to fix |
 | family linker, reconciler, run-identity linker | Opus 5.5 | few calls, each decides which messages are "the same claim" or "the same run"; one wrong merge invents or erases a whole cascade |
 | analyzers, lead, summarizers | Opus 5.5 | Peyton's choice |
@@ -270,11 +318,12 @@ contagion); optional checker diversity.
 1. `load.py`: both swarms into `messages`; DSEWiki added and removed text, NFC; `copy_of`; script features; FTS
    rebuild.
 2. `window_plan.py`: AI Village sessions; DSEWiki 60k-character cores with last-50 + token-routed halo; context pack.
-3. Reader prompt + batch runner + `store.py` validation and re-ask; refusal bisection; `coverage_gaps`.
-4. 3-window test (section 7.2); check cost, refusals, flags.
-5. Planting script and blind hand labels, before looking at full-run output.
-6. Full reader batch; local linker, resolver, `pregroup.py` (copy groups), family linker, reconciler.
-7. Scoring join; analyzers 1, 2, 4; export with the screen.
+3. `identity_candidates.py` (name-sessions, strong and medium edges).
+4. Reader prompt + batch runner + `store.py` validation and re-ask; refusal bisection; `coverage_gaps`.
+5. 3-window test (section 7.2); check cost, refusals, flags.
+6. Planting script and blind hand labels, before looking at full-run output.
+7. Full reader batch; local linker, resolver, `cluster.py` + clusterer, `pregroup.py` (copy groups), family linker, reconciler.
+8. Scoring join; analyzers 1, 2, 4; export with the screen.
 
 Skip if short on time: off-site texts (`records.jsonl.gz`), template groups, community detection, cross-lab checker.
 
@@ -293,7 +342,7 @@ Skip if short on time: off-site texts (`records.jsonl.gz`), template groups, com
 | Outline: cross-lab checker as a core step | optional experiment; core needs one lab's key | Peyton's decision 2026-10-03 |
 | reader_format, windowing, store_design: Jun 18 holdout | dropped; `split` column removed from the schema | Peyton, 2026-10-04 |
 | windowing: DSEWiki windows of ~100 saves + 50 halo | 60k-character cores + token-routed halo | burst measurements (5.2) |
-| windowing asked for schema changes | applied: tiers `local_linker, resolver, identity, reconciler`; candidate bases `copy_group, family`; `coverage_gaps`; `ip16`, `copy_of`, `removed_text` on messages | needed by v2 |
+| windowing asked for schema changes | applied: tiers `local_linker, resolver, identity, reconciler`; candidate bases `copy_group, family`; `coverage_gaps`, `identity_edges`, conversation tables, tier `clusterer`; `ip16`, `copy_of`, `removed_text` on messages | needed by v2/v3 |
 | `messages_fts` | external-content FTS5 table has no sync triggers | `load.py` must run `INSERT INTO messages_fts(messages_fts) VALUES('rebuild')` after loading |
 
 ## 11. DSEWiki run: issues and fixes
@@ -307,7 +356,7 @@ Numbers computed from `dsewiki/raw/` on 2026-10-03/04.
 | 3 | Dev codes are all pre-Jun 18 | 3-window test includes the Jun 18 peak; report label quality there | 7 |
 | 4 | Bursts: 100-save windows span ~1 minute, 73% back-reference coverage | token-routed halo: 99% in bursts (proxy measure) | 5.2 |
 | 5 | Window size varies (up to 280k characters per 100 saves) | 60k-character core cap | 5.2 |
-| 6 | Usernames don't identify runs (3,103 labels, 1,332 used once, 899 anonymous) | thread "DSEWiki agent identity" investigating; run-identity linker on Opus | 5.4, 6.2 |
+| 6 | Usernames don't identify runs (3,103 labels, 1,332 used once, 899 anonymous) | name-sessions + scripted strong edges + Opus linker for medium edges; reversible `identity_edges`; results at three levels; `ip16` dropped | 5.5 |
 | 7 | Added-text edge cases (215 deletion-only saves, 17 with missing history, 50 empty defaults) | `removed_text` shown to readers; missing-history saves flagged in `anomaly`; `EMPTY` by script | 4.1 |
 | 8 | Exact copies (3,140) | read once, record cloned; cross-page / cross-label copies become spread candidates; 35% less reader input | 5.3 |
 | 9 | Encoding (250 UTF-8 saves) | NFC at load; quotes checked on the same text | 4.1 |

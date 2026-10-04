@@ -54,7 +54,7 @@ CREATE TABLE runs (
 CREATE TABLE tasks (
   task_id  TEXT PRIMARY KEY,               -- e.g. run-03/reader/aivillage/general/2026-03-12T16
   run_id   TEXT NOT NULL REFERENCES runs(run_id),
-  tier     TEXT NOT NULL CHECK (tier IN ('reader','local_linker','resolver','linker','identity','reconciler','tracker','lead','summarizer','checker')),
+  tier     TEXT NOT NULL CHECK (tier IN ('reader','clusterer','local_linker','resolver','linker','identity','reconciler','tracker','lead','summarizer','checker')),
   scope    TEXT NOT NULL,                  -- JSON: {channel, t_start, t_end} | {claim_key} | {group_id} ...
   replica  INTEGER NOT NULL DEFAULT 0,     -- >0 = independent re-read of the same scope (agreement tests)
   model    TEXT,
@@ -227,6 +227,18 @@ CREATE TABLE checks (                      -- citation script + adversarial chec
 );
 CREATE INDEX checks_obj ON checks(obj_type, obj_id);
 
+CREATE TABLE identity_edges (              -- run identity (DESIGN.md 5.5); run groups = components of accepted edges
+  edge_id    INTEGER PRIMARY KEY,
+  session_a  TEXT NOT NULL,                -- name-session id: label + first save time (gap > 6 h starts a new one)
+  session_b  TEXT NOT NULL,
+  edge_type  TEXT NOT NULL CHECK (edge_type IN ('template_mint','timestamp_mint','signature','edit_summary','tag_topic','append_chain')),
+  strength   TEXT NOT NULL CHECK (strength IN ('strong','medium')),
+  evidence   TEXT NOT NULL,                -- JSON: msg_ids and the measured feature; never body text
+  status     TEXT NOT NULL DEFAULT 'proposed' CHECK (status IN ('proposed','accepted','rejected')),
+  decided_by TEXT,                         -- 'script' or task_id of the run-identity linker
+  version    INTEGER NOT NULL DEFAULT 1
+);
+
 CREATE TABLE coverage_gaps (               -- messages no reader record exists for, and why (DESIGN.md 7)
   msg_id   TEXT NOT NULL REFERENCES messages(msg_id),
   task_id  TEXT REFERENCES tasks(task_id),
@@ -234,6 +246,43 @@ CREATE TABLE coverage_gaps (               -- messages no reader record exists f
   detail   TEXT,                           -- e.g. stop_details.category; never message text
   PRIMARY KEY (msg_id, reason)
 );
+
+CREATE TABLE conversations (              -- conversation clustering (store_design.md 2a): one row per conversation thread
+  conv_id   TEXT PRIMARY KEY,
+  task_id   TEXT NOT NULL REFERENCES tasks(task_id),   -- 'script' pass or clusterer agent task
+  topic     TEXT NOT NULL,                 -- one line, the clusterer's own words
+  channels  TEXT NOT NULL,                 -- JSON list: rooms or pages it runs across
+  t_first   TEXT NOT NULL, t_last TEXT NOT NULL,
+  rationale TEXT NOT NULL,
+  merged_into TEXT REFERENCES conversations(conv_id)
+);
+CREATE TABLE conversation_members (
+  conv_id  TEXT NOT NULL REFERENCES conversations(conv_id),
+  msg_id   TEXT NOT NULL REFERENCES messages(msg_id),
+  task_id  TEXT NOT NULL REFERENCES tasks(task_id),
+  basis    TEXT NOT NULL CHECK (basis IN ('reply_to','time_gap','shared_entity','same_page_chain','page_reference','agent_judgment')),
+  confidence TEXT NOT NULL CHECK (confidence IN ('high','medium','low')),
+  retracted_by TEXT,
+  PRIMARY KEY (conv_id, msg_id)            -- a message may sit in two conversations (it bridges them)
+);
+CREATE INDEX conversation_members_msg ON conversation_members(msg_id);
+CREATE TABLE conversation_edges (           -- how conversations relate over time
+  edge_id   TEXT PRIMARY KEY,
+  task_id   TEXT NOT NULL REFERENCES tasks(task_id),
+  type      TEXT NOT NULL CHECK (type IN ('split','merge','drift','resume')),
+  from_conv TEXT NOT NULL REFERENCES conversations(conv_id),
+  to_conv   TEXT NOT NULL REFERENCES conversations(conv_id),
+  at_msg_id TEXT NOT NULL REFERENCES messages(msg_id), -- the message where it happens; quote in citations(obj_type='conv_edge')
+  confidence TEXT NOT NULL CHECK (confidence IN ('high','medium','low')),
+  rationale TEXT NOT NULL,
+  retracted_by TEXT
+);
+
+-- who was in a conversation up to a given message: exposure evidence (not proof) for the cascade tracer
+CREATE VIEW conversation_presence AS
+  SELECT cm.conv_id, m.speaker, MIN(m.t) AS t_joined, MAX(m.t) AS t_last_seen, COUNT(*) AS n_msgs
+  FROM conversation_members cm JOIN messages m USING (msg_id)
+  WHERE cm.retracted_by IS NULL GROUP BY cm.conv_id, m.speaker;
 
 CREATE TABLE ops (                         -- append-only log of every tool call that wrote something
   op_id INTEGER PRIMARY KEY, t TEXT NOT NULL, task_id TEXT, tool TEXT NOT NULL,

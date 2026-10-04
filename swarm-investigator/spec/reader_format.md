@@ -1,7 +1,8 @@
 # Reader and linker format (draft v1, 2026-10-03)
 
 How the Swarm Investigator turns raw transcripts into a database that summarizer agents can work from.
-Built from the DSEWiki build split: revisions dated before 2026-06-18, 5,129 of 14,591. Revisions from 2026-06-18 on are held out for scoring and were not read. Checked against 100 AI Village messages.
+Built from the DSEWiki build split: revisions dated before 2026-06-18, 5,129 of 14,591. Revisions from 2026-06-18 on were held out for scoring and were not read. Checked against 100 AI Village messages.
+(2026-10-04: the holdout was dropped; see DESIGN.md section 2. The labels were still built from this subset only.)
 This file does not edit `row_format.md`. Section 6 lists what it would change there.
 
 **Pipeline:** readers (one time window each) → script pre-grouping (no AI) → linkers (across windows) → summarizers.
