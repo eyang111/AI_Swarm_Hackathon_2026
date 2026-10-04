@@ -396,9 +396,9 @@ from a withheld span. The schema must not blind the investigator to what it wasn
 category (spread routes, beliefs and predictions, goals and coordination, conventions and protocols, methods and
 resources, coined words and markers, who spread it, limits and caveats).
 
-**Readable summary.** `readable.py` turns the run into `summary.md`: an overview, findings by category, a chronology
-per slice segment, and links to items. Raw ids are replaced by item names, and access-related items are withheld by
-the export screen. `report.md` is this summary followed by the full technical report under "Background".
+**Readable summary.** `readable.py` turns the run into a short fixed-size summary (`build()`) and a longer one
+(`build_detailed()`: overview, findings by category, chronology per slice segment, item links). Raw ids are replaced by item names, and access-related items are withheld by
+the export screen. `report.md` is the short summary, then the detailed one, then the full technical report under "Background".
 
 ### 9.4 L6 timeline graph
 The main output picture: each cluster is an event node (split into sub-events where L4 finds separate phases),

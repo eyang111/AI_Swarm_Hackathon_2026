@@ -177,7 +177,8 @@ def main(stage_stats=None, backend='?'):
     summary = readable.build(con)
     open(os.path.join(C.RUN_DIR, 'summary.md'), 'w').write(summary)
     background = '\n'.join(L).replace('# Test run report', '# Background: full test run report', 1)
-    open(os.path.join(C.RUN_DIR, 'report.md'), 'w').write(summary + '\n---\n\n' + background + '\n')
+    detailed = readable.build_detailed(con).replace('# Detailed summary', '# Background: detailed summary', 1)
+    open(os.path.join(C.RUN_DIR, 'report.md'), 'w').write(summary + '\n---\n\n' + detailed + '\n---\n\n' + background + '\n')
     return out
 
 

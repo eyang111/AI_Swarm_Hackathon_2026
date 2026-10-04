@@ -127,7 +127,7 @@ def _verdict_words(c):
 CHECKED = "SELECT COUNT(*) FROM checks WHERE obj_type IN ('link', 'cluster_edge')"
 
 
-def build(con, title='Run summary'):
+def build_detailed(con, title='Detailed summary'):
     info = _cluster_info(con)
     L = [f'# {title}', '',
          'Plain-language view of what this run found. These are the pipeline\'s hypotheses, not ground truth. '
@@ -196,4 +196,75 @@ def build(con, title='Run summary'):
             if a and b:
                 L.append(f"- {a['text']} **{word.get(e['type'], e['type'])}** {b['text']}.")
         L.append('')
+    return '\n'.join(L) + '\n'
+
+
+CONF_RANK = {'high': 0, 'medium': 1, 'low': 2}
+VERDICT_SHORT = {'copying': 'copied', 'convergence': 'independent', 'mixed': 'partly copied'}
+
+
+def _first_sentence(text, cap=220):
+    t = re.split(r'(?<=[a-z0-9)\'"])\.\s+(?=[A-Z])', text, maxsplit=1)[0].rstrip('.')
+    return t if len(t) <= cap else t[:cap].rsplit(' ', 1)[0] + '…'
+
+
+def _short(text, cap=70):
+    return text if len(text) <= cap else text[:cap].rsplit(' ', 1)[0] + '…'
+
+
+def build(con, title='Run summary', max_periods=8):
+    """Condensed summary with a fixed size whatever the run size: one finding per category, one line per period."""
+    info = _cluster_info(con)
+    q = lambda s: con.execute(s).fetchone()[0]
+    n_checked, n_rejected = q(CHECKED), q(CHECKED + " AND verdict='reject'")
+    based = [c for c in info.values() if c.get('baseline')]
+    more = sum(1 for c in based if c['baseline']['reading'].startswith('more'))
+    verdicts = collections.Counter(c['verdict'] for c in info.values() if c['verdict'])
+    L = [f'# {title}', '',
+         '*Hypotheses, not ground truth. Details, scores and costs are under "Background".*', '',
+         f"**In short:** {q('SELECT COUNT(DISTINCT msg_id) FROM records')} wiki saves, {len(info)} recurring items. "
+         f"{more} of {len(based)} large items spread more than chance would give. Of the items with a verdict, "
+         f"{verdicts['copying']} were copied, {verdicts['mixed']} partly copied and {verdicts['convergence']} reached independently. "
+         f"The checker rejected {n_rejected} of {n_checked} links it reviewed.", '']
+    # one finding per category
+    rows = con.execute('SELECT * FROM findings ORDER BY finding_id').fetchall()
+    by = collections.defaultdict(list)
+    for f in rows:
+        by[_category(f, info)].append(f)
+    L += ['## Main findings', '']
+    for cat in CATEGORIES:
+        fs = sorted(by.get(cat, []), key=lambda f: (CONF_RANK.get(f['confidence'], 3), f['finding_id']))
+        fs = [f for f in fs if not ({s['id'] for s in json.loads(f['supports']) if s['type'] == 'analysis'} & set(STALE_NOTE)
+                                     and stale_baseline(con, f))]
+        if not fs:
+            continue
+        extra = f' (+{len(fs) - 1} more)' if len(fs) > 1 else ''
+        L.append(f"- **{TITLES[cat]}:** {_first_sentence(_plain(fs[0]['text'], info))} *({fs[0]['confidence']}){extra}*")
+    L.append('')
+    # one line per period
+    periods = collections.defaultdict(list)
+    for c in info.values():
+        periods[c['seg'] or (c['t'] or '?')[:10]].append(c)
+    keep = sorted(periods, key=lambda k: -len(periods[k]))[:max_periods]
+    L += ['## Timeline', '']
+    for k in sorted(keep, key=lambda k: min(c['t'] or '' for c in periods[k])):
+        items = sorted(periods[k], key=lambda c: -c['editors'])
+        top = '; '.join(f"{_short(c['text'])} ({VERDICT_SHORT.get(c['verdict'], 'no verdict')}, {c['editors']} editors)"
+                        for c in items[:2] if not c['text'].startswith('(item withheld'))
+        name = SEGMENT_NAME.get(k, k)
+        L.append(f"- **{name}:** {len(items)} items. Biggest: {top or 'withheld items only'}.")
+    if len(periods) > len(keep):
+        L.append(f'- {len(periods) - len(keep)} quieter periods are in the detailed summary.')
+    L.append('')
+    # caveats
+    n_withheld = sum(1 for c in info.values() if c['text'].startswith('(item withheld'))
+    n_stale = sum(1 for f in rows if {s['id'] for s in json.loads(f['supports']) if s['type'] == 'analysis'} & set(STALE_NOTE)
+                  and stale_baseline(con, f))
+    no_l4 = sum(1 for c in info.values() if not c['summary'])
+    cav = [f'{no_l4} items have no spread analysis']
+    if n_withheld:
+        cav.append(f'{n_withheld} access-related items are withheld')
+    if n_stale:
+        cav.append(f'{n_stale} findings predate recomputed analyses and are left out above')
+    L += ['## Caveats', '', '- ' + '; '.join(cav) + '.', '']
     return '\n'.join(L) + '\n'
