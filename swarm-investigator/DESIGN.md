@@ -6,6 +6,8 @@ what it reconciled (section 9). Section 10 lists issues to expect when running i
 
 Status: design only. No pipeline code (`load.py`, `store.py`, `window_plan.py`, `pregroup.py`, prompts) exists yet.
 
+**Revision 2026-10-03:** the pipeline, data model, windows and analyzers (sections 3–6) are superseded by [`pipeline_v2.md`](pipeline_v2.md): message → function + keywords → capped content links → **assertiveness-seeded** clusters → within-cluster causal order → cross-cluster links → a timeline graph of events, with a **re-verify** pass that resolves reader-flagged uncertainties (and re-checks assertive cluster seeds) against raw. Sections 1–2, 7 and 10 still hold.
+
 | Spec file | What it holds | Status |
 |---|---|---|
 | [`spec/row_format.md`](spec/row_format.md) | event rows (investigator output and truth format), planted and hand-labelled truth, matching and scores | v1; its section 5 (store) is superseded by `store_design.md` |
