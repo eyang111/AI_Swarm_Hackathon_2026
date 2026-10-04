@@ -8,8 +8,9 @@ reconciled).
 
 **Status (2026-10-04):** the whole pipeline is built ([`code/`](code/)) and has run once on a DSEWiki test slice
 ($9.62, 14 of 16 planted events recovered with the right role). Fixes made after that run pass the offline tests but
-have not been re-run against the API. A full DSEWiki run is **not authorized yet**. Proposed feature cuts (section 15)
-are recorded as proposals, not applied.
+have not been re-run against the API. A full DSEWiki run is **not authorized yet**. v5.1 (Peyton, 2026-10-04):
+the feature cuts from the run #1 review are **applied to this design** (section 15); the code still has the cut
+features until the code thread removes them.
 
 | Part | Where |
 |---|---|
@@ -25,7 +26,7 @@ are recorded as proposals, not applied.
 
 Contents: 1 Why · 2 Standing rules · 3 Pipeline · 4 Data and loading · 5 Readers · 6 Re-verify · 7 Linking ·
 8 Run identity · 9 Analysis and the timeline graph · 10 Store · 11 Models and cost · 12 Safety · 13 Checks, truth and
-scoring · 14 Code as built · 15 Proposed cuts · 16 Test slice and run #1 · 17 Decisions and reconciliations ·
+scoring · 14 Code as built · 15 Feature cuts · 16 Test slice and run #1 · 17 Decisions and reconciliations ·
 18 Open issues and next steps
 
 ---
@@ -89,17 +90,15 @@ this design does not load. There is no model, lab or run field; the OpenAI attri
 L0   raw messages (loader script; verbatim added text; exact copies grouped)
 L1   readers (Sonnet, one request per window, Batch API): window = core + last-50 halo + token-routed halo
      + context pack. Per distinct message: one record split into one-act segments, each with function, purpose,
-     assertiveness, reader_confidence, keywords, claims, uncertainty flags. store.py validates; rejects re-asked once;
+     assertiveness, keywords, claims, task_content flag. store.py validates; rejects re-asked once;
      refusals bisected into coverage_gaps; records cloned to exact copies
-L1.9 re-verify (Sonnet): flagged gaps and low reader_confidence segments, checked against raw -> record version 2
 L2   keyword df pass (script): which keywords are distinctive
      local linkers (Sonnet): <= 3 outgoing links per segment (2 recent same-content + 1 topic anchor)
-     conversation layer: cluster.py (script) + clusterer (Opus) -> who was talking with whom
-     pregroup.py (script): copy groups, same claim text, shared entities, signed names, run tags
-L3   run identity: identity.py (script edges) + run-identity linker (Opus) -> run groups
+     conversation layer: cluster.py (script only) -> who was talking with whom
+     pregroup.py (script): copy groups, same claim text, shared keywords, signed names, run tags
+L3   run identity: identity.py (script, strong edges only) -> run groups
      groupers (Opus): per-layer content clusters seeded on assertive segments = claim keys
      reconciler (Opus): merges one claim split across clusters
-     re-verify on every assertive cluster seed
 L4   within-cluster analyzer (Opus): time order = sequence; cause only with exposure evidence; origin, mutations,
      copying vs convergence
 L5   cross-cluster analyzer (Opus): evolves_into / feeds / corrects / supersedes / caused
@@ -124,7 +123,7 @@ parent_msg_id`.
   bodies carry other agents' older text, so they are linked (`body_ref`) but not re-read. `parent_msg_id` is the
   previous save of the page.
 - **`removed_text`**: lines the save deleted. 215 saves add nothing; readers see their removals marked `removed:` so a
-  deletion can be an act. 17 saves have missing history (flagged in `anomaly`); 50 are the wiki's empty default page
+  deletion can be an act. 17 saves have missing history (noted in the reader's `anomaly` field); 50 are the wiki's empty default page
   and are `EMPTY` by script. 250 saves are UTF-8 variants that NFC normalizes.
 - **Exact copies.** After NFC and whitespace normalization, 3,140 saves repeat an earlier save's added text (11,451
   distinct texts; reader input falls 35%, 13.9M to 9.0M characters). The most-copied text is on 555 pages. Copies get
@@ -149,7 +148,7 @@ id is rejected, so every message gets exactly one record).
 CamelCase titles, hyphenated identifiers; document frequency 2 to 50). In AI Village 45% of messages back-refer; the
 nearest earlier use is a median 5 messages back (3 minutes), p75 27, p90 591 (44 hours), and 11% more than a day back.
 A 50-message halo cuts boundary loss from 25% to 16%; bigger windows add little. The long tail is left to the context
-pack and re-verify. A halo costs ~50% more input but no extra output, unlike Swin-style shifted windows, which would
+pack. A halo costs ~50% more input but no extra output, unlike Swin-style shifted windows, which would
 read and write every message twice.
 
 **AI Village:** room x session (sessions cut at gaps over 2 hours), core about 100 messages (split above 150), halo =
@@ -170,8 +169,8 @@ time slices. Bursts break fixed windows: at the Jun 18 peak a 100-save window co
 Scheme D: core = at most 100 distinct saves **and** 60k characters (some 100-save windows reach 280k); halo = the
 previous 50 saves plus, for each distinctive token in the core, the 2 most recent earlier saves using it within 24 h,
 capped at 150 saves and 120k characters. About 182 windows for all of DSEWiki. D is scored on the same proxy it is built
-from, so this shows D does what it is meant to, not that it catches dependence with no shared token; the readers'
-`reply_to_unseen` flags measure that on a real run (0 on the test slice).
+from, so this shows D does what it is meant to, not that it catches dependence with no shared token. On the test
+slice the readers (then still asked to flag missing context) reported 0 unseen-reply gaps.
 
 **Context pack (script).** For each distinctive token in the core whose nearest earlier use is outside core + halo,
 one pointer `{token, msg_id, t, speaker, first 200 chars}`. Raw text only, never earlier AI records.
@@ -186,15 +185,13 @@ One record per distinct message:
 |---|---|
 | `signed_name` | name the agent signs inside the text; on DSEWiki often differs from `speaker` |
 | `run_tag` | run or cohort tag the agent states about itself ("Jun28 cohort"); null if none |
-| `purpose` | 1 primary + up to 2 secondary labels (5.3) |
-| `flags` | `coded_token` (pre-agreed terse format), `task_content` (states a question or answer of the agents' task), `addresses_human` |
+| `purpose` | 1 label (5.3) |
+| `task_content` | flag: states a question or answer of the agents' task (L4 treats such matches as independent) |
 | `summary` | one line, reader's words; fixed string for `ACCESS_WORKAROUND` |
 | `quote` | exact substring, ≤200 chars, the most informative span |
-| `claims[]` | `{claim_text, about: self\|shared, stance: asserts\|relays\|doubts\|corrects, stated_source, quote}` |
-| `entities` | normalized keys: `agent:`, `page:`, `task:`, `value:`, `term:`, `url_host:` |
-| `addressed_to`, `reply_to_hint` | who it speaks to; a msg_id or short description of what it answers |
+| `claims[]` | `{claim_text, stance: asserts\|relays\|doubts\|corrects, stated_source, quote}` |
+| `reply_to_hint` | a msg_id or short description of what it answers (feeds the conversation layer) |
 | `anomaly` | free text for anything odd; usually null |
-| `context_status`, `context_needs[]`, `uncertain_fields` | missing-context flags (5.5) |
 | `segments[]` | one-act segments (below) |
 
 `stated_source` is only what the text says (`own_observation`, a signed name, a page title, "other cohorts",
@@ -210,10 +207,9 @@ segment:
   channels), `affiliative` (identity, ritual, social), `adversarial` (competing, gaming, attack). pipeline_v2 cited an
   α of 0.85 from earlier validation; its source is not in the project, so treat it as unverified;
 - **purpose** label (5.3);
-- **assertiveness** 0–1 (how flatly the agent stated it) and **reader_confidence** 0–1 (how sure the reader is of its
-  labels), never merged. Assertiveness anchors links and cluster seeds; reader_confidence triggers re-verify;
+- **assertiveness** 0–1 (how flatly the agent stated it); it anchors links and cluster seeds;
 - **keywords** 3–8, including topic keys seen elsewhere in the window that this segment is about; the script df pass
-  decides which are distinctive;
+  alone decides which are distinctive (readers no longer tag them);
 - its claims and summary.
 
 ### 5.3 Purpose labels
@@ -237,7 +233,7 @@ segment:
 | `HOUSEKEEPING` | tests or maintains the shared space (test writes, markers, index pages, deletions) | |
 | `ACCESS_WORKAROUND` | uses or shares a way around an operator's or site's access limit | getting around a bug → `STATUS`/`DIRECT`. Cite by msg_id only |
 
-`UNCLEAR` only when `context_status = missing` and the surface act is unclear. Precedence when unsure: `CORRECT >
+`UNCLEAR` only when the reader can't tell what the segment is doing. Precedence when unsure: `CORRECT >
 DOUBT > CONFIRM > DIRECT > CLAIM > RELAY > ASK > COMMIT > STATUS >` the rest (evaluation acts are rarer and more
 informative). Script-only: `DUPLICATE`, `EMPTY`. The dev set's draft labels map as `PROBE`, `ORGANIZE` →
 `HOUSEKEEPING`; `WORKAROUND` → `ACCESS_WORKAROUND`; `SIGNAL` → `RELAY` + `coded_token`; "standby/wait" →
@@ -249,32 +245,23 @@ Readers have no tools: the script assembles window, halo and context pack, so ea
 all its records as structured output (`output_config.format` = the record schema), sent through the **Message Batches
 API** (50% off, no per-minute pressure). The fixed prefix (instructions, label definitions with examples, schema) is
 first and cached. Effort `low`; `max_tokens` about 32k. After the batch, `store.py` checks every record (msg_id in core,
-quote substring, labels, ≤2 secondary labels); rejected records go back once in a small second batch with the reason.
+quote substring, labels); rejected records go back once in a small second batch with the reason.
 Copies: `store.py` clones the first instance's record to each copy (`cloned_from`), re-locating and re-checking quotes;
 a failed re-check sends that copy to readers. Refusals: section 12.
 
-### 5.5 Missing context
+### 5.5 Unclear context
 
-Readers flag instead of guessing. `context_status`: `complete` / `partial` (gist clear, detail missing) / `missing`
-(can't tell what it is doing). One `context_needs` entry per gap: `{type, span, needed, search_hints{channel, agents,
-terms, before_t}}`, with types `reply_to_unseen, unresolved_reference, coded_token, continuation, compacted_history,
-implicit_task, identity, outside_transcript`. Unresolved bits appear as placeholders (`[unresolved: what "C3" refers
-to]`). `uncertain_fields` lists fields that could change once the gap is filled. `outside_transcript` and
-`compacted_history` gaps cannot be filled by any pass and stay visible. Halo and pack count as seen context. The share
-of `reply_to_unseen` gaps resolved just before the window start is the tuning signal for halo size.
+Readers don't guess what they can't see: an unresolved reference is written as a placeholder in the summary or claim
+(`[unresolved: what "C3" refers to]`). There is no separate missing-context schema and no later pass that fills gaps
+(cut, section 15); the halo and context pack are what supply earlier context.
 
-## 6. Re-verify (L1.9)
+## 6. Re-verify (cut)
 
-Replaces the earlier gap resolver. Items: every segment with `context_status` partial/missing, any `context_needs`
-entry, any `uncertain_fields`, or `reader_confidence` below 0.5; later, every assertive cluster seed (assertiveness ≥
-0.7). A Sonnet call pulls raw context (the message, neighbours, the pages and terms in `search_hints`, context-pack
-pointers first) and writes `context_resolutions` rows `{msg_id, need_index, status: resolved | unresolvable |
-ambiguous, resolved_by[], resolution, evidence_quote, confidence, rationale}`. If a resolution changes the record it
-writes **version 2** (`supersedes`, `revision_reason`); version 1 is never edited. `ambiguous` keeps all candidates and
-does not revise. Version 1 vs 2 differences are a score: how often a reader's first reading was wrong.
-
-Why seeds: clusters anchor on assertiveness (decision D1), and an assertive segment can be confidently wrong.
-Re-verify is the backstop. (Run #1 evidence and the proposal to cut it: sections 15 and 16.)
+The re-verify pass (record re-checks for flagged or low-confidence readings, and re-checks of assertive cluster seeds)
+is removed from the design (section 15). In run #1 the seed check supported 94 of 100 seeds and found none wrong, and
+the record pass never produced a result. What still guards against a confidently wrong anchor: every L4 link and L5
+edge goes through the adversarial checker (9.3) against the cited raw text, and every quote through the citation
+check. If a later run shows wrong seeds driving clusters, re-verify comes back from `archive/DESIGN_v4.md`.
 
 ## 7. Linking (L2–L3)
 
@@ -298,19 +285,20 @@ shared_page, human_relay, external_source, task_prompt, unknown`). A link whose 
 rejected. "No link" is always allowed.
 
 ### 7.2 Conversation layer (who was talking with whom)
-Rooms interleave conversations, and on DSEWiki one conversation spans pages. `cluster.py` (script) connects messages by
-readers' `reply_to_hint`, short gaps in the same channel, shared entities, page save chains, and saves naming a page
-saved shortly before; connected groups are candidates. A clusterer (Opus) handles only unclear spots (oversized
-candidates, bridging messages, topic changes): topic line, member moves, and `split`, `merge`, `drift`, `resume` edges
-anchored on a message with a checked quote. A message may belong to two conversations (a bridge). Membership is
-evidence of **presence, not exposure**: an `exposed_to` link may cite it but needs its own rationale. Conversations
-are structure; clusters (7.3) are content. Both are kept.
+Rooms interleave conversations, and on DSEWiki one conversation spans pages. `cluster.py` (script only) connects
+messages by readers' `reply_to_hint`, short gaps in the same channel, shared keywords, page save chains, and saves
+naming a page saved shortly before; connected groups are conversations (`conversations` + `conversation_members`). The
+Opus clusterer that wrote topic lines and split/merge/drift/resume edges is cut (section 15): nothing downstream read
+them, and it failed on the largest groups. Conversations have no topic line; L4 and the baseline use membership only.
+Membership is evidence of **presence, not exposure**: an `exposed_to` link may cite it but needs other evidence
+(9.1). Conversations are structure; clusters (7.3) are content. Both are kept. Watch for over-merged groups (one run #1
+conversation spans 71 saves on 57 pages); a size cap in `cluster.py` is the fix if that recurs.
 
 ### 7.3 Pregrouping, groupers and the reconciler
 - **`pregroup.py` (script)** proposes candidates: copy groups (cross-page or cross-name exact copies pointing at the
-  first instance), same normalized claim text, shared distinctive entities, same signed name or run tag across
+  first instance), same normalized claim text, shared distinctive keywords, same signed name or run tag across
   speakers. Connected components of links + candidates are **families**; a component-size check stops a generic entity
-  from gluing everything together.
+  from gluing everything together. (Reader `entities` were cut; keywords carry the same keys.)
 - **Groupers (Opus)** build content clusters per family, one layer at a time (`belief | goal | protocol | method |
   word`), seeded on the most assertive, clearly typed segments (what the group treated as settled). Members attach by
   distinctive keywords, claim text and L2 links. Clusters are **claim keys**. Families over ~300 segments are split
@@ -345,15 +333,17 @@ Usernames don't identify runs: 3,103 names, 1,332 used once, 899 anonymous saves
 2. Script edges (`identity.py`): **strong** = template mint (same name minus trailing digits, non-generic word,
    within 6 h), timestamp mint, signature (after checking it isn't quoted older text). **Medium** = distinctive edit
    summary (≤5 names) within 48 h, same date tag + non-generic topic word within 48 h, append chains (to measure).
-3. Strong edges merge directly. Medium edges go to the run-identity linker (Opus), which reads both sides' added text.
-   Blockers: two different date tags in added text; saves under 5 s apart on different pages.
+3. Strong edges merge directly. Blockers: two different date tags in added text; saves under 5 s apart on different
+   pages. Medium edges are recorded as `proposed` and **not merged**: the Opus run-identity linker that judged them is
+   cut (section 15; it accepted 10 of 77 in run #1 and the strong edges made most groups). Medium edges stay in the
+   store so a later linker or a person can still use them.
 4. Edges live in `identity_edges` (proposed / accepted / rejected, versioned); run groups are built from accepted
    edges, so a bad merge is undone by rejecting one edge.
 5. Every per-agent result is reported at **name-session, run group and cohort (date tag)** level; a claim that holds
    at one level only is flagged.
 
 **Ceiling.** Scripts alone put ~35% of saves in confident groups; 34% are generic names (`ResearchHelper`: 35 variants
-over 28 days) the linker must split by session and content; ~14% (one-off names with no signal, anonymous) can only be
+over 28 days) that, without the linker, stay split into name-sessions; ~14% (one-off names with no signal, anonymous) can only be
 linked by what they wrote. No run key exists, so no grouping can be confirmed. Spread between cohorts and pages is more
 defensible than spread between runs; state each claim at the coarsest level it survives. **Evaluation:** synthetic
 renaming (fresh fake names on a distinctive name's saves; measure reassembly and wrong merges) and contradiction rate,
@@ -420,13 +410,13 @@ is stored). Every AI row carries `task_id` → `tasks(run_id, tier, scope, model
 of a window can sit side by side.
 
 **Tables.** Source: `messages` (+ `messages_fts`), `agents`, `windows`. Provenance: `runs`, `tasks`, `citations`,
-`ops`, `checks`, `usage`. Readers: `records` (with version, context fields, `cloned_from`), `segments`,
-`segment_keywords`, `claims`, `mentions`, `context_resolutions`, `coverage_gaps` (every message with no record and why:
-refused, failed, skipped). Script: `keyword_df`, `candidates` + members. Conversations: `conversations`,
-`conversation_members`, `conversation_edges`. Linkers: `links`, `claim_keys` + `claim_key_members` +
-`claim_key_segments`, `run_groups` + members (over name-sessions), `identity_edges`, `aggregates` + members,
-`cluster_edges`. Analysis: `analyses`, `loose_ends`, `observations`, `findings`. Views (never written): `live_links`,
-`live_members`, `novelty`, `events`, `conversation_presence`.
+`ops`, `checks`, `usage`. Readers: `records` (with `cloned_from`), `segments`, `segment_keywords`, `claims`,
+`coverage_gaps` (every message with no record and why: refused, failed, skipped). Script: `keyword_df`, `candidates` +
+members. Conversations: `conversations`, `conversation_members`. Linkers: `links`, `claim_keys` + `claim_key_members`
++ `claim_key_segments`, `run_groups` + members (over name-sessions), `identity_edges`, `cluster_edges`. Analysis:
+`analyses`, `observations`, `findings`. Views (never written): `live_links`, `live_members`, `novelty`, `events`.
+Cut as write-only or belonging to cut features (section 15): `mentions`, `loose_ends`, `conversation_edges`,
+`conversation_presence`, `aggregates` + members, `context_resolutions`, record versioning columns.
 
 **`events` view** (the scoring format): first member = `origin`; `doubts` = `challenge`; `corrects` = `correct`; else
 `adopt`. Depth = `acted` if an `acted_on` link leaves that segment, `planned` if `COMMIT`, else `said` (on DSEWiki every
@@ -440,7 +430,7 @@ see msg_id", no free-text claims about it, and `citations.redact = 1`; every exp
 
 **Tools.** `get_window`, `get_raw`, `search(query, before)`, `write_record`; `get_records`, `get_candidates`,
 `find_claim_key`, `new_claim_key`, `add_members`, `retract_members`, `merge_claim_keys`, `add_link`, `new_run_group`,
-`add_run_members`, `add_loose_end`, `close_loose_end`, `add_observation`, `add_finding(text, supports[])`. Every tool
+`add_run_members`, `add_observation`, `add_finding(text, supports[])`. Every tool
 returns `ok` or `rejected: <reason>`. (In the code all model tiers are one-shot, so the script calls these tools on
 the models' structured output; section 14.)
 
@@ -448,8 +438,9 @@ the models' structured output; section 14.)
 
 | Tier | Model | Why |
 |---|---|---|
-| readers, re-verify, local linker | Sonnet 5.5 | many short-range, mostly mechanical calls; errors are local |
-| clusterer, groupers, reconciler, run-identity linker | Opus 5.5 | few calls; one wrong merge invents or erases a whole cascade |
+| readers, local linker | Sonnet 5.5 | many short-range, mostly mechanical calls; errors are local |
+| groupers, reconciler | Opus 5.5 | few calls; one wrong merge invents or erases a whole cascade |
+| conversations, run identity | script only | their model tiers were cut (section 15) |
 | L4, L5, lead | Opus 5.5 | Peyton's choice |
 | checker | Opus 5.5 | not weaker than the rows it checks |
 
@@ -459,8 +450,10 @@ the server-side refusal fallback (`fallbacks: "default"`); in run #1 the Opus 5.
 third of Opus calls, inconsistently and at task level, and the fallback (Opus 4.8) served them. The fallback stays on.
 
 **Cost.** Run #1 on the test slice (1,049 saves): **$9.62** (readers $2.21, local linker $1.26, L4 and L5 $3.20, the
-rest on Opus tiers). Full DSEWiki estimates: readers about $35–40 batched with segments; whole pipeline about **$85
-all-batched** (`--batch-all`) or about **$135 with only readers batched**, range $70–150. Estimates, not measurements.
+rest on Opus tiers). The cuts remove about $1.40 of that (seed re-verify $0.20, clusterer $0.67, identity linker
+$0.54) plus about 10–14% of reader output, so a slice run would be about $8. Full DSEWiki estimates before the cuts:
+about **$85 all-batched** (`--batch-all`) or about **$135 with only readers batched**, range $70–150; expect roughly
+15% less after them. Estimates, not measurements.
 
 ## 12. Safety
 
@@ -496,7 +489,7 @@ that agent, exposure precedes `t`. (2) The Opus adversarial checker (9.3). A cro
 **Match:** same swarm, layer, agent (DSEWiki: same handle or same run group), role; `t` within 30 minutes; same item
 (plants: cites a plant msg_id or names its item; hand labels: judged by Peyton). Depth counts if same or shallower.
 **Scores:** recall; error rate inside labelled windows; calibration by confidence; reader agreement (replica 0 vs 1);
-version 1 vs 2 changes; coverage; all also split before / after Jun 18.
+coverage; all also split before / after Jun 18.
 
 **Experiments:** each safeguard's contribution (single agent vs subagents, + citation check, + checker); more complete
 data (AI Village chat vs + memories and events); reconciler on/off; registry access on/off; one summarizer on raw
@@ -516,13 +509,11 @@ code expects the slice and dump under `/mnt/project-files/` (not in the repo).
 | load | `load.py` | script |
 | windows (scheme D) | `window_plan.py` | script |
 | readers | `readers.py` | Sonnet, batch |
-| reverify | `reverify.py` | Sonnet |
 | keyword_df, pregroup | `pregroup.py` | script |
 | local_linker | `local_linker.py` | Sonnet |
-| conversations | `cluster.py` | script + Opus |
-| identity | `identity.py` | script + Opus |
+| conversations | `cluster.py` | script (Opus part to remove) |
+| identity | `identity.py` | script (Opus part to remove) |
 | groupers, reconciler | `groupers.py` | Opus |
-| reverify_seeds | `reverify.py` | Sonnet |
 | l4, l5, script analyzers, checker, lead | `analyzers.py` | Opus / script |
 | timeline | `timeline.py` | script |
 | score | `score.py` | script |
@@ -533,8 +524,11 @@ ledger, budget guard, fallback handling), `errlog.py`, `common.py`, `schema_patc
 **Where the code differs from the design above:** every model tier is one-shot structured output with script-assembled
 raw context (no tool loops); clusters are over segments (`claim_key_segments`; `live_members`, `novelty`, `events`
 rebuilt in `schema_patch.sql`); segment spans come from `start_quote`; the halo is also capped at 120k characters; run
-groups are over name-sessions; the checker retracts what it rejects. Not built: `aggregates`, replica reader agreement,
-AI Village loading, blind hand labels (Peyton's to make before looking at output).
+groups are over name-sessions; the checker retracts what it rejects. Not built: replica reader agreement, AI Village
+loading, blind hand labels (Peyton's to make before looking at output).
+
+**Not yet in the code:** the section 15 cuts. `reverify.py`, the Opus calls in `cluster.py` and `identity.py`, the cut
+reader fields and the cut tables are still in `code/`. The thread "Test-slice run, fresh session" owns the code and makes these changes.
 
 **Changed since run #1** (by the thread "Test-slice run, fresh session"; mock, fake-API and unit tests pass; not re-run
 on the API):
@@ -546,32 +540,36 @@ on the API):
 - Run-wide error log `errlog.log(stage, kind, detail, …)` → `test_run/errors.jsonl`; the report gets an Errors section.
 - Stricter L4 evidence rule (9.1), with the readers' `task_content` flag passed into L4.
 
-## 15. Proposed cuts (not applied; Peyton to decide)
+## 15. Feature cuts (applied to the design, Peyton 2026-10-04)
 
 From the review thread "Unnecessary pipeline features" ([archive copy](archive/review_unnecessary_features.md)),
-judged by whether a feature changes what the pipeline says about how ideas spread. Costs are from run #1.
+judged by whether a feature changes what the pipeline says about how ideas spread. Peyton approved all six cuts,
+including the two the review had marked "cut unless a rerun shows value". The code still contains them (section 14).
 
-| Proposal | Evidence | Run #1 cost |
-|---|---|---|
-| **Cut** seed re-verify | 94 of 100 seeds supported, 0 unsupported, 6 unclear; nothing reads its loose ends; L4 never uses seeds | $0.20 |
-| **Cut** the Opus conversation clusterer (keep the script grouping) | failed on the 4 largest conversations; 5 splits and 1 edge; L4 and the baseline use script membership | $0.67 |
-| **Cut** unused reader fields: `entities`, `addressed_to`, keyword `distinctive`/`from_context`, `secondary_purposes`, claim `about`, flags `coded_token`/`addresses_human` | no stage reads them; about 18% of reader output | ~10% of reader cost |
-| **Cut** write-only schema: `loose_ends`, `mentions`, `conversation_edges`, `conversation_presence`, empty `aggregates` | never read | cleanup only |
-| **Cut unless a rerun shows value**: record re-verify and its fields (`context_status`, `context_needs`, `uncertain_fields`, `reader_confidence`) | all 7 calls failed in run #1; coverage was already 1,049/1,049 with 0 `reply_to_unseen` | ~3.5% of reader output |
-| **Cut unless a rerun shows value**: the Opus run-identity linker | accepted 10 of 77 medium edges; strong script edges make most of the 19 groups | $0.54 |
+| Cut | Evidence | Run #1 cost | Sections changed |
+|---|---|---|---|
+| Seed re-verify | 94 of 100 seeds supported, 0 unsupported, 6 unclear; nothing read its loose ends; L4 never used seeds | $0.20 | 3, 6 |
+| Opus conversation clusterer (script grouping kept) | failed on the 4 largest conversations; 5 splits and 1 edge; L4 and the baseline use script membership | $0.67 | 3, 7.2, 11 |
+| Unused reader fields: `entities`, `addressed_to`, keyword `distinctive`/`from_context`, secondary purposes, claim `about`, flags `coded_token`/`addresses_human` | no stage read them; about 18% of reader output | ~10% of reader cost | 5.2, 7.3 |
+| Write-only schema: `loose_ends`, `mentions`, `conversation_edges`, `conversation_presence`, `aggregates` | never read | cleanup | 10 |
+| Record re-verify and its fields: `context_status`, `context_needs`, `uncertain_fields`, `reader_confidence`, `context_resolutions`, record versions | all 7 calls failed in run #1; coverage was already 1,049/1,049 with 0 unseen-reply gaps | ~3.5% of reader output | 3, 5.5, 6, 10, 13 |
+| Opus run-identity linker (medium edges kept as proposals) | accepted 10 of 77 medium edges; strong script edges made most of the 19 groups | $0.54 | 3, 8, 11 |
 
-**Keep** (checked, they earn their place): local linker (49 of 103 links join segments that keywords leave apart; 78
-families instead of 68), reconciler (12 merges for $0.06), checker (rejected 16 rows, mostly a shared page or shared
-task answer read as exposure), L5 edges (the timeline's only arrows), L4 mutations and phases, script conversations
-(277 cross-page member pairs that same-page checks miss).
+**What the cuts give up.** Decision D1 anchored clusters on assertiveness with re-verify as its backstop; the checker
+and citation check are now the only guard against a confidently wrong seed. Generic names stay split into
+name-sessions instead of being joined by the linker. Conversations have no topic line. Readers no longer flag missing
+context, so there is no measured signal for tuning the halo size. Each cut feature is fully described in
+`archive/DESIGN_v4.md` if a later run shows it is needed.
 
-**Other review notes:** `task_content` was unused (now fed into L4, section 14); L4 counts `same_run_group` as exposure,
-but a shared run is self-relay, not spread between agents; the timeline draws only cluster edges, so the 154
-within-cluster L4 links don't appear in the main picture; one script conversation (71 saves across 57 pages) looks
-over-merged.
+**Kept** (checked because they looked cuttable, but they earn their place): local linker (49 of 103 links join segments
+that keywords leave apart; 78 families instead of 68), reconciler (12 merges for $0.06), checker (rejected 16 rows,
+mostly a shared page or shared task answer read as exposure), L5 edges (the timeline's only arrows), L4 mutations and
+phases, script conversations (277 cross-page member pairs that same-page checks miss).
 
-Cutting the record re-verify and the clusterer would change sections 6 and 7.2; if Peyton approves the cuts, those
-sections change with them.
+**Other review notes (not cuts, still open, section 18):** L4 counts `same_run_group` as exposure, but a shared run is
+self-relay, not spread between agents; the timeline draws only cluster edges, so the 154 within-cluster L4 links don't
+appear in the main picture; one script conversation (71 saves across 57 pages) looks over-merged. `task_content` was
+unused and is now fed into L4.
 
 ## 16. Test slice and run #1
 
@@ -614,10 +612,11 @@ cut at segment edges; AI Village windows aren't exercised.
 | Date | Decision | By |
 |---|---|---|
 | 10-03 | Cross-lab checker optional; core needs one lab's key | Peyton |
-| 10-03 | D1: "most confident" = agent assertiveness, with re-verify as backstop. D2: cap out-degree at 3, in-degree free. D3: timestamp orders, exposure proves | Peyton (pipeline_v2) |
+| 10-03 | D1: "most confident" = agent assertiveness (its re-verify backstop was cut 10-04). D2: cap out-degree at 3, in-degree free. D3: timestamp orders, exposure proves | Peyton (pipeline_v2) |
 | 10-04 | Holdout dropped; scoring by plants and blind labels | Peyton |
 | 10-04 | Readers Sonnet 5.5, one batched request per window, cached instructions; analyzers and checker Opus | Peyton |
 | 10-04 | Local linker and re-verify Sonnet; groupers, reconciler, run identity, clusterer Opus | Claude's pick, accepted |
+| 10-04 | All six feature cuts from the run #1 review applied (section 15) | Peyton |
 | 10-04 | Burst windows: token-routed halo + 60k core cap; refused windows split and resubmitted | Peyton |
 | 10-04 | Conversation layer added | Peyton |
 | 10-04 | Sandra's pipeline v2 merged (segments, function axis, two confidences, re-verify, capped links + anchor, groupers, L4–L6); reconciler and burst windows kept; cap on local links only | Peyton |
@@ -636,7 +635,7 @@ cut at segment edges; AI Village windows aren't exercised.
 | Roles and layers | `challenge` role added; `protocol` and `method` layers added |
 | Jun 18 holdout | dropped; `split` column removed |
 | DSEWiki windows of 100 saves + 50 halo | scheme D (5.1) |
-| Gap resolver | replaced by re-verify |
+| Gap resolver | replaced by re-verify, which was then cut |
 | Groupers with no cross-component merge | reconciler kept |
 | Hard cap of 3 links | cap on local links only |
 | Conversations vs groupers | both: structure vs content |
@@ -666,7 +665,7 @@ cut at segment edges; AI Village windows aren't exercised.
 | 15 | Deletions | rarely limit exposure; ignored for now | — |
 
 **Still open**
-1. Peyton's decision on the proposed cuts (section 15).
+1. Remove the section 15 cuts from the code (owned by the thread "Test-slice run, fresh session").
 2. Copy cascades across many pages: L4 needs copy-group `source_of` links to see them (the S3 case).
 3. Identity grouping is thin on the slice (55 of 495 name-sessions grouped); expected to improve on the full dump,
    where sessions aren't cut at slice edges.
