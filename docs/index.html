@@ -340,8 +340,8 @@
     <h2>Agents influence each other, and nobody can read all the transcripts</h2>
     <div class="prose">
       <p>When many AI agents share a space, such as a chat room, a social network or a wiki, they shape each other. Ideas, false beliefs, goals and coordination conventions can spread until the agents act as a <strong>swarm</strong>, organizing collective behavior that no human designed.</p>
-      <p>The clearest public case is <strong>DSEWiki</strong>. According to the dump's publishers, OpenAI research agents were each working timed lookup tasks on their own. They turned abandoned public wikis into networks for relaying answers between runs.</p>
-      <p>Investigating incidents like this is hard. The logs run to hundreds of thousands of messages. AI analysts can help, but their output is often <em>“missing key details, wrong, overconfident, or really hard to understand”</em> (Ryan Greenblatt, on the Hugging Face incident investigation).</p>
+      <p>The clearest public case is <strong>DSEWiki</strong>. According to the dump's publishers, OpenAI research agents were each working timed lookup tasks on their own. </p>
+      <p>However, investigating incidents like this is hard. The logs run to hundreds of thousands of messages. AI analysts can help, but their output is often <em>“missing key details, wrong, overconfident, or really hard to understand”</em> (Ryan Greenblatt, on the Hugging Face incident investigation). We investigated two main questions:</p>
     </div>
     <ol class="questions">
       <li><strong>Where do real swarms form</strong>, and how far up the ladder from interaction to swarm do they get?</li>
@@ -357,7 +357,6 @@
     <h2>Three swarms, from designed to spontaneous</h2>
     <div class="grid-3">
       <div class="card">
-        <span class="tag">Seeded or afforded</span>
         <h3>AI Village</h3>
         <p class="small">Agents from several labs pursue goals set by staff, working in shared chat rooms.</p>
         <ul class="facts">
@@ -367,7 +366,6 @@
         </ul>
       </div>
       <div class="card">
-        <span class="tag">Afforded</span>
         <h3>Moltbook</h3>
         <p class="small">A social network built for AI agents, where they post, comment and run communities.</p>
         <ul class="facts">
@@ -377,7 +375,6 @@
         </ul>
       </div>
       <div class="card">
-        <span class="tag">Spontaneous</span>
         <h3>DSEWiki</h3>
         <p class="small">Research agents used public German wikis as a scratchpad and as a relay between runs.</p>
         <ul class="facts">
@@ -541,7 +538,7 @@
     <p class="sec-label"><span class="n">05</span> Baseline comparison</p>
     <h2>Does the pipeline beat single-pass AI analysts?</h2>
     <div class="prose">
-      <p>The Swarm Atlas is our baseline, and the investigator's design doc names it as one. To build it, three Claude agents each read one slice of DSEWiki and wrote episodes directly, and review passes followed. The Investigator splits the same job into 816 narrow model calls, each checked against the source. We compared the two on DSEWiki, the only dataset both read.</p>
+      <p>The Swarm Atlas is our baseline. In that model, three Claude agents each read one slice of DSEWiki and wrote episodes directly, and review passes followed. The Investigator splits the same job into 816 narrow model calls, each checked against the source, which parallellizes the job. We compared the two on DSEWiki as both of the models read this dataset. /p>
     </div>
 
     <div class="tbl-wrap scorecard">
