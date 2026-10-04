@@ -469,7 +469,7 @@ def add_observation(con, task_id, obs_id, text, cites):
     return 'ok', obs_id
 
 
-def add_finding(con, task_id, finding_id, text, confidence, supports):
+def add_finding(con, task_id, finding_id, text, confidence, supports, category=None):
     ok = []
     for s in supports:
         t, i = s.get('type'), s.get('id')
@@ -480,8 +480,8 @@ def add_finding(con, task_id, finding_id, text, confidence, supports):
             ok.append({'type': t, 'id': i})
     if not ok:
         return 'rejected', 'a finding must point at claim keys, links, cluster edges, run groups, conversations or analyses'
-    con.execute('INSERT INTO findings VALUES (?,?,?,?,?)', (finding_id, task_id, text[:2000],
-                                                            confidence if confidence in CONF else 'low', json.dumps(ok)))
+    con.execute('INSERT INTO findings (finding_id, task_id, text, confidence, supports, category) VALUES (?,?,?,?,?,?)',
+                (finding_id, task_id, text[:2000], confidence if confidence in CONF else 'low', json.dumps(ok), category))
     return 'ok', finding_id
 
 

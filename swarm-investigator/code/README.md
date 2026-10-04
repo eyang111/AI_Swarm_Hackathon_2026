@@ -79,3 +79,8 @@ cost ledger, budget guard), `common.py` (prompt views), `schema_patch.sql`, `fak
 - **Model calls**: one retry, then halving up to 3 levels for any failed non-reader call; text after a server-side
   fallback boundary is parsed; declined hops are billed. Opus 4.8 / Opus 5 prices added for fallbacks.
 - **Error log**: `errlog.log(stage, kind, detail, **ctx)` appends to `test_run/errors.jsonl`; report.md has an Errors section.
+- **Readable summary** (`readable.py`): `score` writes `summary.md` (overview, findings grouped by category, a per-segment
+  chronology, links between items) with item names instead of raw ids and access-related items withheld. `report.md`
+  is the summary followed by the full old report under "Background". The lead now tags each finding with a category
+  (`findings.category`, added in `schema_patch.sql`); findings without one get a script-assigned category. Findings
+  written before the script analyses were recomputed get a note.

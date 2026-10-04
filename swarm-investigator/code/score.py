@@ -8,7 +8,7 @@
 Output: test_run/report.md and test_run/scores.json (no message quotes).
 """
 import collections, json, os
-import config as C, errlog, store, identity
+import config as C, errlog, store, identity, readable
 
 JUN18 = '2026-06-18'
 
@@ -174,7 +174,10 @@ def main(stage_stats=None, backend='?'):
     L += ['', '## Findings (lead, Opus)', '']
     for f in con.execute('SELECT * FROM findings ORDER BY finding_id'):
         L.append(f"- {f['finding_id']} ({f['confidence']}): {f['text']}  supports: {f['supports']}")
-    open(os.path.join(C.RUN_DIR, 'report.md'), 'w').write('\n'.join(L) + '\n')
+    summary = readable.build(con)
+    open(os.path.join(C.RUN_DIR, 'summary.md'), 'w').write(summary)
+    background = '\n'.join(L).replace('# Test run report', '# Background: full test run report', 1)
+    open(os.path.join(C.RUN_DIR, 'report.md'), 'w').write(summary + '\n---\n\n' + background + '\n')
     return out
 
 

@@ -88,6 +88,9 @@ CREATE VIEW events AS
   FROM live_members lm JOIN claim_keys ck USING (claim_key) JOIN novelty n USING (claim_key)
   WHERE NOT EXISTS (SELECT 1 FROM messages d WHERE d.msg_id = lm.msg_id AND d.script_label = 'DUPLICATE');
 
+-- Lead findings carry a category for the readable summary (readable.py).
+ALTER TABLE findings ADD COLUMN category TEXT;
+
 -- Cut 2026-10-04 (DESIGN 15): write-only tables and views nothing reads.
 DROP VIEW IF EXISTS conversation_presence;
 DROP TABLE IF EXISTS conversation_edges;

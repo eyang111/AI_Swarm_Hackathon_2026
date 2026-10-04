@@ -10,7 +10,7 @@ Script analyzers: routes (5), spreaders and adopters at three identity levels (6
 Lead: findings that must point at clusters, links, edges or analyses.
 """
 import collections, json, random, re
-import config as C, store, identity
+import config as C, store, identity, readable
 from common import obj, arr, S, CONF, NULLSTR, SAFETY, raw, seg_view, seg_text, chunks, dumps
 
 CTX = 'an investigation of how ideas spread through an AI agent swarm (OpenAI research agents using German wikis as a shared scratchpad and relay, 2026; editor names are self-chosen and do not identify runs)'
@@ -60,8 +60,9 @@ Each row is a claim another analyst made about how two saves (or two clusters) a
 CHECK_SCHEMA = obj({'verdicts': arr(obj({'row_id': S, 'verdict': {'type': 'string', 'enum': ['accept', 'correct', 'reject']}, 'note': S}))})
 
 LEAD_SYSTEM = f"""You are the lead investigator in {CTX}. {SAFETY}
-You get the store's aggregates: clusters with their L4 accounts, cross-cluster edges, routes, spreaders at three identity levels (name-session, run group, cohort tag), stopping points, the copying baseline, conversation and identity statistics, reader coverage and the checker's verdicts. Write findings a person can check: each finding states one thing about how ideas, beliefs, goals, conventions or methods spread in this slice, at the coarsest identity level it survives, with honest confidence, and lists supports (type claim_key, link, cluster_edge, run_group, conversation or analysis, with its id). Note coverage limits (refused or failed windows, segments cut at slice edges, origins before the slice). Also list free observations: anything important the schema did not capture, each citing a msg_id with an exact quote (never from a withheld span)."""
+You get the store's aggregates: clusters with their L4 accounts, cross-cluster edges, routes, spreaders at three identity levels (name-session, run group, cohort tag), stopping points, the copying baseline, conversation and identity statistics, reader coverage and the checker's verdicts. Write findings a person can check: each finding states one thing about how ideas, beliefs, goals, conventions or methods spread in this slice, at the coarsest identity level it survives, with honest confidence, and lists supports (type claim_key, link, cluster_edge, run_group, conversation or analysis, with its id). Give each finding one category: spread routes, beliefs and predictions, goals and coordination, conventions and protocols, methods and resources, coined words and markers, who spread it, or limits and caveats. Note coverage limits (refused or failed windows, segments cut at slice edges, origins before the slice). Also list free observations: anything important the schema did not capture, each citing a msg_id with an exact quote (never from a withheld span)."""
 LEAD_SCHEMA = obj({'findings': arr(obj({'text': S, 'confidence': CONF,
+                                        'category': {'type': 'string', 'enum': readable.CATEGORIES},
                                         'supports': arr(obj({'type': {'type': 'string', 'enum': ['claim_key', 'link', 'cluster_edge', 'run_group', 'conversation', 'analysis']},
                                                              'id': S}))})),
                    'observations': arr(obj({'text': S, 'cites': arr(obj({'msg_id': S, 'quote': S}))}))})
@@ -403,7 +404,7 @@ def run_lead(con, llm, run_id):
     tid = store.new_task(con, run_id, 'lead', {'id': 'lead'}, C.TIER_MODEL['lead'])
 
     def mock():
-        return {'findings': [dict(text=f'mock finding: cluster {ck["claim_key"]} spread', confidence='low',
+        return {'findings': [dict(text=f'mock finding: cluster {ck["claim_key"]} spread', confidence='low', category='spread routes',
                                   supports=[dict(type='claim_key', id=ck['claim_key'])]) for ck in cks[:5]], 'observations': []}
     res = llm.call_many('lead', [dict(custom_id='lead', task_id=tid, system=LEAD_SYSTEM, user='STORE AGGREGATES:\n' + dumps(view),
                                       schema=LEAD_SCHEMA, max_tokens=24000, est_out=4000, mock=mock)])[0]
@@ -411,7 +412,7 @@ def run_lead(con, llm, run_id):
     if res['error']:
         store.finish_task(con, tid, 'failed'); return dict(error=res['error'])
     for n, f in enumerate(res['data'].get('findings', [])):
-        st, _ = store.add_finding(con, tid, f'F{n+1:02d}', f['text'], f['confidence'], f['supports'])
+        st, _ = store.add_finding(con, tid, f'F{n+1:02d}', f['text'], f['confidence'], f['supports'], f.get('category'))
         stats['findings' if st == 'ok' else 'findings_rejected'] += 1
     for n, o in enumerate(res['data'].get('observations', [])):
         st, _ = store.add_observation(con, tid, f'O{n+1:02d}', o['text'], [(c['msg_id'], c['quote']) for c in o['cites']])

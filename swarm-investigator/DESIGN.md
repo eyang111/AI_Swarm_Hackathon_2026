@@ -392,7 +392,13 @@ Sunday set: 1, 2, 3, 4 and the timeline graph. 5, 6 and 7 are already built as s
 accept / correct / reject; rejected links and edges are retracted (verdicts kept in `checks`). The lead reads the
 aggregates and writes **findings** that must cite claim keys, links, cluster edges, run groups, conversations or
 analyses, and **free observations** (anything outside the schema) that must cite a msg_id with an exact quote, never
-from a withheld span. The schema must not blind the investigator to what it wasn't told to look for.
+from a withheld span. The schema must not blind the investigator to what it wasn't told to look for. Each finding carries one
+category (spread routes, beliefs and predictions, goals and coordination, conventions and protocols, methods and
+resources, coined words and markers, who spread it, limits and caveats).
+
+**Readable summary.** `readable.py` turns the run into `summary.md`: an overview, findings by category, a chronology
+per slice segment, and links to items. Raw ids are replaced by item names, and access-related items are withheld by
+the export screen. `report.md` is this summary followed by the full technical report under "Background".
 
 ### 9.4 L6 timeline graph
 The main output picture: each cluster is an event node (split into sub-events where L4 finds separate phases),
