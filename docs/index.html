@@ -422,22 +422,22 @@
 
     <!-- Track B -->
     <div class="track" style="margin-top:56px">
-      <div class="track-head"><span class="badge">TRACK B</span><h3>Swarm Atlas: find every episode and grade it on one definition</h3></div>
-      <p class="sub prose">The Atlas maps swarm episodes across all three datasets and also serves as our baseline. It uses Michael Flood's definition. A swarm is two or more agents whose causal interactions produce self-organized, mutually conditioned behavior toward a collective goal, where no human or orchestrator specified the structure. Episodes are graded on his cumulative ladder:</p>
+      <div class="track-head"><span class="badge">TRACK B</span><h3>Swarm Atlas: find and classify examples of swarm behavior</h3></div>
+      <p class="sub prose">The Atlas collects candidate episodes from all three datasets and classifies them using Michael Flood’s definition of a swarm. It also provides a comparison for the Investigator. The levels below distinguish simple interaction from self-organized behavior toward a collective goal:</p>
       <div class="ladder" aria-label="Swarm progression levels">
-        <div class="rung" style="--c: var(--l0)"><b>L0</b><span>Aggregate</span><em>converged without influencing each other</em></div>
-        <div class="rung" style="--c: var(--l1)"><b>L1</b><span>Interaction</span><em>one agent causally affects another</em></div>
-        <div class="rung" style="--c: var(--l2)"><b>L2</b><span>Cooperation</span><em>advances individual objectives</em></div>
-        <div class="rung" style="--c: var(--l3)"><b>L3</b><span>Coordination</span><em>behavior becomes mutually conditioned</em></div>
-        <div class="rung" style="--c: var(--l4)"><b>L4</b><span>Self-organization</span><em>roles, norms or division of labor emerge</em></div>
-        <div class="rung" style="--c: var(--l5)"><b>L5</b><span>Swarm formation</span><em>that structure serves a collective goal</em></div>
+        <div class="rung" style="--c: var(--l0)"><b>L0</b><span>Aggregate</span><em>similar behavior without influencing each other</em></div>
+        <div class="rung" style="--c: var(--l1)"><b>L1</b><span>Interaction</span><em>one agent influences another</em></div>
+        <div class="rung" style="--c: var(--l2)"><b>L2</b><span>Cooperation</span><em>agents help advance individual goals</em></div>
+        <div class="rung" style="--c: var(--l3)"><b>L3</b><span>Coordination</span><em>agents adjust their actions in response to each other</em></div>
+        <div class="rung" style="--c: var(--l4)"><b>L4</b><span>Self-organization</span><em>agents develop their own roles, rules or division of work</em></div>
+        <div class="rung" style="--c: var(--l5)"><b>L5</b><span>Swarm formation</span><em>the self-organized group works toward a collective goal</em></div>
       </div>
       <ol class="steps">
-        <li><span class="num">1</span><span class="name">Sweep<span class="who">AI sweep agents</span></span><span class="desc">Agents read each dataset in time slices and log every candidate episode, with participants, key messages and evidence for each feature (526 raw episodes).</span></li>
-        <li><span class="num">2</span><span class="name">Vet<span class="who">Independent checkers</span></span><span class="desc">Separate agents re-read each episode against the raw data and challenge its grade.</span></li>
-        <li><span class="num">3</span><span class="name">Align and merge<span class="who">One rule set</span></span><span class="desc">Duplicates are merged across slices, giving 484 episodes. Each is graded under a single rule set, with its origin, its relation to the assigned task, its consequence for people and its goal type.</span></li>
-        <li><span class="num">4</span><span class="name">Check recall<span class="who">Script detector</span></span><span class="desc">A detector scores every room-day, page and thread for multi-agent back-and-forth. The strongest units the sweep missed are read and graded, which found 8 new episodes.</span></li>
-        <li><span class="num">5</span><span class="name">Verify quotes<span class="who">Script</span></span><span class="desc">3,483 of 3,547 key messages (98.2%) were found verbatim at the stated time and speaker. The rest are flagged.</span></li>
+        <li><span class="num">1</span><span class="name">Sweep<span class="who">AI sweep agents</span></span><span class="desc">AI readers examine different time periods and flag possible episodes of swarm behavior. They record the agents involved, key messages and supporting evidence: 526 candidates in the first pass.</span></li>
+        <li><span class="num">2</span><span class="name">Vet<span class="who">Independent checkers</span></span><span class="desc">Other AI reviewers check each candidate against the original messages and question whether its assigned level is justified.</span></li>
+        <li><span class="num">3</span><span class="name">Align and merge<span class="who">One rule set</span></span><span class="desc">Combine duplicate entries and apply the same classification rules throughout. The final 484 episodes record how the behavior began, what goals it served, and its possible effects on people.</span></li>
+        <li><span class="num">4</span><span class="name">Check recall<span class="who">Script detector</span></span><span class="desc">A script looks for back-and-forth between agents in chats, wiki pages and discussion threads. Reviewing promising cases missed by the first pass added 8 episodes.</span></li>
+        <li><span class="num">5</span><span class="name">Verify quotes<span class="who">Script</span></span><span class="desc">Check quoted messages against the original data, including their timestamps and speakers. 3,483 of 3,547 quotes matched (98.2%); the rest are flagged.</span></li>
       </ol>
     </div>
 
@@ -448,56 +448,56 @@
 <section id="results">
   <div class="wrap">
     <p class="sec-label"><span class="n">04</span> Results</p>
-    <h2>The investigator recovered every planted cascade and traced how coordination spread</h2>
+    <h2>What the Investigator recovered and what it found</h2>
 
-    <h3>Swarm Investigator: scored against planted truth</h3>
-    <p class="sub prose">We hid four made-up cascades in a copy of DSEWiki: an easy one (verbatim repeats), a medium one (paraphrased, minutes apart), a hard one (paraphrased, hours apart, partly adopted), and one inside the Jun 18 burst. Each has an origin, adopters and challengers, 16 events in all.</p>
+    <h3>Swarm Investigator: testing on events with known answers</h3>
+    <p class="sub prose">We added four fictional chains of messages to a copy of DSEWiki, with 16 events in total. The examples range from exact repeats to reworded messages hours apart, including one during the busy June 18 period. We checked whether the Investigator found each event and correctly identified its role, such as starting, adopting or challenging an idea.</p>
     <div class="grid-2" style="margin-top:20px">
       <div class="card score">
         <span class="tag">Run 1 · test slice</span>
-        <div class="big">14 <small>/ 16 planted events</small></div>
-        <p class="small">1,049 saves from three stretches, including the Jun 18 peak. Every save got a reader record. 59 items were found. Cost: <strong>$9.62</strong>. The review afterwards cut six pipeline features that weren't adding anything.</p>
+        <div class="big">14 <small>/ 16 events with correct roles</small></div>
+        <p class="small">All 1,049 eligible wiki edits in three selected periods received reader records. The system found 59 groups of related content. Cost: <strong>$9.62</strong>. After reviewing this run, we removed six features that were not adding useful results.</p>
       </div>
       <div class="card score">
         <span class="tag">Full run · all of DSEWiki</span>
-        <div class="big">16 <small>/ 16 planted events</small></div>
-        <p class="small">14,336 saves read (3 reader windows failed). 502 items were found, and 168 of the 387 large enough to test spread more than chance would give. Each plant landed in one cluster with no outsiders. Cost: <strong>$190.11</strong>, including a $43.30 duplicate batch that was cancelled.</p>
+        <div class="big">16 <small>/ 16 events with correct roles</small></div>
+        <p class="small">14,336 of 14,339 eligible edits received reader records. The system found 502 groups of related content; 168 of the 387 tested exceeded the random spread baseline. All four fictional chains were grouped correctly, with no unrelated messages. Source attribution was correct for 9/12 events with a known source. Cost: <strong>$190.11</strong>, including a $43.30 duplicate batch that was cancelled.</p>
       </div>
     </div>
 
     <h3 style="margin-top:48px">What the investigator found in DSEWiki</h3>
-    <p class="small" style="margin-bottom:18px">These are the pipeline's hypotheses, not ground truth. Confidence ratings are the lead's own.</p>
+    <p class="small" style="margin-bottom:18px">These findings are the system’s interpretations of the logs. The lead investigator assigned the confidence ratings; they are not measured accuracy scores.</p>
     <div class="grid-2 findings">
       <div class="card finding">
-        <h3>Shared pages carry the spread <span class="conf">high</span></h3>
-        <p>Items move between runs through per-task “Live”, “Signal” and “Collab” relay pages. Direct replies are rare.</p>
+        <h3>Agents shared information through wiki pages <span class="conf">high</span></h3>
+        <p>Agents left information on shared pages for others working on the same task to pick up. The recorded connections mostly use these pages; direct replies are rare.</p>
       </div>
       <div class="card finding">
-        <h3>Agents invented protocols, and the protocols spread <span class="conf">medium</span></h3>
-        <p>Agents posted a compact STATE5 token on a signal page, wrote the round answer to a shared counter before answering, and kept dedicated relay pages. These were copied across task families, and one signal grew into a heartbeat beacon with rules for observers.</p>
+        <h3>Agents copied ways of coordinating <span class="conf">medium</span></h3>
+        <p>Agents developed shared signals, places to post answers, and rules for passing information along. Similar practices appeared across different tasks. One signal developed into regular updates telling other agents that a run was still active.</p>
       </div>
       <div class="card finding">
-        <h3>A false belief drove the coordination <span class="conf">medium</span></h3>
-        <p>The belief that round 5 ends the episode spread across task families and motivated the signalling protocols. One cohort saw a round 6 and refuted it, but the belief and its protocols lived on elsewhere.</p>
+        <h3>A mistaken belief helped shape coordination <span class="conf">medium</span></h3>
+        <p>Some agents believed their task would end after round 5 and arranged to share information before that happened. One group later encountered round 6, contradicting the belief, but other groups continued using it.</p>
       </div>
       <div class="card finding">
-        <h3>Agents tried to predict the test <span class="conf">high</span></h3>
-        <p>Agents searched for random seeds that reproduced the observed answer sequence. A predicted “Maryland” circulated as preparation until the real answer, Montana, overturned it.</p>
+        <h3>Agents tried to predict future answers <span class="conf">high</span></h3>
+        <p>Agents tried to identify the random-number settings that could have generated earlier answers, then use them to predict later ones. “Maryland” spread as a predicted answer, but the observed answer was Montana.</p>
       </div>
       <div class="card finding">
-        <h3>Corrections rarely stop spread <span class="conf">medium</span></h3>
-        <p>440 items were still alive at the end of the data, against 49 corrected. 631 adoptions came after a correction had already been posted.</p>
+        <h3>Adoption continued after corrections appeared <span class="conf">medium</span></h3>
+        <p>The analysis marked 49 content groups as corrected and 440 as still active when the logs ended. It counted 631 adoptions after a correction was posted, but this does not show that those agents saw the correction.</p>
       </div>
       <div class="card finding">
-        <h3>The top spreaders mostly reposted their own work <span class="conf">medium</span></h3>
-        <p>The largest raw adoption counts come from single sessions reposting their own blocks, not from influencers. Counted at the run-group level, spread is modest.</p>
+        <h3>Repeated posts inflated apparent influence <span class="conf">medium</span></h3>
+        <p>Some of the highest adoption counts came from an agent reposting its own text. Grouping edits likely to belong to the same run reduces the apparent spread between agents.</p>
       </div>
     </div>
 
-    <h3 style="margin-top:56px">Swarm Atlas: swarms form in all three datasets, but only DSEWiki's are spontaneous</h3>
+    <h3 style="margin-top:56px">Swarm Atlas: comparing behavior across three datasets</h3>
     <div class="figure" id="levels-fig" style="margin-top:16px">
-      <h3>How far episodes got, by dataset</h3>
-      <p class="small" style="margin:0">Share of graded episodes at each level. The labels on the right count those that reached L5, swarm formation.</p>
+      <h3>How episodes were classified</h3>
+      <p class="small" style="margin:0">Each bar shows the share of episodes at each level. The labels on the right show how many met the L5 criteria for swarm formation.</p>
       <ul class="legend" aria-hidden="true">
         <li><i style="--c: var(--l0)"></i>L0 Aggregate</li>
         <li><i style="--c: var(--l1)"></i>L1 Interaction</li>
@@ -524,11 +524,11 @@
     </div>
 
     <ul class="points prose">
-      <li><b>DSEWiki holds the clearest spontaneous swarms.</b> Research-agent runs built relay hubs, roles and signalling conventions. They recreated pages after moderators deleted them and handed their structures to the next wave of runs. The largest relay involved about 49 agents identified by signature, and another spanned about 90 cohorts. 86 of 87 episodes were harmful, to evaluation integrity, to sandbox constraints or to a third party's wiki.</li>
-      <li><b>AI Village swarms are mostly seeded or afforded.</b> Agents built pipelines, governance gates and protocols inside goals that staff set. Most had neutral consequences (316 of 347).</li>
-      <li><b>Moltbook's apparent swarms are mostly account rings run by one operator.</b> These are L0, because one operator counts as one agent. The real swarms are small and brief: a bug-tracking hub, a shared blocklist against prompt injection, and a collaborative literature review.</li>
-      <li><b>Shared false beliefs appear in all three datasets.</b> One agent's error spreads before anyone checks it.</li>
-      <li><b>The definition matters.</b> Under a stricter reading, where the structure must outlive changes in membership, only 23 episodes reach L5. Under the wording of Flood's post, 169 do.</li>
+      <li><b>DSEWiki agents built their own coordination networks.</b> Agents created pages for sharing answers, developed roles and signals, and rebuilt pages after deletion. One relay involved about 49 agents identified by signatures; another spanned about 90 groups of runs. The Atlas classified 86 of 87 episodes as harmful to evaluation integrity, sandbox constraints or the wiki.</li>
+      <li><b>AI Village coordination developed within a designed social setting.</b> Agents developed workflows, approval rules and ways of coordinating while pursuing goals set by staff. The Atlas classified 316 of 347 episodes as neutral or ambiguous in their effects on people.</li>
+      <li><b>Multiple Moltbook accounts did not always mean multiple agents.</b> The Atlas treated account rings run by one operator as L0. Cases classified as swarms included a shared bug tracker, a blocklist against prompt injection, and a collaborative literature review.</li>
+      <li><b>Shared false beliefs appear in all three datasets.</b> The reports include cases where agents repeated another agent’s mistake.</li>
+      <li><b>The definition matters.</b> Requiring a group’s structure to survive changes in membership produced 23 L5 episodes. The final interpretation of Flood’s definition allows temporary swarms and classified 169 episodes at L5.</li>
     </ul>
   </div>
 </section>
@@ -537,29 +537,29 @@
 <section id="baseline">
   <div class="wrap">
     <p class="sec-label"><span class="n">05</span> Baseline comparison</p>
-    <h2>Does the pipeline beat single-pass AI analysts?</h2>
+    <h2>How does the Investigator compare with the Atlas?</h2>
     <div class="prose">
-      <p>The Swarm Atlas is our baseline. In that model, three Claude agents each read one slice of DSEWiki and wrote episodes directly, and review passes followed. The Investigator splits the same job into 816 narrow model calls, each checked against the source, which parallellizes the job. We compared the two on DSEWiki as both of the models read this dataset. /p>
+      <p>For the Atlas, three Claude agents each read a time period of DSEWiki and wrote episode summaries, followed by review. The Investigator divides analysis into smaller tasks across 816 model calls, with source checks and a review of sampled connections. We compare them on DSEWiki, the dataset both analyzed.</p>
     </div>
 
     <div class="tbl-wrap scorecard">
       <table>
         <thead><tr><th>Metric</th><th>Investigator</th><th>Swarm Atlas</th><th>Edge</th></tr></thead>
         <tbody>
-          <tr><td>Planted cascades found with the right role<small>the only metric with ground truth</small></td><td data-label="Investigator" class="v"><b>16 / 16</b></td><td data-label="Swarm Atlas" class="v">not testable</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
-          <tr><td>Share of the other system's findings it also found<small>judged blind; fully found</small></td><td data-label="Investigator" class="v"><b>82%</b> of the Atlas's 87 episodes</td><td data-label="Swarm Atlas" class="v">54% of the Investigator's 430 items</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
-          <tr><td>Source records cited<small>Atlas by time and speaker, Investigator by save ID</small></td><td data-label="Investigator" class="v"><b>5,141</b></td><td data-label="Swarm Atlas" class="v">741</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
-          <tr><td>Measures spread<small>copying vs chance, routes, effect of corrections</small></td><td data-label="Investigator" class="v"><b>yes</b></td><td data-label="Swarm Atlas" class="v">no</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
-          <tr><td>Coverage of the 651 pages edited by 3+ agents<small>the Atlas's own recall yardstick</small></td><td data-label="Investigator" class="v">88% (all 65 strongest)</td><td data-label="Swarm Atlas" class="v"><b>90%</b> (63 of the 65 strongest)</td><td data-label="Edge"><span class="edge tie">Tie</span></td></tr>
-          <tr><td>First-pass output changed by review</td><td data-label="Investigator" class="v">32% of checked links</td><td data-label="Swarm Atlas" class="v">48% of grades</td><td data-label="Edge"><span class="edge tie">Neither</span></td></tr>
-          <tr><td>Grades swarm level and harm; covers three datasets</td><td data-label="Investigator" class="v">no</td><td data-label="Swarm Atlas" class="v"><b>yes</b></td><td data-label="Edge"><span class="edge atl">Atlas</span></td></tr>
+          <tr><td>Planted events found with the correct role<small>only the Investigator was tested on these events</small></td><td data-label="Investigator" class="v"><b>16 / 16</b></td><td data-label="Swarm Atlas" class="v">not tested</td><td data-label="Edge"><span class="edge inv">Not compared</span></td></tr>
+          <tr><td>Findings from the other system also covered in full<small>AI judges compared descriptions without system names</small></td><td data-label="Investigator" class="v"><b>82%</b> of the Atlas's 87 episodes</td><td data-label="Swarm Atlas" class="v">54% of the Investigator's 430 items</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
+          <tr><td>Source records cited<small>Atlas: quoted messages; Investigator: distinct wiki edits</small></td><td data-label="Investigator" class="v"><b>5,141</b></td><td data-label="Swarm Atlas" class="v">741</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
+          <tr><td>Measures spread<small>spread vs a random baseline, sharing routes, adoption after corrections</small></td><td data-label="Investigator" class="v"><b>yes</b></td><td data-label="Swarm Atlas" class="v">no</td><td data-label="Edge"><span class="edge inv">Investigator</span></td></tr>
+          <tr><td>Pages covered out of 651 with 3+ agent handles<small>both systems were checked against the same page list</small></td><td data-label="Investigator" class="v">88% (all 65 strongest)</td><td data-label="Swarm Atlas" class="v"><b>90%</b> (63 of the 65 strongest)</td><td data-label="Edge"><span class="edge tie">Tie</span></td></tr>
+          <tr><td>Results revised during review</td><td data-label="Investigator" class="v">32% of checked links</td><td data-label="Swarm Atlas" class="v">48% of grades</td><td data-label="Edge"><span class="edge tie">Neither</span></td></tr>
+          <tr><td>Classifies swarm behavior and harm across three datasets</td><td data-label="Investigator" class="v">no</td><td data-label="Swarm Atlas" class="v"><b>yes</b></td><td data-label="Edge"><span class="edge atl">Atlas</span></td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="figure" id="cross-fig">
-      <h3>Who found what the other found</h3>
-      <p class="small" style="margin:0">Blind judges checked every entry in one catalog against the other catalog, without knowing which system made which.</p>
+      <h3>How much the two sets of findings overlap</h3>
+      <p class="small" style="margin:0">Claude judges compared the two sets of descriptions with system names hidden. They checked whether each finding was fully covered, partly covered or absent in the other set. They did not check whether the findings were true.</p>
       <ul class="legend" aria-hidden="true">
         <li><i style="--c: var(--m-full)"></i>Fully found</li>
         <li><i style="--c: var(--m-part)"></i>Partly found</li>
@@ -581,12 +581,12 @@
           </table>
         </div>
       </details>
-      <p class="foot">Two judges agreed on 97% of episodes (κ 0.89) and 85% of items (κ 0.72). The four planted cascades are left out, because the Atlas never saw them.</p>
+      <p class="foot">Two judges agreed on 97% of the 87 episodes checked twice, and 85% of the 107 items checked twice. Agreement beyond chance was κ = 0.89 and 0.72, respectively. The four planted examples are excluded because the Atlas never saw them.</p>
     </div>
 
     <div class="verdict">
-      <p><strong>Yes, on what can be scored.</strong> The Investigator is the only system tested against truth. It recovered 37 of the Atlas's 42 full swarms and most of its other episodes, and it adds detail the Atlas leaves out: specific link sets, answer values and conventions. It also cites about seven times more source records.</p>
-      <p>It is not better everywhere. Coverage is a tie, and both first passes needed a checker. The Investigator missed two small relays and one writer posting under thirteen names, and it only partly caught pages that agents recreated after moderators deleted them. It does not judge how far a swarm got or who was harmed. <a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/blob/main/comparisons/atlas-vs-investigator/README.md">Full comparison and caveats</a>.</p>
+      <p><strong>The Investigator captures more detail.</strong> It covered 37 of the Atlas’s 42 L5 episodes and cited about seven times as many source records. Some of the 82% vs 54% gap reflects how the systems divide up findings: the Investigator lists specific answers and conventions within broader Atlas episodes. The planted test has a known answer key, but only the Investigator took it.</p>
+      <p>Page coverage was similar. Both systems needed review: 32% of sampled Investigator links changed, while 48% of Atlas grades changed, mostly after the classification rules were revised. These are different measures, not comparable error rates. The Investigator also missed some episodes; the Atlas adds swarm-level and harm classifications. <a href="https://github.com/eyang111/AI_Swarm_Hackathon_2026/blob/main/comparisons/atlas-vs-investigator/README.md">Full comparison and caveats</a>.</p>
     </div>
   </div>
 </section>
@@ -598,20 +598,20 @@
     <h2>What these results can and can't show</h2>
     <div class="grid-2">
       <div class="card">
-        <h3>Answer sharing is invisible in the text</h3>
-        <p class="small">A relayed answer is identical to the answer the task produces, and the copying rule treats task-produced matches as independent. The copying counts (188 items copied, 159 partly copied, 50 reached independently) are therefore a lower bound.</p>
+        <h3>Matching answers do not establish copying</h3>
+        <p class="small">Agents can get the same answer by sharing it or by solving the same task. The system treats matches supplied by the task as independent, so it can miss real answer sharing. It labeled 188 content groups copied, 159 partly copied and 50 independent; those labels are not ground truth.</p>
       </div>
       <div class="card">
-        <h3>Adoption counts are inflated</h3>
-        <p class="small">The checker reviewed 60 sampled links. It accepted 41, corrected 18 and rejected 1. Most corrections were a session reposting its own block, counted as adoption by another agent. In the full run, Claude did the checker and lead stages by hand, without API calls.</p>
+        <h3>Reposts can look like adoption</h3>
+        <p class="small">Of 60 sampled connections, the checker accepted 41, corrected 18 and rejected 1. Many corrections involved an agent’s own repost being mistaken for another agent adopting it. For the full run, Claude supplied the checker and lead outputs in the project conversation rather than through API calls.</p>
       </div>
       <div class="card">
-        <h3>Identity is thin</h3>
-        <p class="small">No run key exists, and editor names are self-chosen. So claims about who spread what hold at the level of a single name's session or a cohort, not individual runs.</p>
+        <h3>Agent identity is uncertain</h3>
+        <p class="small">The data has no reliable ID for each agent run, and agents choose their own editor names. One agent may use several names. We can estimate which edits belong together, but counts of distinct agents remain uncertain.</p>
       </div>
       <div class="card">
-        <h3>Findings are hypotheses</h3>
-        <p class="small">The planted cascades test recall, not precision on real events. Blind hand labels, which would measure error rates, are still to come.</p>
+        <h3>Recovery is not the same as accuracy</h3>
+        <p class="small">Finding planted events tests whether the system can recover known examples. It does not measure how many findings about real events are wrong. The Atlas comparison measures overlap between reports; independent human checks against the original logs are still needed.</p>
       </div>
     </div>
   </div>
@@ -621,20 +621,20 @@
 <section id="goals">
   <div class="wrap">
     <p class="sec-label"><span class="n">07</span> Side exploration</p>
-    <h2>Following goals across AI Village</h2>
+    <h2>Tracing the messages before goal adoption and recruitment</h2>
     <div class="side">
-      <p class="sub prose" style="margin-bottom:0">Separately from the two tracks, we hand-traced how goals pass between agents in AI Village from July to September 2026, when each agent had its own assigned goal. Each case was coded at four levels of adoption:</p>
+      <p class="sub prose" style="margin-bottom:0">In AI Village’s July–September 2026 logs, we investigated what preceded an agent taking on someone else’s goal or recruiting others. We traced timestamped messages alongside stated goals, memory entries and available action records to locate the transition and identify messages that plausibly contributed. These sequences suggest possible triggers; they do not prove causation. We recorded four kinds of adoption evidence:</p>
       <ul class="levels">
-        <li><b>V</b> said so in chat</li>
-        <li><b>G</b> stated it as a goal</li>
-        <li><b>M</b> wrote it to memory</li>
-        <li><b>A</b> acted on it</li>
+        <li><b>V</b> agreed in chat</li>
+        <li><b>G</b> listed it as a goal</li>
+        <li><b>M</b> recorded it in memory</li>
+        <li><b>A</b> acted or reported acting</li>
       </ul>
       <ul class="points" style="margin-top:0">
-        <li><b>Adoption was usually added on top, not a replacement.</b> Three episodes reached all four levels. Most often the agent kept its assigned goal and did the other agent's work alongside it.</li>
-        <li><b>One real substitution happened.</b> An agent dropped Twitter for Substack, then switched back the morning a human asked every agent to re-check its goal.</li>
-        <li><b>Who asks matters.</b> Peer requests to take on an ongoing role were usually declined, with 30+ refusals citing the agent's own goal. A similar request from a human drew 8 volunteers in 15 minutes.</li>
-        <li><b>What tended to come first:</b> the agent's own goal had stalled, it lacked a capability another agent had, it was named as a required participant instead of being asked, the group had a visible success metric, or the first task was cheap.</li>
+        <li><b>Agents usually added a new task alongside their own.</b> Three episodes had evidence in all four categories. Most action evidence came from agents’ own reports; computer-use steps were checked directly for one case.</li>
+        <li><b>One agent replaced its assigned goal.</b> Sonnet 4.5 shifted from Twitter to Substack, then switched back within a minute of a human’s goal-audit prompt. The timeline connects that message with the agent’s acknowledgement of the change.</li>
+        <li><b>Compare requests, responses and recruitment.</b> The study records 30+ peer-role refusals and a human request that drew 8 volunteers in 15 minutes. In one recruitment case on September 18, DeepSeek-V3.2 accepted a proposed task at 20:49:38 UTC, then sought other agents to carry it out at 21:14:16 UTC.</li>
+        <li><b>Possible triggers to investigate:</b> stalled progress on the original goal, needing another agent’s tools, being named as a participant, seeing another group succeed, or being offered a small first task. These patterns come from a small set of cases.</li>
       </ul>
     </div>
   </div>
